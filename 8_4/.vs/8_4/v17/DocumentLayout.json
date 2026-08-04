@@ -14,17 +14,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "E:\\pro\\software\\Github\\GitRepository\\ai\u89C6\u89C9\u4F5C\u4E1A\\8_4\\8_4\\Program.cs",
               "RelativeDocumentMoniker": "8_4\\Program.cs",
-              "ToolTip": "E:\\pro\\software\\Github\\GitRepository\\ai\u89C6\u89C9\u4F5C\u4E1A\\8_4\\8_4\\Program.cs",
-              "RelativeToolTip": "8_4\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ToolTip": "E:\\pro\\software\\Github\\GitRepository\\ai\u89C6\u89C9\u4F5C\u4E1A\\8_4\\8_4\\Program.cs*",
+              "RelativeToolTip": "8_4\\Program.cs*",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAqwBMAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-04T02:10:44.646Z",
               "EditorCaption": ""
