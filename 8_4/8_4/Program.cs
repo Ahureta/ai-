@@ -35,10 +35,11 @@ namespace _8_4
             //List<Object> list.GetRange(Index x, int int); //返回数组从索引x个数为int的多个元素
             //void list.Reverse(); //将数组翻转
 
-            //Dictionary<string, string> dictionary = new Dictionary<string, string>();// { ["A"]="1" };
-            //dictionary.Add("A", "1");        //添加键值对    
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();// { ["A"]="1" };
+            dictionary.Add("A", "1");        //添加键值对    
             //Console.WriteLine(dictionary["A"]);            
-            //Console.WriteLine(dictionary.Count); // 获取键值对数量            
+            //Console.WriteLine(dictionary.Count); // 获取键值对数量
+            //bool result = dictionary.TryGetValue("A", out string value);
             //dictionary["height"] = "180"; //添加键值对，如果键已存在则更新值            
             //dictionary.Remove("gender");  //删除键值对，如果键不存在则不执行任何操作
         }
