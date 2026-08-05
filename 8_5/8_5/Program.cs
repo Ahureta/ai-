@@ -133,6 +133,68 @@
             //        Console.WriteLine("输入有误");
             //        break;
             //}
+
+
+
+            //输出星期几
+            //int n = int.Parse(Console.ReadLine());
+            //switch (n)
+            //{
+            //    case 1:
+            //        Console.WriteLine("星期一");
+            //        break;
+            //    case 2:
+            //        Console.WriteLine("星期二");
+            //        break;
+            //    case 3:
+            //        Console.WriteLine("星期三");
+            //        break;
+            //    case 4:
+            //        Console.WriteLine("星期四");
+            //        break;
+            //    case 5:
+            //        Console.WriteLine("星期五");
+            //        break;
+            //    case 6:
+            //    case 7:
+            //        Console.WriteLine("周末");
+            //        break;
+            //    default:
+            //        Console.WriteLine("输入有误");
+            //        break;
+            //}
+
+
+            //成绩等级输出 switch 简写
+            //int score = int.Parse(Console.ReadLine());
+            //if (score >= 0 && score <= 100)
+            //{
+            //    String n2 = score switch
+            //    {
+            //        >= 90 => "A",
+            //        >= 80 => "B",
+            //        >= 70 => "C",
+            //        >= 60 => "D",
+            //        _ => "F"
+            //    };
+            //    Console.WriteLine(n2);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("输入有误");                
+            //}
+
+
+
+            //三元表达式:判断 成年了/ 未成年
+            //int age = int.Parse(Console.ReadLine());
+            //string result = age >= 18 ? "成年了" : "未成年";
+            //Console.WriteLine(result);
+
+            //三元表达式: 判断 闰年(能被4整除但不能被100整除,能被400整除) 平年
+            //int year = int.Parse(Console.ReadLine());
+            //string result = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? "闰年" : "平年";
+            //Console.WriteLine(result);
         }
     }
 }
