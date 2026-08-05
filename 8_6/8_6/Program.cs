@@ -115,7 +115,14 @@
             //Console.WriteLine("猴子摘了 " + sum + " 个桃子");
 
             //有个皮球，每次落地弹起都是高度的一半，如果从10米高的地方丢下，第十次弹起时，皮球总过经历了多少距离。
-
+            //double height = 10.0;
+            //double total = 10; // 初始高度
+            //for (int i = 0; i < 9; i++)
+            //{
+            //    height /= 2;
+            //    total += height * 2; // 每次弹起和落下的距离
+            //}
+            //Console.WriteLine("第十次弹起时，皮球总过经历了 " + total + " 米");
         }
     }
 }
