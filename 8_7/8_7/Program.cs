@@ -44,6 +44,8 @@ namespace _8_7
                     {"stock", 210}
                 }
             };
+
+            //冒泡算法排序
             //for (int i = 0; i < goodsList.Count - 1; i++)
             //{ 
             //    for (int j = 0; j < goodsList.Count - 1- i; j++)
@@ -61,6 +63,7 @@ namespace _8_7
             //}
 
 
+            //选择排序算法
             //for (int i = 0; i < goodsList.Count - 1; i++)
             //{
             //    var goods = goodsList[i];
