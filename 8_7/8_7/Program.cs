@@ -106,12 +106,39 @@ namespace _8_7
             //var result = list.Distinct(new GoodsComparer()).ToList();
 
 
-            var result = ints
-                    .GroupBy(g => (g)) // 按元素分组
-                    .Select(g => g.First())               // 每组取第一个
-                    .ToList();
-                Console.WriteLine(String.Join(",", result));
+            //var result = ints
+            //         .GroupBy(g => (g)) // 按元素分组
+            //         .Select(g => g.First())               // 每组取第一个
+            //         .ToList();
+            //Console.WriteLine(String.Join(",", result));
 
+
+
+            Console.WriteLine("输入price或者stock以及ASC(1)或者DSC(0)排序");    //LINQ.OrderByDescending()
+            String s = Console.ReadLine();
+            String orderInput = Console.ReadLine();
+            bool isAsc;
+            if (orderInput == "1" || orderInput.Equals("asc", StringComparison.OrdinalIgnoreCase))
+            {
+                isAsc = true;
+            }
+            else if (orderInput == "0" || orderInput.Equals("dsc", StringComparison.OrdinalIgnoreCase))
+            {
+                isAsc = false;
+            }
+            else if (!bool.TryParse(orderInput, out isAsc)) // 兼容true/false输入
+            {
+                Console.WriteLine("排序方式输入错误！请输入1/0/ASC/DSC");
+                return;
+            }
+            var result = isAsc
+                ? goodsList.OrderBy(g => g[s]).ToList()
+                : goodsList.OrderByDescending(g => g[s]).ToList();
+
+            foreach (var goods in result)
+            {
+                Console.WriteLine($"商品名称: {goods["name"]}, 价格: {goods["price"]}, 库存: {goods["stock"]}");
+            }
         }
     }
 }
