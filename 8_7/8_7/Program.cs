@@ -1,4 +1,6 @@
-﻿namespace _8_7
+﻿using System.Collections.Generic;
+
+namespace _8_7
 {
     internal class Program
     {
@@ -59,25 +61,54 @@
             //}
 
 
-            for (int i = 0; i < goodsList.Count - 1; i++)
-            {
-                var goods = goodsList[i];
-                double price = goods["price"];
-                for (int j = i+1; j < goodsList.Count; j++)
-                {
-                    var nextGoods = goodsList[j];
-                    double nextPrice = nextGoods["price"];
-                    if (price > nextPrice)
-                    {
-                        goodsList[i] = nextGoods;
-                        goodsList[j] = goods;
-                        goods = nextGoods;
-                        price = nextPrice;
-                    }
-                }
-            }            
-            //小到大:电脑支架,无线鼠标,电竞耳机,机械键盘,27寸显示器            
-            Console.WriteLine("按价格从低到高排序后的商品列表："+ string.Join(",", goodsList.Select(g => g["name"])));
+            //for (int i = 0; i < goodsList.Count - 1; i++)
+            //{
+            //    var goods = goodsList[i];
+            //    double price = goods["price"];
+            //    for (int j = i+1; j < goodsList.Count; j++)
+            //    {
+            //        var nextGoods = goodsList[j];
+            //        double nextPrice = nextGoods["price"];
+            //        if (price > nextPrice)
+            //        {
+            //            goodsList[i] = nextGoods;
+            //            goodsList[j] = goods;
+            //            goods = nextGoods;
+            //            price = nextPrice;
+            //        }
+            //    }
+            //}            
+            ////小到大:电脑支架,无线鼠标,电竞耳机,机械键盘,27寸显示器            
+            //Console.WriteLine("按价格从低到高排序后的商品列表："+ string.Join(",", goodsList.Select(g => g["name"])));
+
+            //foreach 所遍历的是引用的副本,所以不可修改原始集合,只能修改副本所指向的对象的属性。当然前提是对象是可修改的.
+
+
+            List<int> ints = new List<int> { 1, 3, 3, 4, 5, 6, 7, 7, 8, 6, 4, 2, 3 };
+
+            //class GoodsComparer : IEqualityComparer<Goods>
+            //{
+            //    public bool Equals(Goods x, Goods y)
+            //    {
+            //        if (x == null || y == null) return false;
+            //        return x.Name == y.Name && x.Price == y.Price;
+            //    }
+
+            //    public int GetHashCode(Goods obj)
+            //    {
+            //        // 必须重写 GetHashCode，否则 HashSet 找不到元素
+            //        return HashCode.Combine(obj.Name, obj.Price);
+            //    }
+            //}
+            //var result = list.Distinct(new GoodsComparer()).ToList();
+
+
+            var result = ints
+                    .GroupBy(g => (g)) // 按元素分组
+                    .Select(g => g.First())               // 每组取第一个
+                    .ToList();
+                Console.WriteLine(String.Join(",", result));
+
         }
     }
 }
