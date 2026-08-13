@@ -128,6 +128,7 @@
             Dictionary<string, int> func(string str) =>
                 str.GroupBy(c => c.ToString())
                    .ToDictionary(g => g.Key, g => g.Count());
+            Console.WriteLine(string.Join(",", func("1231")));            
             //Dictionary<string, int> func(string str)
             //{
             //    Dictionary<string, int> d = new Dictionary<string, int>();
