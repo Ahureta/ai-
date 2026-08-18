@@ -17,13 +17,13 @@ namespace BookManager
 
         // 新增数据：强制要求 ==> 将list写入文件中
         public string GetPath() {            
-            return File.Exists(path) ? throw new Exception("路径错误") : path; ; 
+            return File.Exists(path)?path:File.Create(path).Name;
         }
         public string AddBook(Dictionary<string, dynamic> bookDic)
         {
 
             // 判断图书是否已存在===>根据图书名判断(一个书名只有一本)
-
+            if (SearchBook(bookDic["name"]) != null) throw new Exception("图书已存在,请勿重复添加!!!");
             // 新增的逻辑处理
             // 判断path路径是存在===> 不存在, 组装书籍list,序列化后 写入文件
             // 如果存在 =====> 先读取文件内容
@@ -34,10 +34,10 @@ namespace BookManager
             
             // 读取文件===>反序列化
             var json = File.ReadAllText(path);
-            // 反序列化
-            bookList =  JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(json);
-            
-            
+            // 防止反序列化为 null
+            if(!string.IsNullOrEmpty(json)) { 
+                bookList = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(json, JsonOpts) ?? new List<Dictionary<string, dynamic>>();
+            }
             bookList.Add(bookDic);
             //序列化
             string jsonStr = JsonSerializer.Serialize(bookList, JsonOpts);
@@ -54,8 +54,14 @@ namespace BookManager
             try
             {
                 string path = GetPath();
-                List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts);
-                list[list.FindIndex(item => item["name"] == bookDic["name"])] = bookDic;
+                string Text = File.ReadAllText(GetPath());
+                if (string.IsNullOrEmpty(Text)) return null;
+                // 修正：防止反序列化为 null
+                List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts) ?? new List<Dictionary<string, dynamic>>();
+                list[list.FindIndex(item => item["name"]?.ToString() == bookDic["name"]?.ToString())] = bookDic;
+                // 缺失的写回文件
+                string jsonStr = JsonSerializer.Serialize(list, JsonOpts);
+                File.WriteAllText(path, jsonStr);
             }
             catch (Exception ex) { 
                 throw new Exception(ex.Message);
@@ -70,14 +76,24 @@ namespace BookManager
             try
             {
                 string path = GetPath();
-                List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts);
-                list.RemoveAt(list.FindIndex(item => item["name"] == bookName));                
+                string Text = File.ReadAllText(GetPath());
+                if (string.IsNullOrEmpty(Text)) return null;
+                // 修正：防止反序列化为 null
+                List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(Text, JsonOpts) ?? new List<Dictionary<string, dynamic>>();
+                int idx = list?.FindIndex(item => item["name"]?.ToString() == bookName) ?? -1;
+                if (idx >= 0)
+                {
+                    list.RemoveAt(idx);
+                    // 缺失的写回文件
+                    string jsonStr = JsonSerializer.Serialize(list, JsonOpts);
+                    File.WriteAllText(path, jsonStr);
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return "ok";
+            return bookName;
         }
 
         // 查询所有数据
@@ -87,7 +103,10 @@ namespace BookManager
             try
             {
                 string path = GetPath();
-                List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts);
+                string Text = File.ReadAllText(GetPath());
+                if (string.IsNullOrEmpty(Text)) return null;
+                // 修正：防止反序列化为 null
+                List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts) ?? new List<Dictionary<string, dynamic>>();
                 return list;
             }
             catch (Exception ex)
@@ -99,9 +118,15 @@ namespace BookManager
         // 根据图书名称查询当前图书数据：强制要求
         public Dictionary<string, dynamic> SearchBook(string bookName) // 返回值根据情况修改
         {
-            string path = GetPath();
-            List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts);
-            Dictionary<string,dynamic> dic= (Dictionary<string, dynamic>)list.Where(item => item["name"]== bookName);
+            string Text = File.ReadAllText(GetPath());
+            if (string.IsNullOrEmpty(Text)) return null;
+
+            List<Dictionary<string, dynamic>> list =
+                JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(Text, JsonOpts) ?? new List<Dictionary<string, dynamic>>();
+            
+            var dic = list?.FirstOrDefault(item =>
+                item.TryGetValue("name", out var nameVal) && nameVal?.ToString() == bookName
+            );
             // 查询单个图书的逻辑处理
             return dic;
         }

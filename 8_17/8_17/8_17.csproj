@@ -8,8 +8,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="BookManager.csproj" />
-  </ItemGroup>
-
 </Project>
