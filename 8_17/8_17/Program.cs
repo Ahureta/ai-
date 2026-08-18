@@ -50,25 +50,78 @@ namespace BookManager
                             ["mark"] = mark,
                             ["price"] = price
                         };
+                        //Dictionary<string, dynamic> bookDic = new()
+                        //{
+                        //    ["name"] = "qwe",
+                        //    ["author"] = "erwe",
+                        //    ["isBorrow"] = false,
+                        //    ["id"] = new Random().NextDouble(),
+                        //    ["mark"] = "sdf",
+                        //    ["price"] = 1234
+                        //};
                         // 调用实例方法  实现 添加书籍
                         string res = BM.AddBook(bookDic);
                         Console.WriteLine(res);
                         break;
                     case "2":
                         Console.WriteLine("----删除图书----");
-
+                        Console.WriteLine("请输入要删除的书名");
+                        string delBookName = Console.ReadLine();                        
+                        Console.WriteLine("删除"+BM.RemoveBook(delBookName)+"成功");
                         break;
+
                     case "3":
                         Console.WriteLine("----编辑图书----");
-                        
+                        Console.WriteLine("请输入要编辑的书名");
+                        string editBookName = Console.ReadLine();
+                        var bookToEdit = BM.SearchBook(editBookName);
+                        if (bookToEdit != null)
+                        {
+                            Console.WriteLine("请输入新的作者");
+                            string newAuthor = Console.ReadLine();
+                            Console.WriteLine("请输入新的标签");
+                            string newMark = Console.ReadLine();
+                            Console.WriteLine("请输入新的价格");
+                            double newPrice = double.Parse(Console.ReadLine());
+                            bookToEdit["author"] = newAuthor;
+                            bookToEdit["mark"] = newMark;
+                            bookToEdit["price"] = newPrice;
+                            Console.WriteLine(BM.EditBook(bookToEdit));
+                        }
+                        else
+                        {
+                            Console.WriteLine("未找到该图书");
+                        }
                         break;
+
                     case "4":
                         Console.WriteLine("----查询所有图书----");
-
+                        var books = BM.SearchBook();
+                        if (books != null && books.Count > 0)
+                        {
+                            foreach (var b in books)
+                            {
+                                Console.WriteLine($"书名: {b["name"]}, 作者: {b["author"]}, 标签: {b["mark"]}, 价格: {b["price"]}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("未找到图书");
+                        }
                         break;
                     case "5":
                         Console.WriteLine("----查询单个图书----");
-
+                        Console.WriteLine("请输入要查询的书名");
+                        string searchBookName = Console.ReadLine();
+                        var book = BM.SearchBook(searchBookName);
+                        if (book != null)
+                        {
+                            Console.WriteLine($"书名: {book["name"]}, 作者: {book["author"]}, 标签: {book["mark"]}, 价格: {book["price"]}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("未找到该图书");
+                        }
                         break;
                     case "0":
                         Console.WriteLine("--**退出**--");
