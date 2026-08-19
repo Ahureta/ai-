@@ -131,6 +131,61 @@ namespace BookManager
             return dic;
         }
 
+
+        //2. 完善一个借阅功能
+        //    - 添加一个借阅功能的编号 比如： 5
+        //    + 输入5 进入借阅功能
+        //    - 将所有可借阅的书籍展示， 并要求用户输入借阅的书籍名称
+        //    - 输入要借阅的书籍，实现借阅
+        //3. 完善一个还书功能
+
+        public string borrowBook(string bookName)
+        {
+            // 借阅的逻辑处理
+ 
+            string path = GetPath();
+            string Text = File.ReadAllText(GetPath());                
+            if (string.IsNullOrEmpty(Text)) throw new Exception("json文件内容为空");
+            if (string.IsNullOrEmpty(bookName)) throw new Exception("借阅的文件名不能为空");
+            // 修正：防止反序列化为 null
+            List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts) ?? new List<Dictionary<string, dynamic>>();
+            int idx = list.FindIndex(item => item["name"]?.ToString() == bookName.ToString());
+            if (string.Equals(list[idx]["isBorrow"]?.ToString(), "true", StringComparison.OrdinalIgnoreCase))
+                return "图书已被借出";            
+            if (idx >= 0)
+            {
+                list[idx]["isBorrow"] = true; // 假设借出时 isBorrow 设为 true
+                // 缺失的写回文件
+                string jsonStr = JsonSerializer.Serialize(list, JsonOpts);
+                File.WriteAllText(path, jsonStr);
+            }
+
+            return "借阅成功";
+        }
+
+        public string ret(string bookName)
+        {
+            // 归还的逻辑处理
+
+            string path = GetPath();
+            string Text = File.ReadAllText(GetPath());
+            if (string.IsNullOrEmpty(Text)) throw new Exception("json文件内容为空");
+            if (string.IsNullOrEmpty(bookName)) throw new Exception("归还的文件名不能为空");
+            // 修正：防止反序列化为 null
+            List<Dictionary<string, dynamic>> list = JsonSerializer.Deserialize<List<Dictionary<string, dynamic>>>(File.ReadAllText(path), JsonOpts) ?? new List<Dictionary<string, dynamic>>();
+            int idx = list.FindIndex(item => item["name"]?.ToString() == bookName.ToString());
+            if (string.Equals(list[idx]["isBorrow"]?.ToString(), "false", StringComparison.OrdinalIgnoreCase))
+                return "图书未被借出";            
+            if (idx >= 0)
+            {
+                list[idx]["isBorrow"] = false; // 假设借出时 isBorrow 设为 true
+                // 缺失的写回文件
+                string jsonStr = JsonSerializer.Serialize(list, JsonOpts);
+                File.WriteAllText(path, jsonStr);
+            }
+
+            return "归还成功";
+        }
         // 自定义实例构造函数
         public BookManager(string bookPath, JsonSerializerOptions Opts)
         {
