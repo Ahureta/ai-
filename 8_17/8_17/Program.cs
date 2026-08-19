@@ -25,6 +25,8 @@ namespace BookManager
                 Console.WriteLine("3: 编辑图书");
                 Console.WriteLine("4: 查询所有图书");
                 Console.WriteLine("5: 查询单个图书");
+                Console.WriteLine("6: 借阅功能");
+                Console.WriteLine("7: 还书功能");
                 Console.WriteLine("0: 退出");
                 num = Console.ReadLine();
 
@@ -122,6 +124,24 @@ namespace BookManager
                         {
                             Console.WriteLine("未找到该图书");
                         }
+                        break;
+
+                    case "6":
+                        Console.WriteLine("----借阅图书----");
+                        Console.WriteLine("请输入要借阅的书名");
+                        string borrowBookName = Console.ReadLine();
+                        if (string.IsNullOrEmpty(borrowBookName)) throw new Exception("借阅的文件名不能为空");
+                        string result = BM.borrowBook(borrowBookName);// == null?"借阅成功":"借阅失败";
+                        Console.WriteLine(result);
+                        break;
+
+                    case "7":
+                        Console.WriteLine("----归还图书----");
+                        Console.WriteLine("请输入要归还的书名");
+                        string borrowBookName2 = Console.ReadLine();
+                        if (string.IsNullOrEmpty(borrowBookName2)) throw new Exception("归还的图书名不能为空");
+                        string result2 = BM.ret(borrowBookName2);// == null?"借阅成功":"借阅失败";
+                        Console.WriteLine(result2);
                         break;
                     case "0":
                         Console.WriteLine("--**退出**--");

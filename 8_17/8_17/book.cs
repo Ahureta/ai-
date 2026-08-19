@@ -37,7 +37,7 @@ namespace _8_17
                 // 如果需要更严格的验证，可以用正则
                 // if (!Regex.IsMatch(value, @"^[\u4e00-\u9fa5a-zA-Z0-9]+$"))
                 //     throw new ArgumentException("名称只能包含中文、字母、数字");
-                _name = value;
+                _name = value.Trim();
             }
         }
 
@@ -47,9 +47,9 @@ namespace _8_17
             get => _author;
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value.Trim()))
                     throw new ArgumentException("作者不能为空");
-                _author = value;
+                _author = value.Trim();
             }
         }
 
@@ -68,7 +68,7 @@ namespace _8_17
         public string Mark
         {
             get => _mark;
-            set => _mark = value;
+            set => _mark = value.Trim();
         }
 
         public double Price
