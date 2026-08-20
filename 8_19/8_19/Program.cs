@@ -106,6 +106,7 @@ namespace Car
             Console.WriteLine("2：查看所有车辆信息");
             Console.WriteLine("3：查看某辆车");
             Console.WriteLine("4：查看所有空闲车辆");
+
             Console.WriteLine("5：新增客户");
             Console.WriteLine("6：查看所有客户");
             Console.WriteLine("7：查看某个客户");
