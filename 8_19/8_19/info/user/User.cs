@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _8_19.info.user
@@ -13,19 +16,39 @@ namespace _8_19.info.user
         //- 根据id查看单条客户信息
         private static int _nextId = LoadNextId();   // 静态计数器
 
-        public int Id;
+        //属性的校验可以往后做便于调试
+        public int Id { get; }
         public string Name { get; set; }
-        public string Number { get; }
+        public string Number { get; set; }
         public string RegTime { get; }
-        public string Gander { get; set; }        
+        public string Gander { get; set; }
         public string Phone { get; set; }
         public string Motto { get; set; }
 
-        public User() { 
-            
+        public User(string name, string number, string regTime, string gander, string phone, string motto)
+        {
+            this.Id = GenerateId();
+            this.Name = name;
+            this.Number = number;
+            this.RegTime = regTime;// DateTime.UtcNow.ToString();但是需要注意构造实例不一定创建用户,所以传入
+            this.Gander = gander;
+            this.Phone = phone;
+            this.Motto = motto;
         }
 
-        protected static string IdFilePath = "./userId.txt";        
+        [JsonConstructor]
+        public User(int id, string name, string number, string regTime, string gander, string phone, string motto)
+        {
+            this.Id = id;
+            this.Name = name;
+            this.Number = number;
+            this.RegTime = regTime;// DateTime.UtcNow.ToString();但是需要注意构造实例不一定创建用户,所以传入
+            this.Gander = gander;
+            this.Phone = phone;
+            this.Motto = motto;
+        }
+
+        protected static string IdFilePath = "./userId.txt";
         private static int GenerateId()
         {
             int id = Interlocked.Increment(ref _nextId);
@@ -34,7 +57,7 @@ namespace _8_19.info.user
         }
 
         private static int LoadNextId()
-        {            
+        {
             if (File.Exists(IdFilePath) && int.TryParse(File.ReadAllText(IdFilePath).Trim(), out int last))
                 return last;
             return 0;
