@@ -94,7 +94,8 @@ namespace _8_19.Manager
         public (string, List<User>) SearchAll()
         {
             //读取文件
-            (_, List<User> list) = ReadFile();            
+            (_, List<User> list) = ReadFile();
+            if (list.Count == 0) return ("暂无用户数据", list);
             return ("查找成功", list);
         }
         // 查看某个客户方法

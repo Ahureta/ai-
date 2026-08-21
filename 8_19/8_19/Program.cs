@@ -1,4 +1,5 @@
 ﻿using _8_19;
+using _8_19.info;
 using _8_19.info.user;
 using _8_19.Manager;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace Car
             string num = "";// 输入的操作编号
             CarManager CM = new CarManager();// 实例化车辆管理对象
             UserManager UM = new UserManager();// 实例化用户管理对象
+            RecordManager RM = new RecordManager();// 实例化记录管理对象
             while (num != "0")
             {
 
@@ -24,6 +26,7 @@ namespace Car
                 string str = "";
                 List<Vehicle> listVehicle = new List<Vehicle>();
                 List<User> listUser = new List<User>();
+                List<Record> listRecord = new List<Record>();
                 switch (num)
                 {
                     case "0":
@@ -105,14 +108,20 @@ namespace Car
 
                     case "8":
                         Console.WriteLine("租车");
-                        //(str, _) = UM.SearchAll();
-                        //Console.WriteLine(str);
+                        Console.WriteLine("请输入车辆ID：");
+                        int.TryParse(Console.ReadLine(), out int vehicleId);
+                        Console.WriteLine("请输入用户ID：");
+                        int.TryParse(Console.ReadLine(), out int userId2);
+                        (str, _) = RM.lease(vehicleId, userId2);
+                        Console.WriteLine(str);
                         break;
 
                     case "9":
                         Console.WriteLine("还车");
-                        //(str, _) = UM.SearchAll();
-                        //Console.WriteLine(str);
+                        Console.WriteLine("请输入车辆ID：");
+                        int.TryParse(Console.ReadLine(), out int vehicleId2);
+                        (str, _) = RM.ret(vehicleId2);
+                        Console.WriteLine(str);
                         break;
 
                     default:
