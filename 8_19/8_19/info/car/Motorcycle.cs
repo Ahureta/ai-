@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _8_19
@@ -15,6 +16,12 @@ namespace _8_19
         public Motorcycle(double price) : base(price)
         {
             
+        }
+
+        [JsonConstructor]
+        public Motorcycle(int id, string number, VehicleStatusEnum status, double price) : base(id, number, status, price)
+        {
+
         }
     }
 }

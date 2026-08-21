@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -22,14 +23,15 @@ namespace _8_19
         {
             WriteIndented = true,
             AllowTrailingCommas = true,
-            // 在JSON序列化的时候中文不变
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            PropertyNameCaseInsensitive = true,    //忽略大小写            
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,    // 在JSON序列化的时候中文不变
         };
 
-        internal string Path { 
+        internal string Path {
+            //Path事先验证文件路径存在,所以后续直接调用不为空的Path就好
             get 
             {
-                if (!File.Exists(_path)) File.Create(_path);
+                if (!File.Exists(_path)) File.Create(_path).Dispose();
                 return _path;
             }
             set 
@@ -95,7 +97,7 @@ namespace _8_19
         //public (string error, List<T> data) ReadFile<T>(string path) where T : Vehicle
         public (string, List<Vehicle>) ReadFile() 
         {
-            
+            //由于Path事先验证文件路径存在,所以再加上文件内容验证,所以ReadFile返回值就一定不为空串,但是要注意空列表情况
             string str = File.ReadAllText(Path);
             if (string.IsNullOrEmpty(str)) return ("文件为空", new List<Vehicle>());
             var list = JsonSerializer.Deserialize<List<Vehicle>>(str, JsonOpt) ?? new List<Vehicle>();
@@ -114,19 +116,24 @@ namespace _8_19
 
         internal (string, List<Vehicle>) SearchFree()
         {
-            throw new NotImplementedException();
+            //读取文件
+            (_, List<Vehicle> list) = ReadFile();
+            //查询空闲车辆的逻辑
+            List<Vehicle> list2 = list.FindAll(item => item.Status == VehicleStatusEnum.Available);
+
+            string str = list2.Count == 0?"列表为空,暂无车辆":"读取成功";
+            return (str, list2);
         }
 
         internal (string, List<Vehicle>) SearchOne(int id)
         {
             if (id <= 0) throw new ArgumentException("id必须大于0", nameof(id));
 
-            string str = File.ReadAllText(Path);
-            if (!string.IsNullOrEmpty(str))
+            (_, List<Vehicle> list) = ReadFile();                         
+            if (!(list.Count == 0))
             {
-                var vehicles = JsonSerializer.Deserialize<List<Vehicle>>(str, JsonOpt);
                 // 这里可以根据id查找并处理对应的Vehicle对象
-                Vehicle? vehicle = vehicles?.FirstOrDefault(v => v.Id == id);
+                Vehicle? vehicle = list?.FirstOrDefault(v => v.Id == id);
                 if (vehicle == null)
                 {
                     return ($"id:{id}不存在", new List<Vehicle>());

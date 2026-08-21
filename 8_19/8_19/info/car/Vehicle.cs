@@ -20,12 +20,12 @@ namespace _8_19
         //- 查看所有空闲车辆
         private static int _nextId = LoadNextId();   // 静态计数器
         private static readonly Random _random = new();
-       
+
         protected VehicleStatusEnum _status;
         protected double _price;
 
         public int Id { get; }
-        public string Number { get;}
+        public string Number { get; }
         public abstract string Type { get; }
 
         public VehicleStatusEnum Status
@@ -57,7 +57,7 @@ namespace _8_19
                 //Regex.IsMatch(value, reg);
             }
         }
-
+        
 
         public Vehicle(double price)
         {
@@ -65,6 +65,17 @@ namespace _8_19
             this.Number = GetNumber();
             this._status = VehicleStatusEnum.Available;
             this.Price = price;
+        }
+
+        protected Vehicle() { } // 空构造函数，仅用于反序列化后备
+
+        [JsonConstructor]
+        public Vehicle(int id, string number, VehicleStatusEnum status, double price)
+        {
+            Id = id;
+            Number = number;
+            Status = status;
+            Price = price;
         }
 
         private static int GenerateId()
@@ -105,7 +116,7 @@ namespace _8_19
             char[] digits = "0123456789".ToCharArray();
 
             string province = provinces[_random.Next(provinces.Length)];
-            char cityLetter = letters[_random.Next(letters.Length)];                        
+            char cityLetter = letters[_random.Next(letters.Length)];
 
             // 后5位：随机字母+数字混合            
             var sb = new StringBuilder(5);

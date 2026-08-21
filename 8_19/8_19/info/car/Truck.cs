@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace _8_19
@@ -13,6 +14,12 @@ namespace _8_19
         private static readonly string _type = "卡车";  // 静态只读字段，仅一份
         public override string Type => _type;            // 实例属性返回静态字段
         public Truck(double price) : base(price)
+        {
+
+        }
+
+        [JsonConstructor]
+        public Truck(int id, string number, VehicleStatusEnum status, double price) : base(id, number, status, price)
         {
 
         }
