@@ -68,7 +68,7 @@ namespace _8_19
         //}
 
         //- 添加车辆（id、车牌号、车辆类型（轿车、卡车、摩托车）、车辆状态（空闲、已租）、每小时的费用）
-        public (string, List<Vehicle>) Add(string type, string price) 
+        public (string, List<Vehicle>)  Add(string type, string price) 
         { 
             if (!Enum.TryParse<VehicleTypeEnum>(type, true, out var vehicleType))
                 throw new ArgumentException("不支持的车辆类型");
@@ -107,10 +107,12 @@ namespace _8_19
         {
             File.WriteAllText(Path,JsonSerializer.Serialize(list, JsonOpt));
         }
+
         internal (string, List<Vehicle>) SearchAll()
         {
             //读取文件
             (_, List<Vehicle> list) = ReadFile();
+            if (list.Count == 0) return ("列表为空,暂无车辆", list);
             return ("查找成功", list);
         }
 
