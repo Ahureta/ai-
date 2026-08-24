@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
+using _8_19.Enum;
 
-namespace _8_19
+namespace _8_19.Info.Car
 {
     internal class Car : Vehicle
     {

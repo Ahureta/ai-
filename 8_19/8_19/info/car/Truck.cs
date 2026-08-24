@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using _8_19.Enum;
 
-namespace _8_19
+namespace _8_19.Info.Car
 {
     internal class Truck : Vehicle
     {

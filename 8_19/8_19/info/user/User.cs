@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace _8_19.info.user
+namespace _8_19.Info.User
 {
     internal class User
     {

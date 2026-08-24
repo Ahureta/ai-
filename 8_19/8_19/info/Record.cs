@@ -1,11 +1,11 @@
-﻿using _8_19.info.user;
+﻿using _8_19.Info.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _8_19.info
+namespace _8_19.Info
 {
     internal class Record
     {

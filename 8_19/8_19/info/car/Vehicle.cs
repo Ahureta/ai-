@@ -6,8 +6,9 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using _8_19.Enum;
 
-namespace _8_19
+namespace _8_19.Info.Car
 {
     [JsonDerivedType(typeof(Car), "Car")]
     [JsonDerivedType(typeof(Truck), "Truck")]
@@ -37,7 +38,7 @@ namespace _8_19
             set
             {
                 // 检查 value 是否为 carStatusEnum 枚举的有效字符串
-                if (!Enum.IsDefined(typeof(VehicleStatusEnum), value))
+                if (!System.Enum.IsDefined(typeof(VehicleStatusEnum), value))
                 {
                     throw new ArgumentException("无效的车辆状态");
                 }
