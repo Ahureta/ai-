@@ -9,7 +9,7 @@ namespace _8_26
             initTab();
         }
 
-        public string[] picArr = [@"../../images/cat.jpg", @"./images/bird.jpg", @"./images/eagle.jpg"];
+        public string[] picArr = [@"../images/cat.jpg", @"./images/bird.jpg", @"./images/eagle.jpg"];
 
         public void initTab()
         {
