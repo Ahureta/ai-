@@ -9,4 +9,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <Import Project="..\SharedProject\SharedProject\SharedProject.projitems" Label="Shared" />
+
 </Project>

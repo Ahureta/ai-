@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/解决方案项/">
+    <File Path="../../../../../ai视觉/two/8_25/04-资料/images/bird.jpg" />
+    <File Path="../../../../../ai视觉/two/8_25/04-资料/images/cat.jpg" />
+    <File Path="../../../../../ai视觉/two/8_25/04-资料/images/eagle.jpg" />
+    <File Path="../../../../../ai视觉/two/8_25/04-资料/images/off.png" />
+    <File Path="../../../../../ai视觉/two/8_25/04-资料/images/on.png" />
+  </Folder>
+  <Project Path="SharedProject/SharedProject.shproj" />
+</Solution>
