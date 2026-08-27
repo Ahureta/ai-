@@ -10,6 +10,7 @@ namespace _8_26
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+
             ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());     //轮播图
             //Application.Run(new LikeLink());  //下划线模拟链接
@@ -20,6 +21,8 @@ namespace _8_26
             //Application.Run(new Enter());  //comboBoxOpen
             //Application.Run(new Esc());  //comboBoxOpen
             Application.Run(new KeyMove());  //comboBoxOpen
+
+            //代码中尽量不要改边框,会销毁控件重新布局.很耗内存
         }
     }
 }
