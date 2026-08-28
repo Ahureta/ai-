@@ -1,4 +1,4 @@
-namespace _8_27
+namespace _8_28
 {
     internal static class Program
     {
@@ -11,17 +11,8 @@ namespace _8_27
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
-            //Application.Run(new IsBackspace());
-            //Application.Run(new More());
-            //Application.Run(new MaxLength());
-            //Application.Run(new ComItem());
-
+            //Application.Run(new Form1());
+            Application.Run(new Move());
         }
-
-        	//<PropertyGroup>
-		       // <!-- 把 enable 改成 disable -->
-		       // <Nullable>disable</Nullable>
-	        //</PropertyGroup>
     }
 }

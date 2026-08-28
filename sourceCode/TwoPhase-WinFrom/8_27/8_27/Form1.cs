@@ -11,14 +11,14 @@ namespace _8_27
         }
         private List<Dictionary<string, Control>>? listDic = new List<Dictionary<string, Control>>() { };
         private void init() {
-            listDic.Add(new Dictionary<string, Control>()
+            listDic?.Add(new Dictionary<string, Control>()
             {
                 ["label"] = label5,
                 ["number"] = textBox1,
                 ["delete"] = button1,
                 ["add"] = button2,
             });
-            listDic.Add(new Dictionary<string, Control>()
+            listDic?.Add(new Dictionary<string, Control>()
             {
                 ["label"] = label7,
                 ["number"] = textBox2,
@@ -40,7 +40,7 @@ namespace _8_27
             TextBox tb = (TextBox)listDic.Find(item => ((Button)item["add"]) == bt)?["number"];
             string number = tb?.Text;
             int.TryParse(number, out int num);
-            num++;            
+            num++;            //为空时默认值自增
             tb.Text = num.ToString();
 
             //计算总价格
