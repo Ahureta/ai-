@@ -1,4 +1,4 @@
-﻿namespace _8_29
+﻿namespace _8_29.Contorls
 {
     partial class Child
     {

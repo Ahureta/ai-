@@ -28,69 +28,69 @@
         /// </summary>
         private void InitializeComponent()
         {
-            BookManagerLB = new AntdUI.Label();
-            table1 = new AntdUI.Table();
-            BookAdd = new AntdUI.Button();
-            BookEdit = new AntdUI.Button();
-            BookSearch = new AntdUI.Button();
-            BookRemove = new AntdUI.Button();
+            bookManagerLB = new AntdUI.Label();
+            bookSearchTB = new AntdUI.Table();
+            bookAddBT = new AntdUI.Button();
+            bookEditBT = new AntdUI.Button();
+            bookSearchBT = new AntdUI.Button();
+            bookRemoveBT = new AntdUI.Button();
             exit = new AntdUI.Button();
             SuspendLayout();
             // 
-            // BookManagerLB
+            // bookManagerLB
             // 
-            BookManagerLB.Font = new Font("Microsoft YaHei UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 134);
-            BookManagerLB.Location = new Point(294, 12);
-            BookManagerLB.Name = "BookManagerLB";
-            BookManagerLB.Size = new Size(155, 35);
-            BookManagerLB.TabIndex = 0;
-            BookManagerLB.Text = "图书管理系统";
+            bookManagerLB.Font = new Font("Microsoft YaHei UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 134);
+            bookManagerLB.Location = new Point(294, 12);
+            bookManagerLB.Name = "bookManagerLB";
+            bookManagerLB.Size = new Size(155, 35);
+            bookManagerLB.TabIndex = 0;
+            bookManagerLB.Text = "图书管理系统";
             // 
-            // table1
+            // bookSearchTB
             // 
-            table1.BorderWidth = 4F;
-            table1.Gap = 12;
-            table1.Location = new Point(44, 73);
-            table1.Name = "table1";
-            table1.Size = new Size(714, 212);
-            table1.TabIndex = 1;
-            table1.Text = "table1";
+            bookSearchTB.BorderWidth = 4F;
+            bookSearchTB.Gap = 12;
+            bookSearchTB.Location = new Point(44, 73);
+            bookSearchTB.Name = "bookSearchTB";
+            bookSearchTB.Size = new Size(714, 212);
+            bookSearchTB.TabIndex = 1;
+            bookSearchTB.Text = "table1";
             // 
-            // BookAdd
+            // bookAddBT
             // 
-            BookAdd.Location = new Point(44, 330);
-            BookAdd.Name = "BookAdd";
-            BookAdd.Size = new Size(89, 35);
-            BookAdd.TabIndex = 2;
-            BookAdd.Text = "图书添加";
+            bookAddBT.Location = new Point(44, 368);
+            bookAddBT.Name = "bookAddBT";
+            bookAddBT.Size = new Size(89, 35);
+            bookAddBT.TabIndex = 2;
+            bookAddBT.Text = "图书添加";
             // 
-            // BookEdit
+            // bookEditBT
             // 
-            BookEdit.Location = new Point(316, 330);
-            BookEdit.Name = "BookEdit";
-            BookEdit.Size = new Size(89, 35);
-            BookEdit.TabIndex = 2;
-            BookEdit.Text = "图书修改";
+            bookEditBT.Location = new Point(316, 368);
+            bookEditBT.Name = "bookEditBT";
+            bookEditBT.Size = new Size(89, 35);
+            bookEditBT.TabIndex = 2;
+            bookEditBT.Text = "图书修改";
             // 
-            // BookSearch
+            // bookSearchBT
             // 
-            BookSearch.Location = new Point(456, 330);
-            BookSearch.Name = "BookSearch";
-            BookSearch.Size = new Size(89, 35);
-            BookSearch.TabIndex = 2;
-            BookSearch.Text = "图书查找";
+            bookSearchBT.Location = new Point(422, 327);
+            bookSearchBT.Name = "bookSearchBT";
+            bookSearchBT.Size = new Size(89, 35);
+            bookSearchBT.TabIndex = 2;
+            bookSearchBT.Text = "图书查找";
             // 
-            // BookRemove
+            // bookRemoveBT
             // 
-            BookRemove.Location = new Point(175, 330);
-            BookRemove.Name = "BookRemove";
-            BookRemove.Size = new Size(89, 35);
-            BookRemove.TabIndex = 2;
-            BookRemove.Text = "图书删除";
+            bookRemoveBT.Location = new Point(175, 368);
+            bookRemoveBT.Name = "bookRemoveBT";
+            bookRemoveBT.Size = new Size(89, 35);
+            bookRemoveBT.TabIndex = 2;
+            bookRemoveBT.Text = "图书删除";
             // 
             // exit
             // 
-            exit.Location = new Point(594, 330);
+            exit.Location = new Point(520, 368);
             exit.Name = "exit";
             exit.Size = new Size(89, 35);
             exit.TabIndex = 2;
@@ -101,13 +101,13 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(BookRemove);
+            Controls.Add(bookRemoveBT);
             Controls.Add(exit);
-            Controls.Add(BookSearch);
-            Controls.Add(BookEdit);
-            Controls.Add(BookAdd);
-            Controls.Add(table1);
-            Controls.Add(BookManagerLB);
+            Controls.Add(bookSearchBT);
+            Controls.Add(bookEditBT);
+            Controls.Add(bookAddBT);
+            Controls.Add(bookSearchTB);
+            Controls.Add(bookManagerLB);
             Name = "BookManager";
             Text = "BookManager";
             ResumeLayout(false);
@@ -115,12 +115,12 @@
 
         #endregion
 
-        private AntdUI.Label BookManagerLB;
-        private AntdUI.Table table1;
-        private AntdUI.Button BookAdd;
-        private AntdUI.Button BookEdit;
-        private AntdUI.Button BookSearch;
-        private AntdUI.Button BookRemove;
+        private AntdUI.Label bookManagerLB;
+        private AntdUI.Table bookSearchTB;
+        private AntdUI.Button bookAddBT;
+        private AntdUI.Button bookEditBT;
+        private AntdUI.Button bookSearchBT;
+        private AntdUI.Button bookRemoveBT;
         private AntdUI.Button exit;
     }
 }

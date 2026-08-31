@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace _8_29
+namespace _8_29.Contorls
 {
     public partial class Child : UserControl
     {
