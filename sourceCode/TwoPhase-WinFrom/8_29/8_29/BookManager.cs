@@ -85,7 +85,7 @@ namespace _8_29
                         new AntdUI.Column("Name", "书名"),
                         new AntdUI.Column("Author", "作者"),
                         new AntdUI.Column("Price", "价格"),
-                        new AntdUI.Column("BookLabel", "标签"),
+                        new AntdUI.Column("BookTag", "标签"),
                         new AntdUI.Column("IsBorrow", "是否借阅"),
                     };
 
