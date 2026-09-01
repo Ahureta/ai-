@@ -1,4 +1,5 @@
 ﻿using _8_29.Contorls;
+using _8_29.Data.Repositories;
 using _8_29.Info;
 using AntdUI;
 using System;
@@ -29,9 +30,11 @@ namespace _8_29
             showBook();
         }
 
-        private void BookSearchBT_Click(object? sender, EventArgs e)
+        private async void BookSearchBT_Click(object? sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            IBookRepository book = new BookRepository();
+             List<BookInfo> list = await book.GetAll();
+            DataGridView.DataSource = list;
         }
 
         private void BookEditBT_Click(object? sender, EventArgs e)
@@ -71,28 +74,28 @@ namespace _8_29
             //string JsonStr = File.ReadAllText("./book.json");
             //List<BookInfo> books = JsonSerializer.Deserialize<List<BookInfo>>(JsonStr);
             List<BookInfo> books = new List<BookInfo>() { };
-            bookSearchTB.DataSource = books;
+            DataGridView.DataSource = books;
 
             // 重置表头
-            bookSearchTB.Columns.Clear();
+            DataGridView.Columns.Clear();
 
-            bookSearchTB.Columns = new AntdUI.ColumnCollection {
-                        new AntdUI.Column("Id", "编号")
-                        {
-                            Render = (object val,object cel,int index ) =>index.ToString()
+            //DataGridView.Columns = new AntdUI.ColumnCollection {
+            //            new AntdUI.Column("Id", "编号")
+            //            {
+            //                Render = (object val,object cel,int index ) =>index.ToString()
 
-                        },
-                        new AntdUI.Column("Name", "书名"),
-                        new AntdUI.Column("Author", "作者"),
-                        new AntdUI.Column("Price", "价格"),
-                        new AntdUI.Column("BookTag", "标签"),
-                        new AntdUI.Column("IsBorrow", "是否借阅"),
-                    };
+            //            },
+            //            new AntdUI.Column("Name", "书名"),
+            //            new AntdUI.Column("Author", "作者"),
+            //            new AntdUI.Column("Price", "价格"),
+            //            new AntdUI.Column("BookTag", "标签"),
+            //            new AntdUI.Column("IsBorrow", "是否借阅"),
+            //        };
 
-            bookSearchTB.Columns.Add(new AntdUI.Column("Handler", "操作")
-            {
-                Render = (object val, object cel, int index) => "编辑"
-            });
+            //DataGridView.Columns.Add(new AntdUI.Column("Handler", "操作")
+            //{
+            //    Render = (object val, object cel, int index) => "编辑"
+            //});
 
         }
 
