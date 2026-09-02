@@ -23,10 +23,10 @@ namespace _8_29.Info
         }
 
         // ② 带Id构造函数：用于“读取”场景（从数据库加载）
-        public BookInfo(int id, string uid, string uuid)
+        public BookInfo(int id, string uid)
         {
             Id = id;
-            Uid = uid;            
+            Uid = uid;         
         }
 
         //// 无参构造函数，方便 ORM 和绑定

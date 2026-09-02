@@ -34,7 +34,7 @@ namespace _8_29
         {
             IBookRepository book = new BookRepository();
              List<BookInfo> list = await book.GetAll();
-            DataGridView.DataSource = list;
+            bookShowTB.DataSource = list;
         }
 
         private void BookEditBT_Click(object? sender, EventArgs e)
@@ -74,10 +74,10 @@ namespace _8_29
             //string JsonStr = File.ReadAllText("./book.json");
             //List<BookInfo> books = JsonSerializer.Deserialize<List<BookInfo>>(JsonStr);
             List<BookInfo> books = new List<BookInfo>() { };
-            DataGridView.DataSource = books;
+            bookShowTB.DataSource = books;
 
             // 重置表头
-            DataGridView.Columns.Clear();
+            bookShowTB.Columns.Clear();
 
             //DataGridView.Columns = new AntdUI.ColumnCollection {
             //            new AntdUI.Column("Id", "编号")

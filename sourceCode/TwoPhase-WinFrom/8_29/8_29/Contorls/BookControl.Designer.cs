@@ -35,7 +35,7 @@
             bookAuthorLB = new Label();
             bookAuthorTB = new AntdUI.Input();
             bookPriceLB = new Label();
-            bookTagTB = new AntdUI.Input();
+            bookLabelTB = new AntdUI.Input();
             bookTagLB = new Label();
             bookOperationBT = new AntdUI.Button();
             SuspendLayout();
@@ -54,17 +54,17 @@
             // 
             bookPriceTB.Location = new Point(108, 212);
             bookPriceTB.Name = "bookPriceTB";
+            bookPriceTB.PlaceholderText = "请输入价格";
             bookPriceTB.Size = new Size(225, 57);
             bookPriceTB.TabIndex = 1;
-            bookPriceTB.Text = "0";
             // 
             // bookNameTB
             // 
             bookNameTB.Location = new Point(108, 90);
             bookNameTB.Name = "bookNameTB";
+            bookNameTB.PlaceholderText = "请输入图书名称:";
             bookNameTB.Size = new Size(225, 55);
             bookNameTB.TabIndex = 2;
-            bookNameTB.Text = "请输入图书名称:";
             // 
             // bookNameLB
             // 
@@ -90,9 +90,9 @@
             // 
             bookAuthorTB.Location = new Point(108, 151);
             bookAuthorTB.Name = "bookAuthorTB";
+            bookAuthorTB.PlaceholderText = "请输入作者:";
             bookAuthorTB.Size = new Size(225, 55);
             bookAuthorTB.TabIndex = 2;
-            bookAuthorTB.Text = "请输入作者:";
             // 
             // bookPriceLB
             // 
@@ -104,13 +104,13 @@
             bookPriceLB.TabIndex = 0;
             bookPriceLB.Text = "图书价格:";
             // 
-            // bookTagTB
+            // bookLabelTB
             // 
-            bookTagTB.Location = new Point(108, 287);
-            bookTagTB.Name = "bookTagTB";
-            bookTagTB.Size = new Size(225, 108);
-            bookTagTB.TabIndex = 2;
-            bookTagTB.Text = "请输入标签:";
+            bookLabelTB.Location = new Point(108, 287);
+            bookLabelTB.Name = "bookLabelTB";
+            bookLabelTB.PlaceholderText = "请输入标签:";
+            bookLabelTB.Size = new Size(225, 108);
+            bookLabelTB.TabIndex = 2;
             // 
             // bookTagLB
             // 
@@ -135,7 +135,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(bookOperationBT);
-            Controls.Add(bookTagTB);
+            Controls.Add(bookLabelTB);
             Controls.Add(bookAuthorTB);
             Controls.Add(bookTagLB);
             Controls.Add(bookPriceLB);
@@ -159,7 +159,7 @@
         private Label bookAuthorLB;
         private AntdUI.Input bookAuthorTB;
         private Label bookPriceLB;
-        private AntdUI.Input bookTagTB;
+        private AntdUI.Input bookLabelTB;
         private Label bookTagLB;
         private AntdUI.Button bookOperationBT;
     }

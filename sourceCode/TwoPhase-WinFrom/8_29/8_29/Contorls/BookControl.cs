@@ -28,15 +28,14 @@ namespace _8_29.Contorls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SendData.Invoke(new BookInfo()                
-                {
-                Name = txtName.Text,
-    Author = txtAuthor.Text,
-    Price = double.Parse(txtPrice.Text),
-    Label = txtLabel.Text,
-    IsBorrow = false
-                }
-            ; ;
+            SendData.Invoke(new BookInfo()
+            {
+                Name = bookNameTB.Text,
+                Author = bookAuthorTB.Text,
+                Price = double.Parse(bookPriceTB.Text),
+                Label = bookLabelTB.Text,
+                IsBorrow = false
+            });            
         }
     }
 }

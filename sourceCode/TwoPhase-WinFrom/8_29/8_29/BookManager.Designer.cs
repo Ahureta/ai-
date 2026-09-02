@@ -35,10 +35,9 @@
             bookSearchBT = new AntdUI.Button();
             bookRemoveBT = new AntdUI.Button();
             exit = new AntdUI.Button();
-            DataGridView = new DataGridView();
             axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             bookSearchIdTB = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)DataGridView).BeginInit();
+            bookShowTB = new AntdUI.Table();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).BeginInit();
             SuspendLayout();
             // 
@@ -91,22 +90,13 @@
             exit.TabIndex = 2;
             exit.Text = "退出系统";
             // 
-            // DataGridView
-            // 
-            DataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DataGridView.Location = new Point(44, 71);
-            DataGridView.Name = "DataGridView";
-            DataGridView.RowHeadersWidth = 51;
-            DataGridView.Size = new Size(699, 233);
-            DataGridView.TabIndex = 3;
-            // 
             // axWindowsMediaPlayer1
             // 
             axWindowsMediaPlayer1.Enabled = true;
-            axWindowsMediaPlayer1.Location = new Point(692, 368);
+            axWindowsMediaPlayer1.Location = new Point(576, 327);
             axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
-            axWindowsMediaPlayer1.Size = new Size(221, 180);
+            axWindowsMediaPlayer1.Size = new Size(312, 188);
             axWindowsMediaPlayer1.TabIndex = 4;
             // 
             // bookSearchIdTB
@@ -116,14 +106,23 @@
             bookSearchIdTB.Size = new Size(220, 27);
             bookSearchIdTB.TabIndex = 5;
             // 
+            // bookShowTB
+            // 
+            bookShowTB.Gap = 12;
+            bookShowTB.Location = new Point(44, 73);
+            bookShowTB.Name = "bookShowTB";
+            bookShowTB.Size = new Size(829, 239);
+            bookShowTB.TabIndex = 6;
+            bookShowTB.Text = "table1";
+            // 
             // BookManager
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(925, 560);
+            Controls.Add(bookShowTB);
             Controls.Add(bookSearchIdTB);
             Controls.Add(axWindowsMediaPlayer1);
-            Controls.Add(DataGridView);
             Controls.Add(bookRemoveBT);
             Controls.Add(exit);
             Controls.Add(bookSearchBT);
@@ -132,7 +131,6 @@
             Controls.Add(bookManagerLB);
             Name = "BookManager";
             Text = "BookManager";
-            ((System.ComponentModel.ISupportInitialize)DataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)axWindowsMediaPlayer1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -146,8 +144,8 @@
         private AntdUI.Button bookSearchBT;
         private AntdUI.Button bookRemoveBT;
         private AntdUI.Button exit;
-        private DataGridView DataGridView;
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private TextBox bookSearchIdTB;
+        private AntdUI.Table bookShowTB;
     }
 }
