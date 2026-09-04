@@ -10,6 +10,9 @@
     <Compile Update="BookManager.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Contorls\BookEditWF.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Contorls\Child.cs">
       <SubType>UserControl</SubType>
     </Compile>

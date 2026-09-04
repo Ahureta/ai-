@@ -8,10 +8,10 @@ namespace _8_29.Data.Repositories
 {
     public interface IBookRepository
     {
-        Task<List<BookInfo>> GetAll();
-        Task<BookInfo>? GetById(int id);
-        Task<int> Add(BookInfo BookInfo);         // 返回新ID
-        Task<bool> Update(BookInfo BookInfo);     // 返回是否影响行数
-        Task<bool> Delete(int id);        // 返回是否影响行数
+        Task<List<BookInfo>> GetAllAsync();
+        Task<BookInfo>? GetByIdAsync(int id);
+        Task<BookInfo> AddAsync(BookInfo BookInfo);         // 返回新ID
+        Task<BookInfo> UpdateAsync(BookInfo BookInfo);     // 返回是否影响行数
+        Task<BookInfo> DeleteAsync(int id);        // 返回是否影响行数
     }
 }

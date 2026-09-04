@@ -6,29 +6,28 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Text.Json;
 using System.Windows.Forms;
 
 namespace _8_29.Contorls
 {
-    public partial class BookAddWF : Form
+    public partial class BookEditWF : Form
     {
-        public BookInfo SavedBook { get; private set; }
-        public BookAddWF()
+        public BookEditWF()
         {
             InitializeComponent();
             // 绑定接受数据方法
-            bookControl1.SendData += AddBook;
+            bookControl1.SendData += EditBook;
         }
-        private async void AddBook(BookInfo book)
+        
+        private async void EditBook(BookInfo book)
         {
             try
-            {
+            {                
                 IBookRepository bookRepository = new BookRepository();
-                this.SavedBook = await bookRepository.AddAsync(book);
-                MessageBox.Show("savebook"+this.SavedBook.Name);
-                this.DialogResult = DialogResult.OK;
-                MessageBox.Show("图书新增成功!!");
+                await bookRepository.UpdateAsync(book);
+                this.DialogResult = DialogResult.OK;                
+
+                MessageBox.Show("图书修改成功!!");
                 this.Close();                
             }
             catch (Exception ex)
@@ -36,6 +35,6 @@ namespace _8_29.Contorls
                 MessageBox.Show($"保存失败：{ex.Message}");
                 // 不设置 DialogResult.OK，子窗体保持打开，用户可修改后重试
             }
-        }
+        }    
     }
 }

@@ -15,12 +15,14 @@ namespace _8_29
 {
     public partial class BookManager : Form
     {
+        private List<BookInfo> listBook = new List<BookInfo>{ };
         public BookManager()
         {
             InitializeComponent();
             init();
         }
-        public void init() {
+        public void init()
+        {
             //AntdUI.Button()类型
             //List<AntdUI.Button> btList = this.Controls.OfType<AntdUI.Button>().ToList();
             //btList.ForEach(item => item.Click += Item_Click);
@@ -29,23 +31,39 @@ namespace _8_29
             bookSearchBT.Click += BookSearchBT_Click;
             showBook();
         }
-
+        private async void BookSearch() {
+            IBookRepository book = new BookRepository();
+            listBook = await book.GetAllAsync();
+            bookShowTB.DataSource = listBook;
+        }
         private async void BookSearchBT_Click(object? sender, EventArgs e)
         {
-            IBookRepository book = new BookRepository();
-             List<BookInfo> list = await book.GetAll();
-            bookShowTB.DataSource = list;
+            BookSearch();
+            showBook();
+        }
+
+        private async void BookAddBT_Click(object? sender, EventArgs e)
+        {            
+            using BookAddWF bookAddWF = new();            
+           
+            if (bookAddWF.ShowDialog() == DialogResult.OK)
+            {
+                BookSearch();
+                BookInfo createdBook = bookAddWF.SavedBook;                
+                listBook.Add(createdBook);
+                bookShowTB.DataSource = listBook;   //局部更新刷新列表、显示提示等
+
+                MessageBox.Show($"新增成功，Id={createdBook.Id}");
+            }            
+            showBook();
         }
 
         private void BookEditBT_Click(object? sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //BookEditWF bookEditF = new BookEditWF();
+            //bookEditF.Show();            
         }
 
-        private void BookAddBT_Click(object? sender, EventArgs e)
-        {
-            new BookAddWF().Show();
-        }
 
         //private void Item_Click(object? sender, EventArgs e)
         //{
@@ -63,40 +81,92 @@ namespace _8_29
         //    host.Show(this);
         //}
 
-        //public BookShow()
-        //{
-        //    InitializeComponent();
-        //    showBook();
-        //}
-
         private void showBook()
-        {
-            //string JsonStr = File.ReadAllText("./book.json");
-            //List<BookInfo> books = JsonSerializer.Deserialize<List<BookInfo>>(JsonStr);
-            List<BookInfo> books = new List<BookInfo>() { };
-            bookShowTB.DataSource = books;
-
-            // 重置表头
+        {            
+            bookShowTB.DataSource = listBook;
+            
             bookShowTB.Columns.Clear();
 
-            //DataGridView.Columns = new AntdUI.ColumnCollection {
-            //            new AntdUI.Column("Id", "编号")
-            //            {
-            //                Render = (object val,object cel,int index ) =>index.ToString()
+            bookShowTB.Columns = new AntdUI.ColumnCollection {
+                new AntdUI.Column("Id", "编号")
+                {
+                    Render = (object val,object cel,int index ) =>(index+1).ToString()
+                },
+                new AntdUI.Column("Name", "书名"),
+                new AntdUI.Column("Author", "作者"),
+                new AntdUI.Column("Price", "价格"),
+                new AntdUI.Column("BookTag", "标签"),
+                new AntdUI.Column("IsBorrow", "是否借阅"){
+                    Render=(object val,object cel,int index )=> val.ToString()=="1"?"已借阅":"在书架"
+                },
 
-            //            },
-            //            new AntdUI.Column("Name", "书名"),
-            //            new AntdUI.Column("Author", "作者"),
-            //            new AntdUI.Column("Price", "价格"),
-            //            new AntdUI.Column("BookTag", "标签"),
-            //            new AntdUI.Column("IsBorrow", "是否借阅"),
-            //        };
+                // 操作列：在构造列时直接通过 Render 返回按钮数组
+                new AntdUI.Column("OperateBtns", "操作")
+                {
+                    Align = AntdUI.ColumnAlign.Center,
+                    Width = "200",
+                    Render = (object val, object cel, int index) =>
+                    {
+                        var book = cel as BookInfo;
+                        if (book == null) return null;
 
-            //DataGridView.Columns.Add(new AntdUI.Column("Handler", "操作")
-            //{
-            //    Render = (object val, object cel, int index) => "编辑"
-            //});
+                        return new AntdUI.CellButton[]  
+                        {
+                            new AntdUI.CellButton($"edit_{book.Id}", "编辑", AntdUI.TTypeMini.Default),
+                            new AntdUI.CellButton($"del_{book.Id}", "删除", AntdUI.TTypeMini.Default),
+                            book.IsBorrow
+                                ? new AntdUI.CellButton($"return_{book.Id}", "归还", AntdUI.TTypeMini.Default)
+                                : new AntdUI.CellButton($"borrow_{book.Id}", "借阅", AntdUI.TTypeMini.Default),
+                        };
+                    }
+                }
+            };
 
+            bookShowTB.CellButtonClick += (s, e) =>
+            {
+                // e.Btn       —— 被点击的那个 CellButton（可以拿到 Text、ID）
+                // e.record    —— 当前行的原始数据对象（就是你绑定的 BookInfo）
+                // e.rowIndex  —— 行序号
+                // e.columnIndex —— 列序号
+
+                var btn = e.Btn;
+                var book = e.Record as BookInfo;   // 直接拿到行数据
+                if (book == null) return;
+
+                // 方式1：通过按钮 ID 判断
+                var btnId = btn.Id;  // 形如 "edit_3"、"borrow_5"
+                var parts = btnId.Split('_');
+                var action = parts[0];   // "edit" / "del" / "borrow" / "return"
+                
+                // 方式2：也可以直接通过 btn.Text 判断（中文文本）
+                // switch (btn.Text) { case "编辑": ... }
+                //var action = btn.Text;
+                var bookId = int.Parse(parts[1]);
+
+                switch (action)
+                {
+                    case "edit":
+                        // 编辑逻辑，book 已经是当前行对象
+                        //MessageBox.Show($"编辑：{book.Name}");                        
+                        BookEditWF bookEditWF = new();
+                        ((BookControl)(bookEditWF.Controls[0])).SetBookControl(book);
+                        bookEditWF.Show();
+                        BookSearch();
+                        //showBook();
+
+                        //多次绑定逻辑有误差  bug
+                        break;
+                    case "del":
+                        // 删除逻辑
+                        break;
+                    case "borrow":
+                        // 借阅逻辑
+                        break;
+                    case "return":
+                        // 归还逻辑
+                        break;
+                }
+            };
         }
 
         //public BookControl(string bookName,string author,double price,string tag)

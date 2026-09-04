@@ -43,17 +43,15 @@ namespace _8_29.Data.Repositories
             return mySqlDataSource;
         }
 
-        public async Task ConAndHandler(string sql, Func<MySqlDataReader, Task> handlerCall)
+        public async Task ConAndHandler(string sql, Func<MySqlCommand, Task> handlerCall)
         {
-
-
             // 注入到 MySqlExecutor
             MySqlDataSource getMySqlDataSource = GetMySqlDataSource();
 
             await using var conn = await getMySqlDataSource.OpenConnectionAsync(); // 从池中获取连接
             await using var cmd = new MySqlCommand(sql, conn);
-            await using var exe = await cmd.ExecuteReaderAsync();
-            await handlerCall(exe);
+            await handlerCall(cmd);         //采用"逻辑+查询"返回实时更新
+            //await using var exe = await cmd.ExecuteReaderAsync();   
             //// 连接数据库
             //using (MySqlConnection Conn = new MySqlConnection(connStr))
             //{

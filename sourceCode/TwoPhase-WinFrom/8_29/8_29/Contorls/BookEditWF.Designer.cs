@@ -1,6 +1,6 @@
 ﻿namespace _8_29.Contorls
 {
-    partial class BookAddWF
+    partial class BookEditWF
     {
         /// <summary>
         /// Required designer variable.
@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            bookControl1 = new BookControl("图书添加");
+            bookControl1 = new BookControl("图书编辑");
             SuspendLayout();
             // 
             // bookControl1
             // 
-            bookControl1.Location = new Point(216, 37);
+            bookControl1.Location = new Point(212, 26);
             bookControl1.Name = "bookControl1";
-            bookControl1.Size = new Size(539, 522);
-            bookControl1.TabIndex = 0;
+            bookControl1.Size = new Size(527, 492);
+            bookControl1.TabIndex = 0;            
             // 
-            // BookAddWF
+            // BookEditWF
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(848, 616);
+            ClientSize = new Size(832, 559);
             Controls.Add(bookControl1);
-            Name = "BookAddWF";
-            Text = "BookAddWF";
+            Name = "BookEditWF";
+            Text = "BookEditWF";
             ResumeLayout(false);
         }
 

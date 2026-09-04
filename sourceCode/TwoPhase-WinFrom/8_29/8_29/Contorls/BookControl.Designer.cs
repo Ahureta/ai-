@@ -38,6 +38,8 @@
             bookLabelTB = new AntdUI.Input();
             bookTagLB = new Label();
             bookOperationBT = new AntdUI.Button();
+            nameTip = new AntdUI.Label();
+            priceTip = new AntdUI.Label();
             SuspendLayout();
             // 
             // bookOperationLB
@@ -57,6 +59,8 @@
             bookPriceTB.PlaceholderText = "请输入价格";
             bookPriceTB.Size = new Size(225, 57);
             bookPriceTB.TabIndex = 1;
+            bookPriceTB.Text = "0";
+            bookPriceTB.MouseLeave += bookPriceTB_MouseLeave;
             // 
             // bookNameTB
             // 
@@ -65,6 +69,7 @@
             bookNameTB.PlaceholderText = "请输入图书名称:";
             bookNameTB.Size = new Size(225, 55);
             bookNameTB.TabIndex = 2;
+            bookNameTB.MouseLeave += bookNameTB_MouseLeave;
             // 
             // bookNameLB
             // 
@@ -129,11 +134,36 @@
             bookOperationBT.Size = new Size(172, 50);
             bookOperationBT.TabIndex = 3;
             bookOperationBT.Text = "图书操作按钮";
+            bookOperationBT.Click += button1_Click;
+            // 
+            // nameTip
+            // 
+            nameTip.Font = new Font("Microsoft YaHei UI", 7.8F, FontStyle.Bold, GraphicsUnit.Point, 134);
+            nameTip.ForeColor = Color.Red;
+            nameTip.Location = new Point(350, 90);
+            nameTip.Name = "nameTip";
+            nameTip.Size = new Size(167, 55);
+            nameTip.TabIndex = 4;
+            nameTip.Text = "书名不能为空";
+            nameTip.Visible = false;
+            // 
+            // priceTip
+            // 
+            priceTip.Font = new Font("Microsoft YaHei UI", 7.8F, FontStyle.Bold, GraphicsUnit.Point, 134);
+            priceTip.ForeColor = Color.Red;
+            priceTip.Location = new Point(350, 214);
+            priceTip.Name = "priceTip";
+            priceTip.Size = new Size(167, 55);
+            priceTip.TabIndex = 4;
+            priceTip.Text = "价格不能零";
+            priceTip.Visible = false;
             // 
             // BookControl
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(priceTip);
+            Controls.Add(nameTip);
             Controls.Add(bookOperationBT);
             Controls.Add(bookLabelTB);
             Controls.Add(bookAuthorTB);
@@ -145,7 +175,7 @@
             Controls.Add(bookNameLB);
             Controls.Add(bookOperationLB);
             Name = "BookControl";
-            Size = new Size(344, 477);
+            Size = new Size(541, 488);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -162,5 +192,7 @@
         private AntdUI.Input bookLabelTB;
         private Label bookTagLB;
         private AntdUI.Button bookOperationBT;
+        private AntdUI.Label nameTip;
+        private AntdUI.Label priceTip;
     }
 }
