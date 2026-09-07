@@ -30,6 +30,10 @@ namespace _8_29
             bookEditBT.Click += BookEditBT_Click;
             bookSearchBT.Click += BookSearchBT_Click;
             showBook();
+
+            bookShowTBCellButtonClick();
+
+
         }
         private async void BookSearch() {
             IBookRepository book = new BookRepository();
@@ -121,8 +125,10 @@ namespace _8_29
                     }
                 }
             };
+        }
 
-            bookShowTB.CellButtonClick += (s, e) =>
+        private void bookShowTBCellButtonClick() {
+            bookShowTB.CellButtonClick += async (s, e) =>
             {
                 // e.Btn       —— 被点击的那个 CellButton（可以拿到 Text、ID）
                 // e.record    —— 当前行的原始数据对象（就是你绑定的 BookInfo）
@@ -137,7 +143,7 @@ namespace _8_29
                 var btnId = btn.Id;  // 形如 "edit_3"、"borrow_5"
                 var parts = btnId.Split('_');
                 var action = parts[0];   // "edit" / "del" / "borrow" / "return"
-                
+
                 // 方式2：也可以直接通过 btn.Text 判断（中文文本）
                 // switch (btn.Text) { case "编辑": ... }
                 //var action = btn.Text;
@@ -152,12 +158,22 @@ namespace _8_29
                         ((BookControl)(bookEditWF.Controls[0])).SetBookControl(book);
                         bookEditWF.Show();
                         BookSearch();
-                        //showBook();
-
+                        showBook();
                         //多次绑定逻辑有误差  bug
                         break;
                     case "del":
                         // 删除逻辑
+                        DialogResult res = AntdUI.Modal.open(new AntdUI.Modal.Config(this, "删除提示", "你确定要删除吗?", AntdUI.TType.Warn)
+                        {
+                            OkText = "删除"
+                        });
+                        if (res == DialogResult.No) return;
+                        IBookRepository bookRepository = new BookRepository();
+                        int rows = await bookRepository.DeleteAsync(book.Id);
+                        if (rows > 0)                        
+                            MessageBox.Show("删除成功!!");                                                    
+                        else
+                            MessageBox.Show("删除失败!!!");                        
                         break;
                     case "borrow":
                         // 借阅逻辑
@@ -168,15 +184,6 @@ namespace _8_29
                 }
             };
         }
-
-        //public BookControl(string bookName,string author,double price,string tag)
-        //{
-        //    InitializeComponent();
-        //    BookNameTB.Text = bookName;
-        //    BookAuthorTB.Text = author;
-        //    BookPriceTB.Text = price.ToString();
-        //    BookTagTB.Text = tag;
-        //}
     }
 }
 

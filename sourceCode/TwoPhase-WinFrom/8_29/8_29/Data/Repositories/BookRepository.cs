@@ -90,15 +90,23 @@ namespace _8_29.Data.Repositories
             //return book;
         }
 
-        public async Task<BookInfo> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            int rows = 0;
+
+            await _executor.ConAndHandler(
+            "DELETE FROM book WHERE id = @id",            
+            async cmd =>
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+                rows = await cmd.ExecuteNonQueryAsync();
+            });
+            return rows;
         }
 
         public async Task<List<BookInfo>> GetAllAsync()
         {
             var list = new List<BookInfo>();
-
             await _executor.ConAndHandler(
                 "SELECT id, uid, name, author, price, label, is_borrow FROM book",
                 async cmd =>
