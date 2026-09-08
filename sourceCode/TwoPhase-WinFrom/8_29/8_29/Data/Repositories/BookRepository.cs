@@ -3,6 +3,7 @@ using MySqlConnector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Common;
 using System.Security.Cryptography;
 using System.Text;
@@ -104,9 +105,9 @@ namespace _8_29.Data.Repositories
             return rows;
         }
 
-        public async Task<List<BookInfo>> GetAllAsync()
+        public async Task<BindingList<BookInfo>> GetAllAsync()
         {
-            var list = new List<BookInfo>();
+            var list = new BindingList<BookInfo>();
             await _executor.ConAndHandler(
                 "SELECT id, uid, name, author, price, label, is_borrow FROM book",
                 async cmd =>

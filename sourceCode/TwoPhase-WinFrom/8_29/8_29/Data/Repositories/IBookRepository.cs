@@ -2,13 +2,14 @@
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace _8_29.Data.Repositories
 {
     public interface IBookRepository
     {
-        Task<List<BookInfo>> GetAllAsync();
+        Task<BindingList<BookInfo>> GetAllAsync();
         Task<BookInfo>? GetByIdAsync(int id);
         Task<BookInfo> AddAsync(BookInfo BookInfo);         // 返回新ID
         Task<BookInfo> UpdateAsync(BookInfo BookInfo);     // 返回是否影响行数

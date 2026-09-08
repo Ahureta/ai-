@@ -15,7 +15,7 @@ namespace _8_29
 {
     public partial class BookManager : Form
     {
-        private List<BookInfo> listBook = new List<BookInfo>{ };
+        private BindingList<BookInfo> listBook = new BindingList<BookInfo>{ };
         public BookManager()
         {
             InitializeComponent();
@@ -29,6 +29,7 @@ namespace _8_29
             bookAddBT.Click += BookAddBT_Click;
             bookEditBT.Click += BookEditBT_Click;
             bookSearchBT.Click += BookSearchBT_Click;
+
             showBook();
 
             bookShowTBCellButtonClick();
@@ -55,7 +56,7 @@ namespace _8_29
                 BookSearch();
                 BookInfo createdBook = bookAddWF.SavedBook;                
                 listBook.Add(createdBook);
-                bookShowTB.DataSource = listBook;   //局部更新刷新列表、显示提示等
+                //bookShowTB.DataSource = listBook;   //局部更新刷新列表、显示提示等
 
                 MessageBox.Show($"新增成功，Id={createdBook.Id}");
             }            
@@ -87,8 +88,8 @@ namespace _8_29
 
         private void showBook()
         {            
-            bookShowTB.DataSource = listBook;
-            
+            //bookShowTB.DataSource = listBook;
+
             bookShowTB.Columns.Clear();
 
             bookShowTB.Columns = new AntdUI.ColumnCollection {

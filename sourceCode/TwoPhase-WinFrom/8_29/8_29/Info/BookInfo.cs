@@ -1,19 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace _8_29.Info
 {
-    public class BookInfo
+    public class BookInfo: INotifyPropertyChanged
     {
-        public int Id{ get; private set; }
-        public string Uid { get; private set; }
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public double Price { get; set; }
-        public string Label { get; set; }
-        public bool IsBorrow { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private int _id;
+        public int Id
+        {
+            get => _id;
+            private set => SetProperty(ref _id, value);
+        }
+
+        private string _uid;
+        public string Uid
+        {
+            get => _uid;
+            private set => SetProperty(ref _uid, value);
+        }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        private string _author;
+        public string Author
+        {
+            get => _author;
+            set => SetProperty(ref _author, value);
+        }
+
+        private double _price;
+        public double Price
+        {
+            get => _price;
+            set => SetProperty(ref _price, value);
+        }
+
+        private string _label;
+        public string Label
+        {
+            get => _label;
+            set => SetProperty(ref _label, value);
+        }
+
+        private bool _isBorrow;
+        public bool IsBorrow
+        {
+            get => _isBorrow;
+            set => SetProperty(ref _isBorrow, value);
+        }
+
+        private void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(field, value)) return;
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //private int _Id { get; set; }
+        //public int Id
+        //{ 
+        //    get 
+        //    {
+        //        return _Id;
+        //    }
+        //    private set 
+        //    {
+        //        _Id = value;
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Id)));
+        //    } 
+        //}
+        //public string Uid { get; private set; }
+        //public string Name { get; set; }
+        //public string Author { get; set; }
+        //public double Price { get; set; }
+        //public string Label { get; set; }
+        //public bool IsBorrow { get; set; }
 
 
         // ① 无参构造函数：用于“创建”场景（表单添加），Id 自动为 0
@@ -28,19 +100,5 @@ namespace _8_29.Info
             Id = id;
             Uid = uid;         
         }
-
-        //// 无参构造函数，方便 ORM 和绑定
-        //public BookInfo() { }
-
-        //// 可选：带 Id 的构造函数，适用于从数据库读取后创建对象
-        //public BookInfo(string uid,string name, string author, double price, string label, bool isBorrow)
-        //{            
-        //    UId = uid;
-        //    Name = name;
-        //    Author = author;
-        //    Price = price;
-        //    Label = label;
-        //    IsBorrow = isBorrow;
-        //}
     }
 }
