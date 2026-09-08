@@ -176,10 +176,22 @@ namespace _8_29
                             MessageBox.Show("删除失败!!!");                        
                         break;
                     case "borrow":
-                        // 借阅逻辑
+                        // 借阅逻辑                        
+                        IBookRepository bookRepository2 = new BookRepository();
+                        int rows2 = await bookRepository2.BorrowAsync(book.Id);
+                        if (rows2 > 0)
+                            MessageBox.Show("借阅成功!!");
+                        else
+                            MessageBox.Show("借阅失败!!!");
                         break;
                     case "return":
                         // 归还逻辑
+                        IBookRepository bookRepository3 = new BookRepository();
+                        int rows3 = await bookRepository3.ReturnAsync(book.Id);
+                        if (rows3 > 0)
+                            MessageBox.Show("归还成功!!");
+                        else
+                            MessageBox.Show("归还失败!!!");                        
                         break;
                 }
             };

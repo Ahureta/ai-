@@ -12,6 +12,8 @@ namespace _8_29.Data.Repositories
         Task<BookInfo>? GetByIdAsync(int id);
         Task<BookInfo> AddAsync(BookInfo BookInfo);         // 返回新ID
         Task<BookInfo> UpdateAsync(BookInfo BookInfo);     // 返回是否影响行数
+        Task<int> BorrowAsync(int id);
+        Task<int> ReturnAsync(int id);
         Task<int> DeleteAsync(int id);        // 返回是否影响行数
     }
 }

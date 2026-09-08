@@ -136,7 +136,6 @@ namespace _8_29.Data.Repositories
         {
             throw new NotImplementedException();
         }
-
         public async Task<BookInfo> UpdateAsync(BookInfo bookInfo)
         {
             var sql = @"
@@ -182,71 +181,33 @@ namespace _8_29.Data.Repositories
             //MessageBox.Show(bookInfo.Name);
             return bookInfo;
         }
+        
+        public async Task<int> BorrowAsync(int id) {
+            int rows = 0;
+            var sql = @"
+                UPDATE book SET is_borrow=true WHERE id=@id";
+
+            await _executor.ConAndHandler(sql,
+                async cmd =>
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    rows = await cmd.ExecuteNonQueryAsync();
+                });
+            return rows;
+        }
+        
+        public async Task<int> ReturnAsync(int id) {
+            int rows = 0;
+            var sql = @"
+                UPDATE book SET is_borrow=false WHERE id=@id";
+
+            await _executor.ConAndHandler(sql,
+                async cmd =>
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    rows = await cmd.ExecuteNonQueryAsync();
+                });
+            return rows;
+        }
     }
-
-
-
-    //internal class BookRepository : IBookRepository
-    //{
-    //    static readonly string ConnStr = "server=localhost;port=3306;database=testDB;uid=root;pwd=Qaz2109537;charset=utf8";
-
-    //    private MySqlDataSourceBuilder builder;
-    //    private MySqlDataSource dataSource;
-    //    public BookRepository() {
-    //        //自动工厂无需创建
-    //        builder = new MySqlDataSourceBuilder(BookRepository.ConnStr);
-    //        dataSource = builder.Build();
-
-    //        // 每次需要连接时：
-    //        //using var conn = dataSource.CreateConnection();
-    //        //await conn.OpenAsync();
-    //    }
-
-    //    public async Task<int> Add(BookInfo BookInfo)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public async Task<bool> Delete(int id)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public async Task<List<BookInfo>> GetAll()
-    //    {
-    //        using var conn = dataSource.CreateConnection();
-    //        await conn.OpenAsync();                    // 连接数据库（I/O）→ await
-
-    //        using var cmd = new MySqlCommand("SELECT * FROM book", conn);
-    //        using var reader = await cmd.ExecuteReaderAsync();   // 查询（I/O）→ await
-
-    //        var list = new List<BookInfo>();
-
-    //        while (await reader.ReadAsync())          // 读取每行（I/O）→ await
-    //        {                
-    //            list.Add(new BookInfo(
-    //                    id: reader.GetInt32("id"),
-    //                    uid: reader.GetString("uid")                      
-    //                ){
-    //                    Name = reader.GetString("name"),
-    //                    Author = reader.GetString("author"),
-    //                    Price = reader.GetDouble("price"),
-    //                    Label = reader.GetString("label"),
-    //                    IsBorrow = reader.GetBoolean("is_borrow")
-    //                }
-    //            );
-    //        }
-    //        return list;            
-    //    }
-
-    //    public async Task<BookInfo>? GetById(int id)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public async Task<bool> Update(BookInfo BookInfo)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
 }
