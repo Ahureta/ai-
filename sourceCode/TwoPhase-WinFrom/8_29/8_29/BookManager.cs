@@ -55,12 +55,20 @@ namespace _8_29
             {
                 BookSearch();
                 BookInfo createdBook = bookAddWF.SavedBook;                
-                listBook.Add(createdBook);
-                //bookShowTB.DataSource = listBook;   //局部更新刷新列表、显示提示等
-
-                MessageBox.Show($"新增成功，Id={createdBook.Id}");
+                
+                if (createdBook != null)
+                {
+                    listBook.Add(createdBook);                    
+                    AntdUI.Message.success(this, "新增成功", autoClose: 3);
+                }
+                else                                    
+                    AntdUI.Message.error(this, "新增失败", autoClose: 3);
+                
+            }
+            else
+            {                
+                AntdUI.Message.error(this, "新增失败", autoClose: 3);
             }            
-            showBook();
         }
 
         private void BookEditBT_Click(object? sender, EventArgs e)
@@ -153,14 +161,45 @@ namespace _8_29
                 switch (action)
                 {
                     case "edit":
-                        // 编辑逻辑，book 已经是当前行对象
-                        //MessageBox.Show($"编辑：{book.Name}");                        
+                        // 编辑逻辑，book 已经是当前行对象                        
+
+                        //if (bookAddWF.ShowDialog() == DialogResult.OK)
+                        //{
+                        //    BookSearch();
+                        //    BookInfo createdBook = bookAddWF.SavedBook;
+                        //    listBook.Add(createdBook);
+                        //    //bookShowTB.DataSource = listBook;   //局部更新刷新列表、显示提示等
+
+                        //    MessageBox.Show($"新增成功，Id={createdBook.Id}");
+                        //}
+                        //showBook();
+
                         BookEditWF bookEditWF = new();
                         ((BookControl)(bookEditWF.Controls[0])).SetBookControl(book);
                         bookEditWF.Show();
-                        BookSearch();
-                        showBook();
-                        //多次绑定逻辑有误差  bug
+
+                        if (bookEditWF.ShowDialog() == DialogResult.OK)
+                        {
+                            BookSearch();
+                            BookInfo editedBook = bookEditWF.EditedBook;
+
+                            var oldBook = listBook.FirstOrDefault(b => b.Id == editedBook.Id);
+
+                            if (oldBook != null)
+                            {
+                                int index = listBook.IndexOf(oldBook);
+                                listBook[index] = editedBook;
+                                // 成功
+                                AntdUI.Message.success(this, "编辑成功", autoClose: 3);
+                            }
+                            else                            
+                                AntdUI.Message.error(this, "编辑失败", autoClose: 3);
+                            
+                        }
+                        else
+                        {                            
+                            AntdUI.Message.error(this, "编辑失败", autoClose: 3);
+                        }
                         break;
                     case "del":
                         // 删除逻辑

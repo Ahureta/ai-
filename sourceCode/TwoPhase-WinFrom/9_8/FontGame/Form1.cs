@@ -1,21 +1,24 @@
+using System.Runtime.Intrinsics.X86;
+
 namespace FontGame
 {
     public partial class Form1 : Form
     {
         //全局计时器;
-        private System.Windows.Forms.Timer globalTimer  = new();
+        private System.Windows.Forms.Timer globalTimer = new();
         //全局随机对象
         private Random random = new();
         //计时器字典
-        private List<Dictionary<string, dynamic>> LbAndTimer = new ();
-        private int Score=0;
+        private List<Dictionary<string, dynamic>> LbAndTimer = new();
+        private int Score = 0;
         public Form1()
         {
             InitializeComponent();
             this.Shown += Form1_Shown;
             Init();
         }
-        private void Init() {
+        private void Init()
+        {
             button1.Click += Button1_Click;
         }
 
@@ -79,16 +82,16 @@ namespace FontGame
         {
             //创建lable
             Label label = new();
-            label.Size = new(25,25);
-            label.Text = ((char)random.Next(65,90)).ToString();
-            label.Font = new("微软雅黑",14,FontStyle.Bold,GraphicsUnit.Point);
+            label.Size = new(25, 25);
+            label.Text = ((char)random.Next(65, 90)).ToString();
+            label.Font = new("微软雅黑", 14, FontStyle.Bold, GraphicsUnit.Point);
             label.TextAlign = ContentAlignment.MiddleCenter;
             panel1.Controls.Add(label);
 
-            label.Location = new Point(random.Next(panel1.Width-label.Width),0);
+            label.Location = new Point(random.Next(panel1.Width - label.Width), 0);
             System.Windows.Forms.Timer timer = new();
             timer.Interval = 200;
-            timer.Tick += (Object sender,EventArgs e) => up(label);
+            timer.Tick += (Object sender, EventArgs e) => up(label);
             timer.Start();
             LbAndTimer.Add(new Dictionary<string, dynamic>()
             {
@@ -96,7 +99,8 @@ namespace FontGame
                 ["timer"] = timer
             });
         }
-        private void up(Label label) {
+        private void up(Label label)
+        {
             label.Top += 2;
             if (label.Top >= panel1.Height - 30)
             {
@@ -107,7 +111,7 @@ namespace FontGame
                     item["timer"].Stop();
                 }
                 globalTimer.Stop();
-                MessageBox.Show("GAME OVER!!!");
+                MessageBox.Show("GAME OVER!!!");                
             }
         }
     }

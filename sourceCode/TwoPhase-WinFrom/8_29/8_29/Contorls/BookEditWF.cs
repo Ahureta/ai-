@@ -12,6 +12,7 @@ namespace _8_29.Contorls
 {
     public partial class BookEditWF : Form
     {
+        public BookInfo EditedBook { get; private set; }
         public BookEditWF()
         {
             InitializeComponent();
@@ -24,10 +25,9 @@ namespace _8_29.Contorls
             try
             {                
                 IBookRepository bookRepository = new BookRepository();
-                await bookRepository.UpdateAsync(book);
-                this.DialogResult = DialogResult.OK;                
-
-                MessageBox.Show("图书修改成功!!");
+                EditedBook = await bookRepository.UpdateAsync(book);
+                if (EditedBook == null) return;
+                this.DialogResult = DialogResult.OK;
                 this.Close();                
             }
             catch (Exception ex)

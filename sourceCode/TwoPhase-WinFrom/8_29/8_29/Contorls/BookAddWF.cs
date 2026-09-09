@@ -26,9 +26,8 @@ namespace _8_29.Contorls
             {
                 IBookRepository bookRepository = new BookRepository();
                 this.SavedBook = await bookRepository.AddAsync(book);
-                MessageBox.Show("savebook"+this.SavedBook.Name);
+                if (SavedBook == null) return;
                 this.DialogResult = DialogResult.OK;
-                MessageBox.Show("图书新增成功!!");
                 this.Close();                
             }
             catch (Exception ex)
