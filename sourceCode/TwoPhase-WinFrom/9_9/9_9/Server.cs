@@ -8,11 +8,11 @@ namespace _9_9
     public partial class Server : Form
     {
         private string IP = "127.0.0.1";
-        private IPAddress IPAddr;
+        private IPAddress? IPAddr;
 
-        private TcpListener _tcpListener;
-        private TcpClient _tcpClient;
-        private NetworkStream _stream;
+        private TcpListener? _tcpListener;
+        private TcpClient? _tcpClient;
+        private NetworkStream? _stream;
         private CancellationTokenSource _cts = new();
 
         public Server()
@@ -71,6 +71,7 @@ namespace _9_9
 
             try
             {
+                if (IPAddr == null) { AntdUI.Message.warn(this, "IP 地址未初始化", autoClose:2); return; }
                 _tcpListener = new TcpListener(IPAddr, port);
                 _tcpListener.Start();
 
@@ -82,7 +83,7 @@ namespace _9_9
                 _tcpClient = await _tcpListener.AcceptTcpClientAsync();
                 _stream = _tcpClient.GetStream();
 
-                string clientIp = _tcpClient.Client.RemoteEndPoint?.ToString();
+                string clientIp = _tcpClient?.Client?.RemoteEndPoint?.ToString() ?? "unknown";
                 AntdUI.Message.info(this, $"客户端 {clientIp} 已连接", autoClose: 2);
 
 
@@ -100,6 +101,50 @@ namespace _9_9
                     };                    
                     panel1.Controls.Add(label);
                 }
+
+                #region    //生产/作业推荐用异步多连接模式
+                /*
+                 private async void StartServer_Click(object sender, EventArgs e)
+                {
+                    _tcpListener = new TcpListener(IPAddress.Loopback, port);
+                    _tcpListener.Start();
+
+                    // 不断接受新连接，每个连接开一个 Task 处理
+                    while (true)
+                    {
+                        var client = await _tcpListener.AcceptTcpClientAsync();
+
+                        // 不等待处理结束，立即继续 accept
+                        _ = HandleClientAsync(client);
+                    }
+                }
+
+                private async Task HandleClientAsync(TcpClient client)
+                {
+                    using (client)
+                    using (var stream = client.GetStream())
+                    {
+                        byte[] buffer = new byte[1024];
+                        while (true)
+                        {
+                            int len = await stream.ReadAsync(buffer, 0, buffer.Length);
+                            if (len == 0) break; // 客户端断开
+
+                            string msg = Encoding.UTF8.GetString(buffer, 0, len);
+
+                            // 这里更新 UI（如果有跨线程需求）
+                            this.Invoke(() =>
+                            {
+                                panel1.Controls.Add(new AntdUI.Label { Text = msg, AutoSize = true });
+                            });
+                        }
+                    }
+                    // client 和 stream 在 using 里自动关闭
+                }
+                 */
+
+                #endregion
+            
             }
             catch (Exception)
             {
@@ -109,9 +154,9 @@ namespace _9_9
             finally
             {
                 // 清理
-                _stream.Close();
-                _tcpClient.Close();
-                _tcpListener.Stop();
+                _stream?.Close();
+                _tcpClient?.Close();
+                _tcpListener?.Stop();
             }
         }
     }
