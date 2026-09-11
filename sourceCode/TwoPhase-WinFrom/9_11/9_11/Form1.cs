@@ -150,7 +150,11 @@ namespace _9_11
                     MessageBox.Show("读取异常");
                     return;
                 }
+                //AntdUI.Message.error(this, "数据"+ string.Join(",", Data), autoClose: 3);
+
                 DeviceTempRecordList.Add(new DeviceTempRecord(Data));
+
+                //AntdUI.Message.error(this, "列表"+string.Join(",", DeviceTempRecordList), autoClose: 3);
             }
             catch (Exception err)
             {
