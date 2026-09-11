@@ -215,39 +215,64 @@ namespace _9_11
             }
         }
 
-        private async void DeviceSimulation()
-        {   //模拟设备
-            ushort temp = 30;
-
-            var timer = new System.Windows.Forms.Timer
-            {
-                Interval = 200,
-                Tag = temp
-            };
-
-            timer.Tick += async (object? sender, EventArgs e) =>
-            {
-                var t = (System.Windows.Forms.Timer)sender!;
-                // 安全地以 ushort 读取、修改并回写 Tag
-                ushort simStep = (ushort)t.Tag;
-                simStep = (ushort)(simStep <200? simStep+1: simStep-1);
-                t.Tag = simStep;
-                                
-                await Master.WriteSingleRegisterAsync(SlaveAddress, 2, simStep);
-            };
-
+        private async void DeviceSimulation()          //模拟设备
+        {
             if (!IsConnect())
             {
                 AntdUI.Message.error(this, "模拟设备异常", autoClose: 3);
                 return;
             }
+
+            ushort initialTemp = 30;
+            ushort maxTemp = 80;     // 最高到 80℃
+            ushort minTemp = 30;     // 最低回到 30℃
+            ushort stepSize = 2;     // 每次变化 2℃
+
+            var state = new SimState { CurrentTemp = initialTemp };
+
+            var timer = new System.Windows.Forms.Timer
+            {
+                Interval = 200,
+                Tag = state    // ← 把整个状态对象塞进 Tag
+            };
+
+            timer.Tick += async (object? sender, EventArgs e) =>
+            {
+                var t = (System.Windows.Forms.Timer)sender!;
+                var s = (SimState)t.Tag!;   // ← 取出来
+
+                if (s.IsRising)
+                {
+                    s.CurrentTemp += stepSize;
+                    if (s.CurrentTemp >= maxTemp)
+                    {
+                        s.CurrentTemp = maxTemp;
+                        s.IsRising = false;   // ← 到顶了，开始下降
+                    }
+                }
+                else
+                {
+                    s.CurrentTemp -= stepSize;
+                    if (s.CurrentTemp <= minTemp)
+                    {
+                        s.CurrentTemp = minTemp;
+                        s.IsRising = true;    // ← 到底了，开始上升
+                    }
+                }
+
+                s.Step++;
+                t.Tag = s;   // 写回去
+
+                // 写入 PLC 寄存器
+                await Master.WriteSingleRegisterAsync(SlaveAddress, 2, s.CurrentTemp);
+            };
+
             try
             {
                 //初始状态                
-                Master.WriteSingleRegisterAsync(SlaveAddress, 0, 0).Wait();      // 状态停止
-                Master.WriteSingleRegisterAsync(SlaveAddress, 2, temp).Wait(); // 初始温度 30
-                Master.WriteSingleRegisterAsync(SlaveAddress, 3, 0).Wait();      // 故障码 0
-
+                await Master.WriteSingleRegisterAsync(SlaveAddress, 0, 0);      // 状态停止
+                await Master.WriteSingleRegisterAsync(SlaveAddress, 2, initialTemp); // 初始温度 30
+                await Master.WriteSingleRegisterAsync(SlaveAddress, 3, 0);      // 故障码 0
 
                 timer.Start();
             }
