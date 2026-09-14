@@ -44,7 +44,7 @@
             // bookManagerLB
             // 
             bookManagerLB.Font = new Font("Microsoft YaHei UI", 15F, FontStyle.Bold, GraphicsUnit.Point, 134);
-            bookManagerLB.Location = new Point(294, 12);
+            bookManagerLB.Location = new Point(381, 21);
             bookManagerLB.Name = "bookManagerLB";
             bookManagerLB.Size = new Size(155, 35);
             bookManagerLB.TabIndex = 0;

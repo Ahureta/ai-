@@ -6,7 +6,7 @@ using System.Text;
 
 namespace _9_11.models
 {
-    internal class DeviceTempRecord : INotifyPropertyChanged
+    public class DeviceTempRecord : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private int _id;

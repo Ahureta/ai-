@@ -12,9 +12,9 @@ namespace _9_11
         //public SerialPort(string portName, int baudRate, System.IO.Ports.Parity parity, int dataBits, System.IO.Ports.StopBits stopBits
         private readonly string PortName = "COM1";
         private readonly int BaudRate = 9600;
-        private readonly System.IO.Ports.Parity Parity = System.IO.Ports.Parity.None;
+        private readonly Parity Parity = Parity.None;
         private readonly int DataBits = 8;
-        private readonly System.IO.Ports.StopBits StopBits = System.IO.Ports.StopBits.One;
+        private readonly StopBits StopBits = StopBits.One;
 
         private IModbusSerialMaster? Master;
         //Task<ushort[]> ReadInputRegistersAsync(byte slaveAddress, ushort startAddress, ushort numberOfPoints);
@@ -136,25 +136,33 @@ namespace _9_11
         }
 
         private async void GlobalTimer_Tick(object? sender, EventArgs e)
-        {
+        {            
             if (!IsConnect())
             {
                 AntdUI.Message.error(this, "请先连接设备", autoClose: 3);
                 return;
             }
             try
-            {
+            {                
                 Data = await Master.ReadHoldingRegistersAsync(SlaveAddress, Offset, Count);
                 if (Data == null)
                 {
                     MessageBox.Show("读取异常");
                     return;
                 }
-                //AntdUI.Message.error(this, "数据"+ string.Join(",", Data), autoClose: 3);
+                //DeviceTempRecordList.Add(new DeviceTempRecord(Data));
 
-                DeviceTempRecordList.Add(new DeviceTempRecord(Data));
-
-                //AntdUI.Message.error(this, "列表"+string.Join(",", DeviceTempRecordList), autoClose: 3);
+                if (InvokeRequired)
+                {
+                    Console.WriteLine("进入该线程");
+                    Invoke(() => DeviceTempRecordList.Add(new DeviceTempRecord(Data))); // ✅ UI 线程
+                }
+                else
+                {
+                    DeviceTempRecordList.Add(new DeviceTempRecord(Data));
+                    dataRecordsTB.Refresh();      // 或 Invalidate()
+                    //dataRecordsTB.Invalidate();      // 或 Invalidate()
+                }                
             }
             catch (Exception err)
             {
