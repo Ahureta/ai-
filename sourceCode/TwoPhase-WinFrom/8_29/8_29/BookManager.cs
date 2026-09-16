@@ -34,12 +34,44 @@ namespace _8_29
 
             bookShowTBCellButtonClick();
 
+            LoadBooks();
+        }
+
+        private async void LoadBooks()
+        {
+            IBookRepository book = new BookRepository();
+            var items = await book.GetAllAsync(); // items 为 IEnumerable<BookInfo> 或 BindingList<BookInfo>
+            listBook.Clear();
+            foreach (var b in items) listBook.Add(b);
+
+            bookShowTB.DataSource = listBook;  // 假设 AntdUI 表格也支持 DataSource
+            listBook.ListChanged += (s, e) =>
+            {
+                // 列表结构变化（增、删、换序）或某项属性变化，强制刷新
+                if (bookShowTB.IsHandleCreated && !bookShowTB.IsDisposed)
+                    bookShowTB.Refresh();
+            };
 
         }
+        
         private async void BookSearch() {
-            IBookRepository book = new BookRepository();
-            listBook = await book.GetAllAsync();
-            bookShowTB.DataSource = listBook;
+            IBookRepository bookRepository = new BookRepository();
+
+            //listBook.ReplaceAll(await book.GetAllAsync());
+            //bookShowTB.DataSource = listBook;   
+
+            var newList = await bookRepository.GetAllAsync(); // BindingList<BookInfo> 或 IEnumerable<BookInfo>
+
+            // 把现有绑定的 listBook 清空并逐项添加新数据（保持原来的实例，这样 DataSource 不用重新设置）
+            listBook.Clear();
+            foreach (var item in newList)
+            {
+                listBook.Add(item);
+            }
+
+            // 可选：强制刷新 UI（如果需要）
+            if (bookShowTB.IsHandleCreated && !bookShowTB.IsDisposed)
+                bookShowTB.Refresh();
         }
         private async void BookSearchBT_Click(object? sender, EventArgs e)
         {
@@ -221,6 +253,19 @@ namespace _8_29
                         int rows2 = await bookRepository2.BorrowAsync(book.Id);
                         if (rows2 > 0)
                             MessageBox.Show("借阅成功!!");
+                        
+                            var newList = await bookRepository2.GetAllAsync(); // BindingList<BookInfo> 或 IEnumerable<BookInfo>
+
+                            // 把现有绑定的 listBook 清空并逐项添加新数据（保持原来的实例，这样 DataSource 不用重新设置）
+                            listBook.Clear();
+                            foreach (var item in newList)
+                            {
+                                listBook.Add(item);
+                            }
+
+                            // 可选：强制刷新 UI（如果需要）
+                            if (bookShowTB.IsHandleCreated && !bookShowTB.IsDisposed)
+                                bookShowTB.Refresh();
                         else
                             MessageBox.Show("借阅失败!!!");
                         break;
@@ -229,7 +274,20 @@ namespace _8_29
                         IBookRepository bookRepository3 = new BookRepository();
                         int rows3 = await bookRepository3.ReturnAsync(book.Id);
                         if (rows3 > 0)
-                            MessageBox.Show("归还成功!!");
+                            MessageBox.Show("归还成功!!");                            
+
+                            var newList2 = await bookRepository3.GetAllAsync(); // BindingList<BookInfo> 或 IEnumerable<BookInfo>
+
+                            // 把现有绑定的 listBook 清空并逐项添加新数据（保持原来的实例，这样 DataSource 不用重新设置）
+                            listBook.Clear();
+                            foreach (var item in newList2)
+                            {
+                                listBook.Add(item);
+                            }
+
+                            // 可选：强制刷新 UI（如果需要）
+                            if (bookShowTB.IsHandleCreated && !bookShowTB.IsDisposed)
+                                bookShowTB.Refresh();
                         else
                             MessageBox.Show("归还失败!!!");                        
                         break;

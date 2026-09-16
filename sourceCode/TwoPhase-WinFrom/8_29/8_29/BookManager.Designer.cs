@@ -98,6 +98,7 @@
             axWindowsMediaPlayer1.OcxState = (AxHost.State)resources.GetObject("axWindowsMediaPlayer1.OcxState");
             axWindowsMediaPlayer1.Size = new Size(312, 188);
             axWindowsMediaPlayer1.TabIndex = 4;
+            axWindowsMediaPlayer1.Visible = false;
             // 
             // bookSearchIdTB
             // 

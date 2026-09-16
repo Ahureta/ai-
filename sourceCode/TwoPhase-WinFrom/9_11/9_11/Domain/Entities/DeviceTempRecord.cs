@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace _9_11.models
+namespace _9_11.Domain.Entities
 {
     public class DeviceTempRecord : INotifyPropertyChanged
     {
@@ -51,7 +51,7 @@ namespace _9_11.models
             private set => SetProperty(ref _faultCode, value);
         }
 
-        private void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        private void SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (Equals(field, value)) return;
             field = value;

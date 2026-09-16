@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _9_11.models
+namespace _9_11.Domain.Entities
 {
     // 模拟状态类
     public class SimState

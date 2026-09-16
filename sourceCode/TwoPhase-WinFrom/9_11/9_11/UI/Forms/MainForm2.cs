@@ -1,4 +1,4 @@
-using _9_11.models;
+using _9_11.Domain.Entities;
 using Modbus.Device;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +6,7 @@ using System.IO.Ports;
 
 namespace _9_11
 {
-    public partial class Form1 : Form
+    public partial class MainForm2 : Form
     {
         private SerialPort? serialPort;     //串口对象
         //public SerialPort(string portName, int baudRate, System.IO.Ports.Parity parity, int dataBits, System.IO.Ports.StopBits stopBits
@@ -26,7 +26,7 @@ namespace _9_11
         private readonly System.Windows.Forms.Timer GlobalTimer = new();
 
         private BindingList<DeviceTempRecord> DeviceTempRecordList = [];
-        public Form1()
+        public MainForm2()
         {
             InitializeComponent();
             this.Shown += Form1_Shown;
@@ -308,4 +308,31 @@ namespace _9_11
             loggingPN.Controls.Add(label);
         }
     }
+
+    /*
+    public partial class MainForm : Form
+    {
+        private readonly IMonitoringService _monitoring;
+        private readonly BulkBindingList<DeviceTempRecord> _tempList = new();
+
+        public MainForm(IMonitoringService monitoring)
+        {
+            InitializeComponent();
+            _monitoring = monitoring;
+            _monitoring.TempRead += OnTempRead;
+            _monitoring.DeviceStatusChanged += OnDeviceStatusChanged;
+            tempGrid.DataSource = _tempList;
+        }
+
+        private void OnTempRead(object? sender, TempReadEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() => HandleTempRead(e.Record)));
+                return;
+            }
+            HandleTempRead(e.Record);
+        }
+    }
+     */
 }

@@ -1,6 +1,6 @@
 ﻿namespace _9_11
 {
-    partial class Form1
+    partial class MainForm2
     {
         /// <summary>
         ///  Required designer variable.

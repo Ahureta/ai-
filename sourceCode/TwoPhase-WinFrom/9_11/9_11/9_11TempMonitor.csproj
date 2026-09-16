@@ -15,4 +15,10 @@
     <PackageReference Include="System.IO.Ports" Version="10.0.12" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Models\" />
+    <Folder Include="UI\Controls\" />
+    <Folder Include="UI\ViewModels\" />
+  </ItemGroup>
+
 </Project>
