@@ -8,7 +8,7 @@ namespace _9_11.Infrastructure.Modbus
 {
     public class TemperatureProvider : ITemperatureProvider
     {
-        private readonly IModbusClient _modbus;
+        private readonly IModbusClient _modbus;        
 
         public TemperatureProvider(ModbusRtuClient modbus)
         {
@@ -18,8 +18,14 @@ namespace _9_11.Infrastructure.Modbus
         public async Task<DeviceTempRecord> ReadCurrentAsync()
         {
             // 读保持寄存器 0~3，解析成 DeviceTempRecord
-            var data = await _modbus.ReadRegistersAsync(1, 0, 4);
+            var data = await _modbus.ReadHoldingRegistersAsync(RegisterMap.SlaveAddress, RegisterMap.ReadStart, RegisterMap.ReadCount);
             return new DeviceTempRecord(data);
+
+            /*
+                         // 读保持寄存器 0~3，解析成 DeviceTempRecord
+                        var data = await _modbus.ReadHoldingRegistersAsync(RegisterMap.SlaveAddress, RegisterMap.ReadStart, RegisterMap.ReadCount);
+                        return new RegisterMap(data);
+             */
         }
     }
 }

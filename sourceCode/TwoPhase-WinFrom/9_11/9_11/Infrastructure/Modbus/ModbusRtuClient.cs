@@ -57,12 +57,19 @@ namespace _9_11.Infrastructure.Modbus
         }
 
         // ===== 对外暴露的方法 =====
-        public async Task<ushort[]> ReadRegistersAsync(byte SlaveAddress, ushort Offset, ushort Count)
+        public async Task<ushort[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort offset, ushort count)
         {
             if (Master == null)
                 throw new InvalidOperationException("Modbus 未连接");
 
-            return await Master.ReadInputRegistersAsync(SlaveAddress, Offset, Count);
+            return await Master.ReadHoldingRegistersAsync(slaveAddress, offset, count);
+        }
+        public async Task WriteMultipleRegistersAsync(byte slaveAddress, ushort startAddress, ushort[] data)
+        {
+            if (Master == null)
+                throw new InvalidOperationException("Modbus 未连接");
+
+            await Master.WriteMultipleRegistersAsync(slaveAddress, startAddress, data);
         }
 
         public bool IsConnected => serialPort?.IsOpen ?? false;

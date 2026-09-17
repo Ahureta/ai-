@@ -58,6 +58,7 @@ namespace _9_11.Domain.Entities
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        //读取构造函数
         public DeviceTempRecord(ushort[] DTR)
         {            
             CollectTime = DateTime.Now;
@@ -65,6 +66,14 @@ namespace _9_11.Domain.Entities
             SetTemp = DTR[1];
             RealTemp = DTR[2];
             FaultCode = DTR[3];
+        }
+        public DeviceTempRecord(ushort DeviceStatus, ushort SetTemp, ushort RealTemp, ushort FaultCode)
+        {
+            CollectTime = DateTime.Now;
+            this.DeviceStatus = DeviceStatus;
+            this.SetTemp = SetTemp;
+            this.RealTemp = RealTemp;
+            this.FaultCode = FaultCode;
         }
     }
 }

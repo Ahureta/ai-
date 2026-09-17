@@ -77,6 +77,7 @@
             lostConnectPLCBT.Size = new Size(120, 53);
             lostConnectPLCBT.TabIndex = 3;
             lostConnectPLCBT.Text = "断开PLC";
+            lostConnectPLCBT.Click += lostConnectPLCBT_Click;
             // 
             // getConnectPLCBT
             // 
@@ -86,6 +87,7 @@
             getConnectPLCBT.Size = new Size(120, 53);
             getConnectPLCBT.TabIndex = 3;
             getConnectPLCBT.Text = "连接PLC";
+            getConnectPLCBT.Click += getConnectPLCBT_Click;
             // 
             // connectControlLB
             // 
@@ -172,6 +174,7 @@
             searchHistoryBT.Size = new Size(144, 40);
             searchHistoryBT.TabIndex = 3;
             searchHistoryBT.Text = "查看历史记录";
+            searchHistoryBT.Click += searchHistoryBT_Click;
             // 
             // DTRTB
             // 
@@ -240,6 +243,7 @@
             setTemperatureBT.Size = new Size(96, 53);
             setTemperatureBT.TabIndex = 4;
             setTemperatureBT.Text = "设定温度";
+            setTemperatureBT.Click += setTemperatureBT_Click;
             // 
             // deviceStopBT
             // 
@@ -249,6 +253,7 @@
             deviceStopBT.Size = new Size(120, 53);
             deviceStopBT.TabIndex = 4;
             deviceStopBT.Text = "停止";
+            deviceStopBT.Click += deviceStopBT_Click;
             // 
             // deviceStartBT
             // 
@@ -258,6 +263,7 @@
             deviceStartBT.Size = new Size(120, 53);
             deviceStartBT.TabIndex = 5;
             deviceStartBT.Text = "启动";
+            deviceStartBT.Click += deviceStartBT_Click;
             // 
             // deviceControlLB
             // 
