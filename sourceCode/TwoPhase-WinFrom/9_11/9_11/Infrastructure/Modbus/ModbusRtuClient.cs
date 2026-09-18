@@ -75,13 +75,18 @@ namespace _9_11.Infrastructure.Modbus
         public bool IsConnected => serialPort?.IsOpen ?? false;
 
         // ===== 释放资源 =====
+        private bool _disposed = false;
         public void Dispose()
         {
+            if (_disposed) return;  // 防止重复释放
+
             GlobalTimer?.Stop();
             Master?.Dispose();
             if (serialPort?.IsOpen == true)
                 serialPort.Close();
             serialPort?.Dispose();
+
+            _disposed = true;
         }
     }
 }

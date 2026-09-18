@@ -9,5 +9,6 @@ namespace _9_11.Domain.Interfaces
     public interface IModbusClient
     {        
         Task<ushort[]> ReadHoldingRegistersAsync(byte SlaveAddress, ushort Offset, ushort Count);
+        Task WriteMultipleRegistersAsync(byte slaveAddress, ushort startAddress, ushort[] data);
     }
 }

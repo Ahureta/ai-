@@ -1,6 +1,7 @@
 ﻿using _9_11.Application.Abstractions;
 using _9_11.Application.Implementation;
 using _9_11.Domain.Entities;
+using _9_11.Domain.Events;
 using _9_11.UI.Utils;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 
 namespace _9_11.UI.Forms
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         private readonly IMonitoringService _monitoring;
         private readonly BulkBindingList<DeviceTempRecord> _tempList = new();
@@ -22,7 +23,7 @@ namespace _9_11.UI.Forms
             InitializeComponent();
             _monitoring = monitoring;
             _monitoring.TempRead += OnTempRead;
-            _monitoring.DeviceStatusChanged += OnDeviceStatusChanged;
+            //_monitoring.DeviceStatusChanged += OnDeviceStatusChanged;
             DTRTB.DataSource = _tempList;
         }
 
