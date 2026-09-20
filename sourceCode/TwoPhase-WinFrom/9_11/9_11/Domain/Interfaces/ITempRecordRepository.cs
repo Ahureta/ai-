@@ -7,7 +7,8 @@ namespace _9_11.Domain.Interfaces
 {
     public interface ITempRecordRepository
     {
-        Task InsertAsync(DeviceTempRecord record);
+        Task InsertOneAsync(DeviceTempRecord record);
         Task<List<DeviceTempRecord>> GetPageAsync(int page, int pageSize, DateTime? start, DateTime? end);
+        Task FlushBatchAsync(List<DeviceTempRecord> batch);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _9_11.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -58,7 +59,7 @@ namespace _9_11.Domain.Entities
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //读取构造函数
+        //串口读取构造函数
         public DeviceTempRecord(ushort[] DTR)
         {            
             CollectTime = DateTime.Now;
@@ -75,5 +76,18 @@ namespace _9_11.Domain.Entities
             this.RealTemp = RealTemp;
             this.FaultCode = FaultCode;
         }
+
+        public DeviceTempRecord(int id, DateTime collectTime, ushort deviceStatus, ushort setTemp, ushort realTemp, int faultCode)
+        {
+            this.Id = id;
+            this.CollectTime = collectTime;
+            this.DeviceStatus = deviceStatus;
+            this.SetTemp = setTemp;
+            this.RealTemp = realTemp;
+            this.FaultCode = faultCode;
+        }
+
+        //数据库读取构造函数
+
     }
 }

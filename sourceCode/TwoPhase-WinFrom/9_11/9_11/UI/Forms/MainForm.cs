@@ -41,7 +41,7 @@ namespace _9_11.UI.Forms
         {
             _tempList.Add(record);
             // 或者如果列表太长，限制行数
-            if (_tempList.Count > 1000)
+            if (_tempList.Count > 500)
                 _tempList.RemoveAt(0);
         }
 
