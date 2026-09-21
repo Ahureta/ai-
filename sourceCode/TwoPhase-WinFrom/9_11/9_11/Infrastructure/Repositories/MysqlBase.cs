@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace _9_11.Infrastructure.Repositories
@@ -14,23 +16,34 @@ namespace _9_11.Infrastructure.Repositories
         private string Uid = "root";
         private string Password = "Qaz2109537";
         private string Charset = "utf8";
-        private string ConnStr = "";
+        private string _connStr = "";
+        private MySqlDataSource mySqlDataSource;
 
         internal MysqlBase()
-        {            
-            ConnStr = $"server={IP};port={Port};database={DataBase};uid={Uid};password={Password};charset={Charset}";
+        {
+            _connStr = $"server={IP};port={Port};database={DataBase};uid={Uid};password={Password};charset={Charset}";
+
+            if (mySqlDataSource == null)    //最好Lazy懒加载数据库连接池，线程安全
+            {                
+                MySqlDataSourceBuilder builder = new(_connStr);
+                mySqlDataSource = builder.Build();
+            }
         }
         internal MysqlBase(string db)
         {
             DataBase = db;
-            ConnStr = $"server={IP};port={Port};database={DataBase};uid={Uid};password={Password};charset={Charset}";
+            _connStr = $"server={IP};port={Port};database={DataBase};uid={Uid};password={Password};charset={Charset}";
+
+            if (mySqlDataSource == null)
+            {                
+                MySqlDataSourceBuilder builder = new(_connStr);
+                mySqlDataSource = builder.Build();
+            }
         }
 
         protected async Task<MySqlConnection> GetOpenConnectionAsync()
         {
-            var conn = new MySqlConnection(ConnStr);
-            await conn.OpenAsync();
-            return conn;
+            return await mySqlDataSource.OpenConnectionAsync();
         }
 
         // 通用的 ExecuteNonQuery
@@ -46,13 +59,54 @@ namespace _9_11.Infrastructure.Repositories
         protected async Task<DataTable> QueryDataTableAsync(string sql, params MySqlParameter[] parameters)
         {
             var dt = new DataTable();
-            using var conn = await GetOpenConnectionAsync();
+            await using var conn = await GetOpenConnectionAsync();
             using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddRange(parameters);
-            using var adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);  // DataAdapter 没有 Async 版本，只能同步
+
+            using var reader = await cmd.ExecuteReaderAsync();  // ← 真异步
+            dt.Load(reader);  // ← Load 也是同步的，但 reader 读取是异步的
+
+            //using var adapter = new MySqlDataAdapter(cmd);
+            //adapter.Fill(dt);  // DataAdapter 没有 Async 版本，只能同步
             return dt;
         }
+
+        public void Dispose()
+        {
+            mySqlDataSource?.Dispose();
+            mySqlDataSource = null;
+        }
+
+        /*
+         //事务加强版
+         // ===== MysqlBase 里加这个 =====
+        protected async Task<int> ExecuteInTransactionAsync(
+            MySqlConnection conn,
+            MySqlTransaction transaction,
+            string sql,
+            params MySqlParameter[] parameters)
+        {
+            using var cmd = new MySqlCommand(sql, conn, transaction);  // ← 绑定连接+事务
+            cmd.Parameters.AddRange(parameters);
+            return await cmd.ExecuteNonQueryAsync();
+        }
+
+        FlushBatchAsync 开始
+            ↓
+        1. 打开连接
+            ↓
+        2. BeginTransaction（MySQL 默认 REPEATABLE READ）
+            ↓
+        3. 拼 SQL + 参数
+            ↓
+        4. ExecuteNonQuery（在事务内执行 INSERT）
+            ↓
+            ├─ 成功 → Commit → 数据落盘
+            └─ 失败 → Rollback → 数据库恢复原样，一条都没写进去
+            ↓
+        5. finally 释放连接
+
+         */
 
 
         //// 封装一个连接数据库并查询数据的方法(返回一个datatable数据)

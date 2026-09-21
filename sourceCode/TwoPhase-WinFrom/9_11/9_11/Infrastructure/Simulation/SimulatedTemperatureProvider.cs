@@ -21,7 +21,7 @@ namespace _9_11.Infrastructure.Simulation
             // 每秒升/降，返回模拟数据
             await _modbusRtuClient.WriteMultipleRegistersAsync(
                 RegisterMap.SlaveAddress,
-                RegisterMap.SetTempIndex,                    
+                RegisterMap.RealTempIndex,                    
                 [temp]
             );
         }

@@ -34,7 +34,8 @@ namespace _9_11.Application.Implementation
         private Task? _consumerTask;
         private bool _disposed;
 
-        public MonitoringService() {            
+        public MonitoringService()
+        {
             _dataChannel = Channel.CreateBounded<DeviceTempRecord>(new BoundedChannelOptions(1000)
             {
                 FullMode = BoundedChannelFullMode.DropOldest  // 满了丢最旧的，保内存
@@ -46,14 +47,17 @@ namespace _9_11.Application.Implementation
 
             //定时读取温度
             // ===== 生产者：Timer Tick =====
-            Timer.Tick += async (object? sender, EventArgs e) => {
-                if (_modbusRtuClient == null)
+            Timer.Tick += async (object? sender, EventArgs e) =>
+            {
+                if (_modbusRtuClient == null || !_modbusRtuClient.IsConnected)
                     return;
-                    //throw new ArgumentNullException(nameof(_modbusRtuClient));
-                
+
                 //读取当前温度
                 ITemperatureProvider temperatureProvider = new TemperatureProvider(_modbusRtuClient);
-                DeviceTempRecord deviceTempRecord= await temperatureProvider.ReadCurrentAsync();
+                DeviceTempRecord deviceTempRecord = await temperatureProvider.ReadCurrentAsync();
+
+                Console.WriteLine("模拟读取温度："+ deviceTempRecord);
+
                 TempRead?.Invoke(this, new TempReadEventArgs(deviceTempRecord));
 
                 //// 1. 通知 UI（UI 自己限长）
@@ -64,38 +68,21 @@ namespace _9_11.Application.Implementation
             };
 
             //定时写入模拟温度
-            TimerSimulated.Tick += async (object? sender, EventArgs e) => {
-                if (_modbusRtuClient == null)
+            double _t = 0;
+            TimerSimulated.Tick += async (object? sender, EventArgs e) =>
+            {
+                if (_modbusRtuClient == null || !_modbusRtuClient.IsConnected)                                    
                     return;
-
+                
                 // 模拟温度在 50~150 之间正弦波动
-                double _t = 0;
                 _t += 0.1;
                 var sumulatedTemp = 100 + 50 * Math.Sin(_t);
-                
+
+                //Console.WriteLine("模拟写入温度："+ sumulatedTemp);
                 ISimulatedTemperatureProvider simulatedTemperatureProvider = new SimulatedTemperatureProvider(_modbusRtuClient);
-                await simulatedTemperatureProvider.WriteCurrentAsync((ushort)sumulatedTemp);                
+                await simulatedTemperatureProvider.WriteCurrentAsync((ushort)sumulatedTemp);
             };
         }
-
-        //// ===== 生产者：Timer Tick =====
-        //private async void OnTick(object? sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        var record = await _tempProvider.ReadCurrentAsync();
-
-        //        // 1. 通知 UI（UI 自己限长）
-        //        TempRead?.Invoke(this, new TempReadEventArgs(record));
-
-        //        // 2. 写入 Channel 等待批量落库（不阻塞 Timer）
-        //        await _dataChannel.Writer.WriteAsync(record);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        CommError?.Invoke(this, new CommErrorEventArgs(ex));
-        //    }
-        //}
 
         // ===== 消费者：批量写库 =====
         private async Task ConsumeAndFlushAsync()
@@ -113,7 +100,7 @@ namespace _9_11.Application.Implementation
                 {
                     try
                     {
-                        await _repository.FlushBatchAsync(batch);       //FlushBatchAsync
+                        await _repository.FlushBatchAsync(batch);
                         batch.Clear();
                         timer.Restart();
                     }
@@ -121,13 +108,13 @@ namespace _9_11.Application.Implementation
                     {
                         // CancellationToken 触发时走到这里（正常退出路径）
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // 写库失败：可以重试、写本地文件、或者记日志
                         //_logger?.LogError(ex, "批量写库失败，{Count} 条数据丢失", batch.Count);
                         batch.Clear(); // 生产环境通常丢（保活），或者存本地文件重试
                     }
-                    
+
                     // ← ReadAllAsync 结束后（Complete 或 Cancel），收尾写剩余数据
                     if (batch.Count > 0)
                     {
@@ -139,20 +126,25 @@ namespace _9_11.Application.Implementation
 
         public async Task DeviceStartAsync()
         {
-            if (_registerMap == null ||
-                _registerMap.RawData[RegisterMap.DeviceStatusIndex] == (ushort)DeviceState.Running)
+            if (_registerMap == null)
+                throw new ArgumentNullException(nameof(_registerMap));
+
+            if (_registerMap.RawData[RegisterMap.DeviceStatusIndex] == (ushort)DeviceState.Running)
                 return;
 
-            var client = _modbusRtuClient;
-            if (client != null)
-            {
-                await client.WriteMultipleRegistersAsync(
-                    RegisterMap.SlaveAddress,
-                    RegisterMap.DeviceStatusIndex,
-                    new ushort[] { (ushort)DeviceState.Running }
-                );
-                Timer.Start();
-            }
+            if (_modbusRtuClient == null)
+                throw new ArgumentNullException(nameof(_modbusRtuClient));
+
+            await _modbusRtuClient.WriteMultipleRegistersAsync(
+                RegisterMap.SlaveAddress,
+                RegisterMap.DeviceStatusIndex,
+                [(ushort)DeviceState.Running]
+            );
+
+            _registerMap.RawData[RegisterMap.DeviceStatusIndex] = (ushort)DeviceState.Running;
+
+            TimerSimulated.Start();
+            Timer.Start();
         }
 
         public async Task DeviceStopAsync()
@@ -160,62 +152,72 @@ namespace _9_11.Application.Implementation
             if (_registerMap == null ||
                 _registerMap.RawData[RegisterMap.DeviceStatusIndex] == (ushort)DeviceState.Standby)
                 return;
+            
+            if (_modbusRtuClient == null)
+                throw new InvalidOperationException("设备未连接");
 
-            var client = _modbusRtuClient;
-            if (client != null)
-            {
-                await client.WriteMultipleRegistersAsync(
-                    RegisterMap.SlaveAddress,
-                    RegisterMap.DeviceStatusIndex,
-                    new ushort[] { (ushort)DeviceState.Standby }
-                );
-            }
+            TimerSimulated.Stop();
+            Timer.Stop();
+            
+            await _modbusRtuClient.WriteMultipleRegistersAsync(
+                RegisterMap.SlaveAddress,
+                RegisterMap.DeviceStatusIndex,
+                [(ushort)DeviceState.Standby]
+            );            
+
+            _registerMap.RawData[RegisterMap.DeviceStatusIndex] = (ushort)DeviceState.Standby;
         }
 
         public async Task GetConnectAsync()
         {
             if (_modbusRtuClient != null)
-                return;
+                throw new InvalidOperationException("设备已连接，请先断开后再试");
 
             try
             {
-                _modbusRtuClient = ModbusRtuClient.Instance;
+                _modbusRtuClient = new ModbusRtuClient();
+                _modbusRtuClient.Connect();
                 _registerMap = new RegisterMap(await _modbusRtuClient.ReadHoldingRegistersAsync(
                     RegisterMap.SlaveAddress,
                     RegisterMap.ReadStart,
                     RegisterMap.ReadCount
                 ));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // 1. 清理资源（必须做）
                 _modbusRtuClient?.Dispose();
                 _modbusRtuClient = null;
+                _registerMap = null;
+
+                throw new Exception($"设备连接失败：{ex.Message}", ex);
             }
         }
 
         public async Task LostConnectAsync()
         {
+            await DeviceStopAsync();
             _modbusRtuClient?.Dispose();
             _modbusRtuClient = null;
         }
 
         public async Task SetTemperatureAsync(double temperature)
         {
-            if (_registerMap == null ||
-                _registerMap.RawData[RegisterMap.DeviceStatusIndex] == (ushort)DeviceState.Running)
+            if (_registerMap == null)
+                throw new ArgumentNullException(nameof(_registerMap));
+            if (_registerMap.RawData[RegisterMap.DeviceStatusIndex] == (ushort)DeviceState.Running)
                 return;
 
             _registerMap.RawData[RegisterMap.SetTempIndex] = (ushort)(temperature / RegisterMap.TempScale);
-
-            var client = _modbusRtuClient;
-            if (client != null)
-            {
-                await client.WriteMultipleRegistersAsync(
-                    RegisterMap.SlaveAddress,
-                    RegisterMap.SetTempIndex, // 写入 SetTempIndex 更合理（根据语义）
-                    new ushort[] { _registerMap.RawData[RegisterMap.SetTempIndex] }
-                );
-            }
+            
+            if (_modbusRtuClient == null)
+                throw new ArgumentNullException(nameof(_registerMap));
+            
+            await _modbusRtuClient.WriteMultipleRegistersAsync(
+                RegisterMap.SlaveAddress,
+                RegisterMap.SetTempIndex, // 写入 SetTempIndex 更合理（根据语义）
+                [_registerMap.RawData[RegisterMap.SetTempIndex]]
+            );            
         }
     }
 }

@@ -77,6 +77,8 @@ namespace _9_11.Domain.Entities
             this.FaultCode = FaultCode;
         }
 
+        
+        //数据库读取构造函数
         public DeviceTempRecord(int id, DateTime collectTime, ushort deviceStatus, ushort setTemp, ushort realTemp, int faultCode)
         {
             this.Id = id;
@@ -86,8 +88,5 @@ namespace _9_11.Domain.Entities
             this.RealTemp = realTemp;
             this.FaultCode = faultCode;
         }
-
-        //数据库读取构造函数
-
     }
 }

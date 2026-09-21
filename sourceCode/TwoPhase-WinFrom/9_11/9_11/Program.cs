@@ -1,3 +1,4 @@
+using _9_11.UI.Forms;
 using System.Configuration;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
@@ -15,11 +16,11 @@ namespace _9_11
         [STAThread]
         static void Main()
         {
-            AllocConsole();
+            AllocConsole();   //控制台
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm2());
+            System.Windows.Forms.Application.Run(new MainForm());
 
             //MainForm 加载
             //→ 调用 _monitoring.Start()

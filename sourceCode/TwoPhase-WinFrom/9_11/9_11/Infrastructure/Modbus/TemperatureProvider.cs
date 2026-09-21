@@ -19,7 +19,7 @@ namespace _9_11.Infrastructure.Modbus
         public async Task<DeviceTempRecord> ReadCurrentAsync()
         {
             // 读保持寄存器 0~3，解析成 DeviceTempRecord
-            var data = await _modbusRtuClient.ReadHoldingRegistersAsync(RegisterMap.SlaveAddress, RegisterMap.RealTempIndex, 1);
+            var data = await _modbusRtuClient.ReadHoldingRegistersAsync(RegisterMap.SlaveAddress, RegisterMap.ReadStart, RegisterMap.ReadCount);
             return new DeviceTempRecord(data);
 
             /*
