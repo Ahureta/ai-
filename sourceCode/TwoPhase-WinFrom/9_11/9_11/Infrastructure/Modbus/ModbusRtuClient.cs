@@ -29,29 +29,9 @@ namespace _9_11.Infrastructure.Modbus
         private readonly int _dataBits = 8;
         private readonly StopBits _stopBits = StopBits.One;
 
-        private IModbusSerialMaster? _master;
-        private ushort[]? ata;
+        private IModbusSerialMaster? _master;        
 
-        //private readonly System.Windows.Forms.Timer GlobalTimer = new();
-
-        //// ===== 初始化逻辑 =====
-        //private void Initialize()
-        //{
-        //    try
-        //    {
-        //        _serialPort = new SerialPort(_portName, _baudRate, _parity, _dataBits, _stopBits);
-        //        _serialPort.Open();
-
-        //        _master = ModbusSerialMaster.CreateRtu(_serialPort);
-        //        _master.Transport.ReadTimeout = 2000;
-        //        _master.Transport.Retries = 3;
-        //    }
-        //    catch (Exception err)
-        //    {
-        //        Dispose();
-        //        throw new InvalidOperationException($"Modbus 连接失败: {err.Message}", err);
-        //    }
-        //}
+        public bool IsConnected => _serialPort?.IsOpen ?? false;
 
         // ===== 对外暴露的方法 =====
         public async Task<ushort[]> ReadHoldingRegistersAsync(byte slaveAddress, ushort offset, ushort count)
@@ -69,7 +49,7 @@ namespace _9_11.Infrastructure.Modbus
             await _master.WriteMultipleRegistersAsync(slaveAddress, startAddress, data);            
         }
 
-        public bool IsConnected => _serialPort?.IsOpen ?? false;
+        
 
         // ===== 连接（可重复调用）=====
         public void Connect()

@@ -13,8 +13,6 @@ namespace _9_11.Infrastructure.Repositories
 {
     internal class MySqlTempRepository : MysqlBase, ITempRecordRepository
     {
-        private static MysqlBase myBase = new MysqlBase("test");
-
         public async Task<List<DeviceTempRecord>> GetPageAsync(int page, int pageSize, DateTime? start, DateTime? end)
         {
             // 如果需要 DataTable 做 UI 绑定，可以在这里转
@@ -64,7 +62,7 @@ namespace _9_11.Infrastructure.Repositories
         public async Task FlushBatchAsync(List<DeviceTempRecord> batch)
         {
             ArgumentNullException.ThrowIfNull(batch);
-
+            
             int count = batch.Count;
             if (count == 0)
                 return;
@@ -76,10 +74,10 @@ namespace _9_11.Infrastructure.Repositories
 
             for (int i = 0; i < count; i++)
             {
-                sql2 += $"(@DeviceStatus{i},@SetTemp{i},@RealTemp{i},@FaultCode{i})";
+                sql2 += $"(@CollectTime{i},@DeviceStatus{i},@SetTemp{i},@RealTemp{i},@FaultCode{i})";
                 if (i < count - 1) sql2 += ",";
                 mySqlParameters.AddRange([                
-                    //new MySqlParameter($"@CollectTime{i}", batch[i].CollectTime), @CollectTime{i},
+                    new MySqlParameter($"@CollectTime{i}", batch[i].CollectTime),
                     new MySqlParameter($"@DeviceStatus{i}", (byte)batch[i].DeviceStatus),
                     new MySqlParameter($"@SetTemp{i}", batch[i].SetTemp),
                     new MySqlParameter($"@RealTemp{i}", batch[i].RealTemp),
@@ -87,10 +85,10 @@ namespace _9_11.Infrastructure.Repositories
                 ]);
             }
             
-            var rowsAffected = await ExecuteAsync(
+            var qq= await ExecuteAsync(
                 sql1 + " Values" + sql2,
                 [.. mySqlParameters]
-            );
+            );            
         }
 
         public Task InsertOneAsync(DeviceTempRecord record)

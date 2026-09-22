@@ -6,14 +6,13 @@ using System.Text;
 namespace _9_11.Application.Abstractions
 {
     internal interface IMonitoringService
-    {
-        //internal Action<object?, TempReadEventArgs> TempRead { get; set; }
-        internal event EventHandler<TempReadEventArgs>? TempRead;
-        internal Task DeviceStartAsync();
-        internal Task DeviceStopAsync();
-        internal Task GetConnectAsync();
-        internal Task LostConnectAsync();
-        internal Task SetTemperatureAsync(double temperature);
+    {        
+        event EventHandler<TempReadEventArgs>? TempRead;
+        Task DeviceStartAsync();
+        Task DeviceStopAsync();
+        Task GetConnectAsync();
+        Task LostConnectAsync();
+        Task SetTemperatureAsync(double temperature);
     }
 }
 

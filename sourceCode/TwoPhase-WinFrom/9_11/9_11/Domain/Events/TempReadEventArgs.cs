@@ -7,9 +7,9 @@ namespace _9_11.Domain.Events
 {
     internal class TempReadEventArgs : EventArgs
     {
-        public DeviceTempRecord Record { get; }
+        internal DeviceTempRecord Record { get; }
 
-        public TempReadEventArgs(DeviceTempRecord record)
+        internal TempReadEventArgs(DeviceTempRecord record)
         {
             Record = record ?? throw new ArgumentNullException(nameof(record));
         }
