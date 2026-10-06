@@ -26,7 +26,7 @@ namespace _9_29
         {
             StringBuilder fwType = new StringBuilder(128);
             StringBuilder version = new StringBuilder(128);
-            int ret = DobotDll.ConnectDobot("DOM3", 115200, fwType, version);
+            int ret = DobotDll.ConnectDobot("COM3", 115200, fwType, version);
 
             MessageBox.Show($"ConnectDobot 返回码：{ret}\n固件：{fwType}\n版本：{version}");
         }
@@ -56,18 +56,20 @@ namespace _9_29
         {
             PTPCmd ptpCmd = new PTPCmd();
             ptpCmd.ptpMode = 0;
-            ptpCmd.x = 200;
-            ptpCmd.y = 0;
-            ptpCmd.z = 80;
+            ptpCmd.x = 269.55F;
+            ptpCmd.y = -11.33F;
+            ptpCmd.z = 0;
             ptpCmd.rHead = 0;
             UInt64 cmdIndex = 0;
+            PrintAlarms();
             int ret = DobotDll.SetPTPCmd(ref ptpCmd, false, ref cmdIndex);
+            PrintAlarms();
             if (ret == 0)
             {
                 MessageBox.Show("移动指令下发成功");
             }
             else
-            {
+            {                
                 MessageBox.Show($"移动失败，返回码:{ret}");
             }
         }
@@ -174,10 +176,25 @@ namespace _9_29
             UInt64 cmdIndex = 0;
             int ret;
 
+            //ret = DobotDll.SetPTPCmd(ref ptpA, true, ref cmdIndex);
+            //ret = DobotDll.SetPTPCmd(ref ptpB, true, ref cmdIndex);
+            //ret = DobotDll.SetPTPCmd(ref ptpC, true, ref cmdIndex);
+            //ret = DobotDll.SetPTPCmd(ref ptpD, true, ref cmdIndex);
+
+
             ret = DobotDll.SetPTPCmd(ref ptpA, true, ref cmdIndex);
+            if (ret != 0) { MessageBox.Show($"A点入队失败 ret={ret}"); return; }
+
             ret = DobotDll.SetPTPCmd(ref ptpB, true, ref cmdIndex);
+            if (ret != 0) { MessageBox.Show($"B点入队失败 ret={ret}"); return; }
+
             ret = DobotDll.SetPTPCmd(ref ptpC, true, ref cmdIndex);
+            if (ret != 0) { MessageBox.Show($"C点入队失败 ret={ret}"); return; }
+
             ret = DobotDll.SetPTPCmd(ref ptpD, true, ref cmdIndex);
+            if (ret != 0) { MessageBox.Show($"D点入队失败 ret={ret}"); return; }
+
+            MessageBox.Show("所有点位已入队，请点'启动队列'按钮执行");
 
             /*
              // 1.运动到A点
@@ -237,6 +254,37 @@ namespace _9_29
             else
             {
                 MessageBox.Show($"清除报警失败，返回码:{ret}");
+            }
+        }
+
+
+        private void PrintAlarms()
+        {
+            try
+            {
+                byte[] buf = new byte[16];
+                uint len = 16;
+                int ret = DobotDll.GetAlarmsState(buf, ref len, buf.Length);
+                if (ret != 0) { MessageBox.Show("GetAlarmsState ret=" + ret); return; }
+
+                var sb = new StringBuilder();
+                for (int b = 0; b < len; b++)
+                {
+                    if (buf[b] == 0) continue;
+                    for (int bit = 0; bit < 8; bit++)
+                    {
+                        if ((buf[b] & (1 << bit)) != 0)
+                        {
+                            int idx = b * 8 + bit;
+                            sb.Append($"byte[{b}]=0x{buf[b]:X2} bit{bit} alarmIndex=0x{idx:X2}({idx}) ");
+                        }
+                    }
+                }
+                MessageBox.Show(sb.Length == 0 ? "无报警" : "报警:" + sb);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("读报警异常:" + ex.Message);
             }
         }
     }
