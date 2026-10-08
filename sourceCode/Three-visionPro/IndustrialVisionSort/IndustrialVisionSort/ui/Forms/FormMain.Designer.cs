@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.Main = new AntdUI.In.Panel();
             this.PNTestingStatistics = new AntdUI.Panel();
             this.label5 = new AntdUI.Label();
             this.label4 = new AntdUI.Label();
             this.label7 = new AntdUI.Label();
+            this.label9 = new AntdUI.Label();
+            this.label8 = new AntdUI.Label();
             this.label6 = new AntdUI.Label();
             this.label3 = new AntdUI.Label();
             this.label2 = new AntdUI.Label();
@@ -56,14 +60,13 @@
             this.LBImagePreviewArea = new AntdUI.Label();
             this.PNImagePreviewArea = new AntdUI.Panel();
             this.LBImagePreviewAreaLB = new AntdUI.Label();
-            this.IGImagePreviewArea = new AntdUI.Image3D();
-            this.label8 = new AntdUI.Label();
-            this.label9 = new AntdUI.Label();
+            this.cogRecordDisplay = new Cognex.VisionPro.CogRecordDisplay();
             this.Main.SuspendLayout();
             this.PNTestingStatistics.SuspendLayout();
             this.PNOperationControl.SuspendLayout();
             this.PNStatusBar.SuspendLayout();
             this.PNImagePreviewArea.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay)).BeginInit();
             this.SuspendLayout();
             // 
             // Main
@@ -122,6 +125,22 @@
             this.label7.TabIndex = 1;
             this.label7.Text = "0";
             // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(131, 145);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(78, 25);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "0.00%";
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(131, 114);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(78, 25);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "0";
+            // 
             // label6
             // 
             this.label6.Location = new System.Drawing.Point(131, 83);
@@ -149,7 +168,7 @@
             // LBTestingStatistics
             // 
             this.LBTestingStatistics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBTestingStatistics.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LBTestingStatistics.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LBTestingStatistics.Location = new System.Drawing.Point(2, 2);
             this.LBTestingStatistics.Name = "LBTestingStatistics";
             this.LBTestingStatistics.Size = new System.Drawing.Size(385, 35);
@@ -305,7 +324,7 @@
             // LBOperationControl
             // 
             this.LBOperationControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBOperationControl.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LBOperationControl.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LBOperationControl.Location = new System.Drawing.Point(2, 2);
             this.LBOperationControl.Name = "LBOperationControl";
             this.LBOperationControl.Size = new System.Drawing.Size(385, 32);
@@ -327,10 +346,10 @@
             // LBImagePreviewArea
             // 
             this.LBImagePreviewArea.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBImagePreviewArea.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LBImagePreviewArea.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LBImagePreviewArea.Location = new System.Drawing.Point(2, 2);
             this.LBImagePreviewArea.Name = "LBImagePreviewArea";
-            this.LBImagePreviewArea.Size = new System.Drawing.Size(574, 50);
+            this.LBImagePreviewArea.Size = new System.Drawing.Size(574, 66);
             this.LBImagePreviewArea.TabIndex = 0;
             this.LBImagePreviewArea.Text = "状态栏：";
             // 
@@ -339,8 +358,8 @@
             this.PNImagePreviewArea.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.PNImagePreviewArea.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             this.PNImagePreviewArea.BorderWidth = 1F;
+            this.PNImagePreviewArea.Controls.Add(this.cogRecordDisplay);
             this.PNImagePreviewArea.Controls.Add(this.LBImagePreviewAreaLB);
-            this.PNImagePreviewArea.Controls.Add(this.IGImagePreviewArea);
             this.PNImagePreviewArea.Location = new System.Drawing.Point(12, 12);
             this.PNImagePreviewArea.Name = "PNImagePreviewArea";
             this.PNImagePreviewArea.Size = new System.Drawing.Size(579, 396);
@@ -350,37 +369,30 @@
             // LBImagePreviewAreaLB
             // 
             this.LBImagePreviewAreaLB.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBImagePreviewAreaLB.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LBImagePreviewAreaLB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LBImagePreviewAreaLB.Location = new System.Drawing.Point(2, 2);
             this.LBImagePreviewAreaLB.Name = "LBImagePreviewAreaLB";
             this.LBImagePreviewAreaLB.Size = new System.Drawing.Size(575, 45);
             this.LBImagePreviewAreaLB.TabIndex = 2;
             this.LBImagePreviewAreaLB.Text = "图像预览区";
             // 
-            // IGImagePreviewArea
+            // cogRecordDisplay
             // 
-            this.IGImagePreviewArea.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.IGImagePreviewArea.Location = new System.Drawing.Point(2, 53);
-            this.IGImagePreviewArea.Name = "IGImagePreviewArea";
-            this.IGImagePreviewArea.Size = new System.Drawing.Size(575, 341);
-            this.IGImagePreviewArea.TabIndex = 1;
-            this.IGImagePreviewArea.Text = "image3D1";
-            // 
-            // label8
-            // 
-            this.label8.Location = new System.Drawing.Point(131, 114);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(78, 25);
-            this.label8.TabIndex = 1;
-            this.label8.Text = "0";
-            // 
-            // label9
-            // 
-            this.label9.Location = new System.Drawing.Point(131, 145);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(78, 25);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "0.00%";
+            this.cogRecordDisplay.ColorMapLowerClipColor = System.Drawing.Color.Black;
+            this.cogRecordDisplay.ColorMapLowerRoiLimit = 0D;
+            this.cogRecordDisplay.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+            this.cogRecordDisplay.ColorMapUpperClipColor = System.Drawing.Color.Black;
+            this.cogRecordDisplay.ColorMapUpperRoiLimit = 1D;
+            this.cogRecordDisplay.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.cogRecordDisplay.DoubleTapZoomCycleLength = 2;
+            this.cogRecordDisplay.DoubleTapZoomSensitivity = 2.5D;
+            this.cogRecordDisplay.Location = new System.Drawing.Point(2, 53);
+            this.cogRecordDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+            this.cogRecordDisplay.MouseWheelSensitivity = 1D;
+            this.cogRecordDisplay.Name = "cogRecordDisplay";
+            this.cogRecordDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay.OcxState")));
+            this.cogRecordDisplay.Size = new System.Drawing.Size(575, 341);
+            this.cogRecordDisplay.TabIndex = 3;
             // 
             // FormMain
             // 
@@ -395,6 +407,7 @@
             this.PNOperationControl.ResumeLayout(false);
             this.PNStatusBar.ResumeLayout(false);
             this.PNImagePreviewArea.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -408,7 +421,6 @@
         private AntdUI.Panel PNOperationControl;
         private AntdUI.Label LBImagePreviewArea;
         private AntdUI.Label LBOperationControl;
-        private AntdUI.Image3D IGImagePreviewArea;
         private AntdUI.Label LBImagePreviewAreaLB;
         private AntdUI.Label LBTestingStatistics;
         private AntdUI.Button button1;
@@ -432,5 +444,6 @@
         private AntdUI.Label label6;
         private AntdUI.Label label8;
         private AntdUI.Label label9;
+        private Cognex.VisionPro.CogRecordDisplay cogRecordDisplay;
     }
 }
