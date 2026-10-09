@@ -137,7 +137,7 @@ namespace _9_30
                 CogAcqFifoPixelFormatConstants.Format8Grey,
                 0,
                 true
-                );
+            );
 
             acq.OwnedExposureParams.Exposure = 300;
 

@@ -72,37 +72,112 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\CameraSettingService.cs" />
+    <Compile Include="DoMain\Events\FrameAcquiredEventArgs.cs" />
+    <Compile Include="DoMain\Events\ImageSourceEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ui\Forms\FormDeviceDebug.cs">
+    <Compile Include="ui\Controls\UC\VisionConfig\UcCameraSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcCameraSetting.Designer.cs">
+      <DependentUpon>UcCameraSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcImageSaveConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcImageSaveConfig.Designer.cs">
+      <DependentUpon>UcImageSaveConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcPMATemplateTraining.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcPMATemplateTraining.Designer.cs">
+      <DependentUpon>UcPMATemplateTraining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcVPPPlan.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\VisionConfig\UcVPPPlan.Designer.cs">
+      <DependentUpon>UcVPPPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcModbusConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcModbusConfig.Designer.cs">
+      <DependentUpon>UcModbusConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcRobotConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcRobotConfig.Designer.cs">
+      <DependentUpon>UcRobotConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcSQLConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcSQLConfig.Designer.cs">
+      <DependentUpon>UcSQLConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcVisionConfig.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\SystemSetting\UcVisionConfig.Designer.cs">
+      <DependentUpon>UcVisionConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\UcDeviceDebug.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\UcDeviceDebug.Designer.cs">
+      <DependentUpon>UcDeviceDebug.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\UcMain.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\UcMain.Designer.cs">
+      <DependentUpon>UcMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Controls\UC\UcLog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ui\Controls\UC\UcLog.Designer.cs">
+      <DependentUpon>UcLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Forms\FormDubug\FormDeviceDebug.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ui\Forms\FormDeviceDebug.Designer.cs">
+    <Compile Include="ui\Forms\FormDubug\FormDeviceDebug.Designer.cs">
       <DependentUpon>FormDeviceDebug.cs</DependentUpon>
     </Compile>
-    <Compile Include="ui\Forms\FormMain.cs">
+    <Compile Include="ui\Forms\FormDubug\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ui\Forms\FormMain.Designer.cs">
+    <Compile Include="ui\Forms\FormDubug\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="ui\Forms\FormSetting.cs">
+    <Compile Include="ui\Forms\FormDubug\FormSetting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ui\Forms\FormSetting.Designer.cs">
+    <Compile Include="ui\Forms\FormDubug\FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="ui\Forms\FormVisionConfig.cs">
+    <Compile Include="ui\Forms\FormDubug\FormVisionConfig.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ui\Forms\FormVisionConfig.Designer.cs">
+    <Compile Include="ui\Forms\FormDubug\FormVisionConfig.Designer.cs">
       <DependentUpon>FormVisionConfig.cs</DependentUpon>
     </Compile>
-    <Compile Include="ui\Forms\FormVisionSort.cs">
+    <Compile Include="ui\Forms\FormDubug\FormVisionSort.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ui\Forms\FormVisionSort.Designer.cs">
+    <Compile Include="ui\Forms\FormDubug\FormVisionSort.Designer.cs">
       <DependentUpon>FormVisionSort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Forms\IndustrialVisionSortingSystem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\Forms\IndustrialVisionSortingSystem.Designer.cs">
+      <DependentUpon>IndustrialVisionSortingSystem.cs</DependentUpon>
     </Compile>
     <Compile Include="ui\Utils\BulkBindingList.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -114,20 +189,56 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ui\Forms\FormDeviceDebug.resx">
+    <EmbeddedResource Include="ui\Controls\UC\VisionConfig\UcCameraSetting.resx">
+      <DependentUpon>UcCameraSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\VisionConfig\UcImageSaveConfig.resx">
+      <DependentUpon>UcImageSaveConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\VisionConfig\UcPMATemplateTraining.resx">
+      <DependentUpon>UcPMATemplateTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\VisionConfig\UcVPPPlan.resx">
+      <DependentUpon>UcVPPPlan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\SystemSetting\UcModbusConfig.resx">
+      <DependentUpon>UcModbusConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\SystemSetting\UcRobotConfig.resx">
+      <DependentUpon>UcRobotConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\SystemSetting\UcSQLConfig.resx">
+      <DependentUpon>UcSQLConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\SystemSetting\UcVisionConfig.resx">
+      <DependentUpon>UcVisionConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\UcDeviceDebug.resx">
+      <DependentUpon>UcDeviceDebug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\UcMain.resx">
+      <DependentUpon>UcMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Controls\UC\UcLog.resx">
+      <DependentUpon>UcLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Forms\FormDubug\FormDeviceDebug.resx">
       <DependentUpon>FormDeviceDebug.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ui\Forms\FormMain.resx">
+    <EmbeddedResource Include="ui\Forms\FormDubug\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ui\Forms\FormSetting.resx">
+    <EmbeddedResource Include="ui\Forms\FormDubug\FormSetting.resx">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ui\Forms\FormVisionConfig.resx">
+    <EmbeddedResource Include="ui\Forms\FormDubug\FormVisionConfig.resx">
       <DependentUpon>FormVisionConfig.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ui\Forms\FormVisionSort.resx">
+    <EmbeddedResource Include="ui\Forms\FormDubug\FormVisionSort.resx">
       <DependentUpon>FormVisionSort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\Forms\IndustrialVisionSortingSystem.resx">
+      <DependentUpon>IndustrialVisionSortingSystem.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -144,7 +255,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ui\Controls\" />
+    <Folder Include="Infrastructure\" />
     <Folder Include="ui\ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

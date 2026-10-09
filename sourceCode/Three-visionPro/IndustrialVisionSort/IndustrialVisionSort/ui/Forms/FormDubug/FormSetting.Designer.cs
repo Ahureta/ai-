@@ -32,35 +32,35 @@
             this.panel3 = new AntdUI.Panel();
             this.select3 = new AntdUI.Select();
             this.select4 = new AntdUI.Select();
+            this.RobotConfig = new AntdUI.Tag();
             this.input2 = new AntdUI.Input();
             this.label5 = new AntdUI.Label();
             this.label6 = new AntdUI.Label();
             this.label7 = new AntdUI.Label();
-            this.label8 = new AntdUI.Label();
             this.panel5 = new AntdUI.Panel();
+            this.tag4 = new AntdUI.Tag();
             this.select7 = new AntdUI.Select();
             this.select8 = new AntdUI.Select();
             this.input4 = new AntdUI.Input();
             this.label13 = new AntdUI.Label();
             this.label14 = new AntdUI.Label();
             this.label15 = new AntdUI.Label();
-            this.label16 = new AntdUI.Label();
             this.panel4 = new AntdUI.Panel();
             this.select5 = new AntdUI.Select();
+            this.tag3 = new AntdUI.Tag();
             this.select6 = new AntdUI.Select();
             this.input3 = new AntdUI.Input();
             this.label9 = new AntdUI.Label();
             this.label10 = new AntdUI.Label();
             this.label11 = new AntdUI.Label();
-            this.label12 = new AntdUI.Label();
             this.panel2 = new AntdUI.Panel();
             this.select2 = new AntdUI.Select();
             this.select1 = new AntdUI.Select();
             this.input1 = new AntdUI.Input();
+            this.ModbusConfig = new AntdUI.Tag();
             this.label4 = new AntdUI.Label();
             this.label3 = new AntdUI.Label();
             this.label2 = new AntdUI.Label();
-            this.label1 = new AntdUI.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -86,11 +86,11 @@
             this.panel3.BorderWidth = 1F;
             this.panel3.Controls.Add(this.select3);
             this.panel3.Controls.Add(this.select4);
+            this.panel3.Controls.Add(this.RobotConfig);
             this.panel3.Controls.Add(this.input2);
             this.panel3.Controls.Add(this.label5);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.label7);
-            this.panel3.Controls.Add(this.label8);
             this.panel3.Location = new System.Drawing.Point(513, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(487, 253);
@@ -111,6 +111,17 @@
             this.select4.Size = new System.Drawing.Size(278, 39);
             this.select4.TabIndex = 3;
             this.select4.Text = "端口";
+            // 
+            // RobotConfig
+            // 
+            this.RobotConfig.Dock = System.Windows.Forms.DockStyle.Top;
+            this.RobotConfig.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.RobotConfig.Location = new System.Drawing.Point(2, 2);
+            this.RobotConfig.Name = "RobotConfig";
+            this.RobotConfig.Size = new System.Drawing.Size(483, 39);
+            this.RobotConfig.TabIndex = 1;
+            this.RobotConfig.Text = "机械臂配置";
+            this.RobotConfig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // input2
             // 
@@ -147,32 +158,33 @@
             this.label7.TabIndex = 1;
             this.label7.Text = "机械臂IP";
             // 
-            // label8
-            // 
-            this.label8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label8.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(2, 2);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(483, 41);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "机械臂配置";
-            // 
             // panel5
             // 
             this.panel5.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.panel5.BorderWidth = 1F;
+            this.panel5.Controls.Add(this.tag4);
             this.panel5.Controls.Add(this.select7);
             this.panel5.Controls.Add(this.select8);
             this.panel5.Controls.Add(this.input4);
             this.panel5.Controls.Add(this.label13);
             this.panel5.Controls.Add(this.label14);
             this.panel5.Controls.Add(this.label15);
-            this.panel5.Controls.Add(this.label16);
             this.panel5.Location = new System.Drawing.Point(513, 259);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(487, 238);
             this.panel5.TabIndex = 0;
             this.panel5.Text = "panel2";
+            // 
+            // tag4
+            // 
+            this.tag4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tag4.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tag4.Location = new System.Drawing.Point(2, 2);
+            this.tag4.Name = "tag4";
+            this.tag4.Size = new System.Drawing.Size(483, 44);
+            this.tag4.TabIndex = 1;
+            this.tag4.Text = "数据库配置";
+            this.tag4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // select7
             // 
@@ -224,27 +236,17 @@
             this.label15.TabIndex = 1;
             this.label15.Text = "数据库类型";
             // 
-            // label16
-            // 
-            this.label16.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label16.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label16.Location = new System.Drawing.Point(2, 2);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(483, 41);
-            this.label16.TabIndex = 0;
-            this.label16.Text = "数据库配置";
-            // 
             // panel4
             // 
             this.panel4.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.panel4.BorderWidth = 1F;
             this.panel4.Controls.Add(this.select5);
+            this.panel4.Controls.Add(this.tag3);
             this.panel4.Controls.Add(this.select6);
             this.panel4.Controls.Add(this.input3);
             this.panel4.Controls.Add(this.label9);
             this.panel4.Controls.Add(this.label10);
             this.panel4.Controls.Add(this.label11);
-            this.panel4.Controls.Add(this.label12);
             this.panel4.Location = new System.Drawing.Point(0, 259);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(487, 238);
@@ -257,6 +259,17 @@
             this.select5.Name = "select5";
             this.select5.Size = new System.Drawing.Size(278, 39);
             this.select5.TabIndex = 3;
+            // 
+            // tag3
+            // 
+            this.tag3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tag3.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tag3.Location = new System.Drawing.Point(2, 2);
+            this.tag3.Name = "tag3";
+            this.tag3.Size = new System.Drawing.Size(483, 44);
+            this.tag3.TabIndex = 1;
+            this.tag3.Text = "视觉参数配置";
+            this.tag3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // select6
             // 
@@ -301,16 +314,6 @@
             this.label11.TabIndex = 1;
             this.label11.Text = "匹配分数阈值";
             // 
-            // label12
-            // 
-            this.label12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label12.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(2, 2);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(483, 41);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "视觉参数配置";
-            // 
             // panel2
             // 
             this.panel2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
@@ -318,10 +321,10 @@
             this.panel2.Controls.Add(this.select2);
             this.panel2.Controls.Add(this.select1);
             this.panel2.Controls.Add(this.input1);
+            this.panel2.Controls.Add(this.ModbusConfig);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(487, 253);
@@ -351,6 +354,17 @@
             this.input1.TabIndex = 2;
             this.input1.Text = "端口";
             // 
+            // ModbusConfig
+            // 
+            this.ModbusConfig.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ModbusConfig.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ModbusConfig.Location = new System.Drawing.Point(2, 2);
+            this.ModbusConfig.Name = "ModbusConfig";
+            this.ModbusConfig.Size = new System.Drawing.Size(483, 39);
+            this.ModbusConfig.TabIndex = 1;
+            this.ModbusConfig.Text = "Modbus传送带配置";
+            this.ModbusConfig.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -378,16 +392,6 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "IP地址";
             // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(2, 2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(483, 41);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Modbus传送带配置";
-            // 
             // FormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -410,7 +414,6 @@
         private AntdUI.In.Panel panel1;
         private AntdUI.Panel panel2;
         private AntdUI.Label label2;
-        private AntdUI.Label label1;
         private AntdUI.Select select2;
         private AntdUI.Select select1;
         private AntdUI.Input input1;
@@ -423,7 +426,6 @@
         private AntdUI.Label label5;
         private AntdUI.Label label6;
         private AntdUI.Label label7;
-        private AntdUI.Label label8;
         private AntdUI.Panel panel4;
         private AntdUI.Select select5;
         private AntdUI.Select select6;
@@ -431,7 +433,6 @@
         private AntdUI.Label label9;
         private AntdUI.Label label10;
         private AntdUI.Label label11;
-        private AntdUI.Label label12;
         private AntdUI.Panel panel5;
         private AntdUI.Select select7;
         private AntdUI.Select select8;
@@ -439,6 +440,9 @@
         private AntdUI.Label label13;
         private AntdUI.Label label14;
         private AntdUI.Label label15;
-        private AntdUI.Label label16;
+        private AntdUI.Tag ModbusConfig;
+        private AntdUI.Tag RobotConfig;
+        private AntdUI.Tag tag3;
+        private AntdUI.Tag tag4;
     }
 }

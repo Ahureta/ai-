@@ -40,7 +40,6 @@
             this.label6 = new AntdUI.Label();
             this.label3 = new AntdUI.Label();
             this.label2 = new AntdUI.Label();
-            this.LBTestingStatistics = new AntdUI.Label();
             this.PNOperationControl = new AntdUI.Panel();
             this.select3 = new AntdUI.Select();
             this.select2 = new AntdUI.Select();
@@ -55,12 +54,13 @@
             this.button5 = new AntdUI.Button();
             this.button2 = new AntdUI.Button();
             this.button1 = new AntdUI.Button();
-            this.LBOperationControl = new AntdUI.Label();
             this.PNStatusBar = new AntdUI.Panel();
-            this.LBImagePreviewArea = new AntdUI.Label();
             this.PNImagePreviewArea = new AntdUI.Panel();
-            this.LBImagePreviewAreaLB = new AntdUI.Label();
             this.cogRecordDisplay = new Cognex.VisionPro.CogRecordDisplay();
+            this.TagImagePreviewAreaLB = new AntdUI.Tag();
+            this.TagImagePreviewArea = new AntdUI.Tag();
+            this.TagOperationControl = new AntdUI.Tag();
+            this.TagTestingStatistics = new AntdUI.Tag();
             this.Main.SuspendLayout();
             this.PNTestingStatistics.SuspendLayout();
             this.PNOperationControl.SuspendLayout();
@@ -86,6 +86,7 @@
             this.PNTestingStatistics.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.PNTestingStatistics.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             this.PNTestingStatistics.BorderWidth = 1F;
+            this.PNTestingStatistics.Controls.Add(this.TagOperationControl);
             this.PNTestingStatistics.Controls.Add(this.label5);
             this.PNTestingStatistics.Controls.Add(this.label4);
             this.PNTestingStatistics.Controls.Add(this.label7);
@@ -94,7 +95,6 @@
             this.PNTestingStatistics.Controls.Add(this.label6);
             this.PNTestingStatistics.Controls.Add(this.label3);
             this.PNTestingStatistics.Controls.Add(this.label2);
-            this.PNTestingStatistics.Controls.Add(this.LBTestingStatistics);
             this.PNTestingStatistics.Location = new System.Drawing.Point(611, 304);
             this.PNTestingStatistics.Name = "PNTestingStatistics";
             this.PNTestingStatistics.Size = new System.Drawing.Size(389, 192);
@@ -165,21 +165,12 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "总检测数量：";
             // 
-            // LBTestingStatistics
-            // 
-            this.LBTestingStatistics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBTestingStatistics.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LBTestingStatistics.Location = new System.Drawing.Point(2, 2);
-            this.LBTestingStatistics.Name = "LBTestingStatistics";
-            this.LBTestingStatistics.Size = new System.Drawing.Size(385, 35);
-            this.LBTestingStatistics.TabIndex = 0;
-            this.LBTestingStatistics.Text = "检测统计";
-            // 
             // PNOperationControl
             // 
             this.PNOperationControl.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.PNOperationControl.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             this.PNOperationControl.BorderWidth = 1F;
+            this.PNOperationControl.Controls.Add(this.TagTestingStatistics);
             this.PNOperationControl.Controls.Add(this.select3);
             this.PNOperationControl.Controls.Add(this.select2);
             this.PNOperationControl.Controls.Add(this.select1);
@@ -193,7 +184,6 @@
             this.PNOperationControl.Controls.Add(this.button5);
             this.PNOperationControl.Controls.Add(this.button2);
             this.PNOperationControl.Controls.Add(this.button1);
-            this.PNOperationControl.Controls.Add(this.LBOperationControl);
             this.PNOperationControl.Location = new System.Drawing.Point(611, 12);
             this.PNOperationControl.Name = "PNOperationControl";
             this.PNOperationControl.Size = new System.Drawing.Size(389, 270);
@@ -321,60 +311,30 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "开始检测";
             // 
-            // LBOperationControl
-            // 
-            this.LBOperationControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBOperationControl.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LBOperationControl.Location = new System.Drawing.Point(2, 2);
-            this.LBOperationControl.Name = "LBOperationControl";
-            this.LBOperationControl.Size = new System.Drawing.Size(385, 32);
-            this.LBOperationControl.TabIndex = 0;
-            this.LBOperationControl.Text = "运行控制";
-            // 
             // PNStatusBar
             // 
             this.PNStatusBar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.PNStatusBar.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             this.PNStatusBar.BorderWidth = 1F;
-            this.PNStatusBar.Controls.Add(this.LBImagePreviewArea);
+            this.PNStatusBar.Controls.Add(this.TagImagePreviewArea);
             this.PNStatusBar.Location = new System.Drawing.Point(12, 428);
             this.PNStatusBar.Name = "PNStatusBar";
             this.PNStatusBar.Size = new System.Drawing.Size(578, 69);
             this.PNStatusBar.TabIndex = 1;
             this.PNStatusBar.Text = "PNStatusBar";
             // 
-            // LBImagePreviewArea
-            // 
-            this.LBImagePreviewArea.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBImagePreviewArea.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LBImagePreviewArea.Location = new System.Drawing.Point(2, 2);
-            this.LBImagePreviewArea.Name = "LBImagePreviewArea";
-            this.LBImagePreviewArea.Size = new System.Drawing.Size(574, 66);
-            this.LBImagePreviewArea.TabIndex = 0;
-            this.LBImagePreviewArea.Text = "状态栏：";
-            // 
             // PNImagePreviewArea
             // 
             this.PNImagePreviewArea.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
             this.PNImagePreviewArea.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             this.PNImagePreviewArea.BorderWidth = 1F;
+            this.PNImagePreviewArea.Controls.Add(this.TagImagePreviewAreaLB);
             this.PNImagePreviewArea.Controls.Add(this.cogRecordDisplay);
-            this.PNImagePreviewArea.Controls.Add(this.LBImagePreviewAreaLB);
             this.PNImagePreviewArea.Location = new System.Drawing.Point(12, 12);
             this.PNImagePreviewArea.Name = "PNImagePreviewArea";
             this.PNImagePreviewArea.Size = new System.Drawing.Size(579, 396);
             this.PNImagePreviewArea.TabIndex = 0;
             this.PNImagePreviewArea.Text = "PNImagePreviewArea";
-            // 
-            // LBImagePreviewAreaLB
-            // 
-            this.LBImagePreviewAreaLB.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LBImagePreviewAreaLB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LBImagePreviewAreaLB.Location = new System.Drawing.Point(2, 2);
-            this.LBImagePreviewAreaLB.Name = "LBImagePreviewAreaLB";
-            this.LBImagePreviewAreaLB.Size = new System.Drawing.Size(575, 45);
-            this.LBImagePreviewAreaLB.TabIndex = 2;
-            this.LBImagePreviewAreaLB.Text = "图像预览区";
             // 
             // cogRecordDisplay
             // 
@@ -386,13 +346,57 @@
             this.cogRecordDisplay.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.cogRecordDisplay.DoubleTapZoomCycleLength = 2;
             this.cogRecordDisplay.DoubleTapZoomSensitivity = 2.5D;
-            this.cogRecordDisplay.Location = new System.Drawing.Point(2, 53);
+            this.cogRecordDisplay.Location = new System.Drawing.Point(2, 2);
             this.cogRecordDisplay.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
             this.cogRecordDisplay.MouseWheelSensitivity = 1D;
             this.cogRecordDisplay.Name = "cogRecordDisplay";
             this.cogRecordDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay.OcxState")));
-            this.cogRecordDisplay.Size = new System.Drawing.Size(575, 341);
+            this.cogRecordDisplay.Size = new System.Drawing.Size(575, 392);
             this.cogRecordDisplay.TabIndex = 3;
+            // 
+            // TagImagePreviewAreaLB
+            // 
+            this.TagImagePreviewAreaLB.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TagImagePreviewAreaLB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TagImagePreviewAreaLB.Location = new System.Drawing.Point(2, 2);
+            this.TagImagePreviewAreaLB.Name = "TagImagePreviewAreaLB";
+            this.TagImagePreviewAreaLB.Size = new System.Drawing.Size(575, 45);
+            this.TagImagePreviewAreaLB.TabIndex = 4;
+            this.TagImagePreviewAreaLB.Text = "图像预览区";
+            this.TagImagePreviewAreaLB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TagImagePreviewArea
+            // 
+            this.TagImagePreviewArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TagImagePreviewArea.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TagImagePreviewArea.Location = new System.Drawing.Point(2, 2);
+            this.TagImagePreviewArea.Name = "TagImagePreviewArea";
+            this.TagImagePreviewArea.Size = new System.Drawing.Size(574, 65);
+            this.TagImagePreviewArea.TabIndex = 0;
+            this.TagImagePreviewArea.Text = "状态栏";
+            this.TagImagePreviewArea.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TagOperationControl
+            // 
+            this.TagOperationControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TagOperationControl.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TagOperationControl.Location = new System.Drawing.Point(2, 2);
+            this.TagOperationControl.Name = "TagOperationControl";
+            this.TagOperationControl.Size = new System.Drawing.Size(385, 44);
+            this.TagOperationControl.TabIndex = 0;
+            this.TagOperationControl.Text = "状态栏";
+            this.TagOperationControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // TagTestingStatistics
+            // 
+            this.TagTestingStatistics.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TagTestingStatistics.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.TagTestingStatistics.Location = new System.Drawing.Point(2, 2);
+            this.TagTestingStatistics.Name = "TagTestingStatistics";
+            this.TagTestingStatistics.Size = new System.Drawing.Size(385, 45);
+            this.TagTestingStatistics.TabIndex = 0;
+            this.TagTestingStatistics.Text = "检测统计";
+            this.TagTestingStatistics.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FormMain
             // 
@@ -419,10 +423,6 @@
         private AntdUI.Panel PNStatusBar;
         private AntdUI.Panel PNTestingStatistics;
         private AntdUI.Panel PNOperationControl;
-        private AntdUI.Label LBImagePreviewArea;
-        private AntdUI.Label LBOperationControl;
-        private AntdUI.Label LBImagePreviewAreaLB;
-        private AntdUI.Label LBTestingStatistics;
         private AntdUI.Button button1;
         private AntdUI.Button button4;
         private AntdUI.Button button3;
@@ -445,5 +445,9 @@
         private AntdUI.Label label8;
         private AntdUI.Label label9;
         private Cognex.VisionPro.CogRecordDisplay cogRecordDisplay;
+        private AntdUI.Tag TagImagePreviewArea;
+        private AntdUI.Tag TagImagePreviewAreaLB;
+        private AntdUI.Tag TagOperationControl;
+        private AntdUI.Tag TagTestingStatistics;
     }
 }

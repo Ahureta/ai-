@@ -1,4 +1,5 @@
-﻿using IndustrialVisionSort.UI.Forms;
+﻿using IndustrialVisionSort.ui.Forms;
+using IndustrialVisionSort.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,10 @@ namespace IndustrialVisionSort
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            //System.Windows.Forms.Application.Run(new FormMain());
+            System.Windows.Forms.Application.Run(new IndustrialVisionSortingSystem());
         }
     }
 }
