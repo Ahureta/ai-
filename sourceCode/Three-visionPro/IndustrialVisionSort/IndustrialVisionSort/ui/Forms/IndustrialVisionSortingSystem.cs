@@ -44,7 +44,14 @@ namespace IndustrialVisionSort.ui.Forms
             Register("VisionParamConfig", () => new UcVisionConfig());
 
             this.Shown += IndustrialVisionSortingSystem_Shown;
+            this.FormClosed += IndustrialVisionSortingSystem_FormClosed;
         }
+
+        private void IndustrialVisionSortingSystem_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
+
         private void IndustrialVisionSortingSystem_Shown(object sender, EventArgs e)
         {
             MenuSet();

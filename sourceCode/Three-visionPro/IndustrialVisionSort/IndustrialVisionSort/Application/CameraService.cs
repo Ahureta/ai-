@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IndustrialVisionSort.Application
 {
-    internal class CameraSettingService
+    internal class CameraService
     {
         //UI委托
         //public event EventHandler<ImageSourceEventArgs> ImageSource;
@@ -17,13 +17,29 @@ namespace IndustrialVisionSort.Application
         private CogFrameGrabbers _grabbers;
         private ICogFrameGrabber _cogFrameGrabber;
         private ICogAcqFifo _acq;
-        private bool _isLiveMode = false;
-        // 暴露给 UI 层读取（只读）
+        private bool _isLiveMode = false;        
         public ICogAcqFifo CurrentAcqFifo => _acq;
         public bool IsAcqReady => _acq != null;
 
         internal void GetAcqFifo(string selectedValue)
         {
+            if (_cogFrameGrabber == null)
+                throw new InvalidOperationException("请先选择图像源");
+
+            if (string.IsNullOrEmpty(selectedValue))
+                throw new ArgumentException("视频格式不能为空");
+
+            // 防重复创建：先释放旧的
+            if (_acq != null)
+            {
+                try
+                {                    
+                    _acq.Complete -= Acq_Complete;
+                    _acq = null;
+                }
+                catch { /* 忽略释放时的异常 */ }
+            }
+
             // 根据 videoFormat 自动匹配 pixelFormat
             CogAcqFifoPixelFormatConstants pixelFormat = MapPixelFormat(selectedValue);
 
@@ -32,6 +48,9 @@ namespace IndustrialVisionSort.Application
                 0,
                 true
             );
+
+            if (_acq == null)
+                throw new InvalidOperationException("CreateAcqFifo 返回 null，相机可能未就绪");
 
             _acq.OwnedExposureParams.Exposure = 300;
             
@@ -61,16 +80,6 @@ namespace IndustrialVisionSort.Application
                 System.Diagnostics.Debug.WriteLine($"Acq_Complete error: {ex.Message}");
             }
         }
-        //// 模式一：业务采集（单次/连续处理）
-        //public void StartBusinessMode()
-        //{            
-        //    _acq.StartAcquire(); // 开始采，Complete 事件里处理
-        //}
-        //// 模式二：纯预览
-        //public void StartLiveMode()
-        //{                    
-        //    _acq?.StartAcquire();            
-        //}
         private CogAcqFifoPixelFormatConstants MapPixelFormat(string videoFormat)
         {
             if (string.IsNullOrEmpty(videoFormat))
@@ -103,12 +112,6 @@ namespace IndustrialVisionSort.Application
         public void StartAcquisition()
         {
             _acq?.StartAcquire();
-        }
-        //停止开采
-        public void StopAcquisition()
-        {
-            _acq?.Flush();
-            _isLiveMode = false;
         }
         public void SetMode(bool isLiveMode)
         {

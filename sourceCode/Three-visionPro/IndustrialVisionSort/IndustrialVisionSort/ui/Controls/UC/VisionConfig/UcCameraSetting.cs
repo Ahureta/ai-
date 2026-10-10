@@ -1,5 +1,6 @@
 ﻿using Cognex.VisionPro;
 using IndustrialVisionSort.Application;
+using IndustrialVisionSort.DoMain.Entities;
 using IndustrialVisionSort.DoMain.Events;
 using System;
 using System.Collections.Generic;
@@ -15,25 +16,50 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
 {
     public partial class UcCameraSetting : UserControl
     {
-        private readonly CameraSettingService _cameraSettingService = new CameraSettingService();
-        private bool _liveMode = false;
-        //private CogFrameGrabbers _grabbers;
-        //private ICogAcqFifo _acq;        
+        private readonly CameraService _cameraSettingService = new CameraService();
+        private bool _liveMode = false;             
         public UcCameraSetting()
         {
             InitializeComponent();
             Init();
         }
-        private void Init() {
-            SetImageSource(_cameraSettingService.GetImageSource());            
-
-            SELImageSource.SelectedValueChanged += SELImageSource_SelectedValueChanged;
+        private void Init()
+        {            
+            CBBImageSource.SelectedIndexChanged += CBBImageSource_SelectedIndexChanged;
 
             BTInitializeCapture.Click += BTInitializeCapture_Click;
 
             _cameraSettingService.FrameAcquired += CameraService_FrameAcquired;
         }
 
+        private void CBBImageSource_SelectedIndexChanged(object sender, EventArgs e)
+        {            
+            var combo = sender as ComboBox;
+            var item = combo?.SelectedItem as ComboBoxItem;
+            if (item == null) return;
+
+            var grabber = item.Value as ICogFrameGrabber;
+            if (grabber == null) return;
+
+            SetVideoFormat(_cameraSettingService.GetVideoFormat(grabber));
+        }
+
+        private bool _dataLoaded = false;
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (DesignMode) return;
+
+            if (!_dataLoaded)
+            {
+                _dataLoaded = true;
+                Console.WriteLine(">>> OnLoad 加载相机列表");
+                var grabbers = _cameraSettingService.GetImageSource();
+                SetImageSource(grabbers);
+            }
+        }
         private void CameraService_FrameAcquired(object sender, FrameAcquiredEventArgs e)
         {
             if (this.IsDisposed || !this.IsHandleCreated) return;
@@ -61,15 +87,37 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
             }
         }
 
-        private void BTInitializeCapture_Click(object sender, EventArgs e)
+        private async void BTInitializeCapture_Click(object sender, EventArgs e)
         {
-            _cameraSettingService.GetAcqFifo((string)SELVideoFormat.SelectedValue);
-        }
+            if (!(CBBVideoFormat.SelectedItem is ComboBoxItem item && item.Value is string format))
+            {
+                MessageBox.Show("请先选择视频格式");
+                return;
+            }
 
-        private void SELImageSource_SelectedValueChanged(object sender, AntdUI.ObjectNEventArgs e)
-        {
-            ICogFrameGrabber cogFrameGrabber = (ICogFrameGrabber)e;            
-            SetVideoFormat(_cameraSettingService.GetVideoFormat(cogFrameGrabber));
+            BTInitializeCapture.Enabled = false;  // 防重复点击
+            Cursor = Cursors.WaitCursor;
+
+            // 先弹提示
+            AntdUI.Message.info(this.FindForm(), "正在初始化...", autoClose: 2);
+
+            // 让出 UI 线程，让消息循环有机会渲染上面的提示
+            await Task.Delay(150);
+
+            try
+            {
+                _cameraSettingService.GetAcqFifo(format);
+                AntdUI.Message.success(this.FindForm(), "初始化成功", autoClose: 3);
+            }
+            catch (Exception ex)
+            {
+                AntdUI.Message.error(this.FindForm(), $"初始化失败:\n{ex.Message}", autoClose: 5);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                BTInitializeCapture.Enabled = true;
+            }
         }
 
         private void SetVideoFormat(CogStringCollection cogStringCollection)
@@ -77,32 +125,16 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
             Action update = () =>
             {
                 // 清空现有项并将每个抓取器逐项加入 Items
-                SELVideoFormat.Items.Clear();
+                CBBVideoFormat.Items.Clear();
                 foreach (string g in cogStringCollection)
                 {
-                    SELVideoFormat.Items.Add(g);
+                    //Console.WriteLine(g);
+                    CBBVideoFormat.Items.Add(new ComboBoxItem(g, g));
                 }
-            };
 
-            if (InvokeRequired)
-            {
-                BeginInvoke(update);
-                return;
-            }
-
-            update();            
-        }
-
-        private void SetImageSource(CogFrameGrabbers cogFrameGrabbers)
-        {
-            Action update = () =>
-            {
-                // 清空现有项并将每个抓取器逐项加入 Items
-                SELImageSource.Items.Clear();
-                foreach (ICogFrameGrabber g in cogFrameGrabbers)
-                {
-                    SELImageSource.Items.Add(g);
-                }
+                // 默认选中第一项
+                if (CBBVideoFormat.Items.Count > 0)
+                    CBBVideoFormat.SelectedIndex = 0;
             };
 
             if (InvokeRequired)
@@ -114,8 +146,39 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
             update();
         }
 
-        private void BTStopPreview_Click(object sender, EventArgs e)
+        private void SetImageSource(CogFrameGrabbers cogFrameGrabbers)
         {
+            Action update = () =>
+            {
+                // 清空现有项并将每个抓取器逐项加入 Items
+                CBBImageSource.Items.Clear();                
+
+                if (cogFrameGrabbers.Count == 0)
+                {
+                    CBBImageSource.Items.Add(new AntdUI.SelectItem("未检测到相机/采集卡", null));
+                    return;
+                }
+                
+                foreach (ICogFrameGrabber g in cogFrameGrabbers)
+                {
+                    CBBImageSource.Items.Add(new ComboBoxItem(g.Name, g));
+                }
+                // 默认选中第一项
+                if (CBBImageSource.Items.Count > 0)
+                    CBBImageSource.SelectedIndex = 0;
+            };
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(update);
+                return;
+            }
+            
+            update();
+        }
+
+        private void BTStopPreview_Click(object sender, EventArgs e)
+        {            
             if (_liveMode)
             {
                 cogRecordDisplay1.StopLiveDisplay();
@@ -123,7 +186,7 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
             }
         }
         private void BTSingleShot_Click(object sender, EventArgs e)
-        {
+        {            
             // 1. 停掉可能的 live
             if (cogRecordDisplay1.LiveDisplayRunning)
                 cogRecordDisplay1.StopLiveDisplay();
@@ -133,9 +196,6 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
 
             // 3. 开始采（Complete 事件会取图抛回来）
             _cameraSettingService.StartAcquisition();
-
-            //if (_liveMode) return; // 预览模式下不处理
-            //_cameraSettingService.StartBusinessMode();
         }
 
         private void BTLivePreview_Click(object sender, EventArgs e)
@@ -151,12 +211,7 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
                 cogRecordDisplay1.StartLiveDisplay(_cameraSettingService.CurrentAcqFifo);
             }
 
-            // 3. 开始采（fifo 开始往队列塞图，display 自己取自己画）
-            //_cameraSettingService.StartAcquisition();
-
-            //cogRecordDisplay1.StartLiveDisplay(_cameraSettingService.CurrentAcqFifo); // 把同一个 acq 交给显示控件
-            //_cameraSettingService.StartLiveMode();
-            //_liveMode = true;
+            _liveMode = true;
         }
     }
 }
