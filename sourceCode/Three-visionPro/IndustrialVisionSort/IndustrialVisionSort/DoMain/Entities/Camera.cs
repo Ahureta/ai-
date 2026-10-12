@@ -146,10 +146,11 @@ namespace IndustrialVisionSort.DoMain.Entities
                     catch { }
                 }
 
-                //Console.WriteLine("单次触发模式"+_acq.OwnedTriggerParams.TriggerModel);
-                Console.WriteLine("模式启动"+ _acq.OwnedTriggerParams.TriggerEnabled);
-                Console.WriteLine(_acq.OwnedContrastParams.AvailableVideoFormats.Count);
-                
+                foreach (string item in _grabber.AvailableVideoFormats) {
+                    AvailableVideoFormats.Add(item);
+                }
+                Console.WriteLine("formate数量"+AvailableVideoFormats.Count);
+
                 IsConnected = true;
                 ConnectionState = CameraConnectionState.Ready;
             }

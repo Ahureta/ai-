@@ -72,7 +72,7 @@ namespace IndustrialVisionSort.Application
             _worker = new Thread(() =>
             {
                 try
-                {                    
+                {
                     _camera.Connect(cogFrameGrabber.Name);
                     Console.WriteLine(_camera.AvailableVideoFormats.Count);
                     GetVideoFormat?.Invoke(_camera.AvailableVideoFormats);
