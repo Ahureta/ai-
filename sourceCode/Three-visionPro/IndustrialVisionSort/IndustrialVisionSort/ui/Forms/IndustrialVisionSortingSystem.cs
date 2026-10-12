@@ -38,8 +38,8 @@ namespace IndustrialVisionSort.ui.Forms
             Register("PMATemplateTraining", () => new UcPMATemplateTraining());
             Register("VPPPlan", () => new UcVPPPlan());
 
-            Register("ModbusConfig", () => new UcModbusConfig());
-            Register("RobotConfig", () => new UcRobotConfig());
+            Register("ModbusDeviceDebug", () => new UcModbusDeviceDebug());
+            Register("RobotDeviceDebug", () => new UcRobotDeviceDebug());
             Register("SQLConfig", () => new UcSQLConfig());
             Register("VisionParamConfig", () => new UcVisionConfig());
 

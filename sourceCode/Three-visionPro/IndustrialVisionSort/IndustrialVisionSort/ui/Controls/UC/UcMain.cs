@@ -1,8 +1,16 @@
-﻿using System;
+﻿using Cognex.VisionPro;
+using Cognex.VisionPro.ToolBlock;
+using IndustrialVisionSort.Application;
+using IndustrialVisionSort.Application.Implementation;
+using IndustrialVisionSort.DoMain.Events;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +20,112 @@ namespace IndustrialVisionSort.ui.Controls.UC
 {
     public partial class UcMain : UserControl
     {
+        private RobotService _robotService;
+        //private ArmTcpClient _armClient;
+        private CameraService _cameraService;
+        private ModbusService _modbusService;
+        int Count;
+        double X;
+        double Y;
+        private CogToolBlock CTB { get; set; }      // 视觉检测方案(ToolBlock)
         public UcMain()
         {
             InitializeComponent();
+            InitServices();
+            Init();
         }
+
+        // ---- 初始化 ----
+        private void InitServices()
+        {
+            _robotService = new RobotService();
+            //_armClient = new ArmTcpClient();
+            _cameraService = new CameraService();
+            _modbusService = new ModbusService();
+        }
+        public void Init() {
+            //初始化VPP方案
+            string path = @"E:\pro\software\Github\GitRepository\ai视觉作业\sourceCode\Three-visionPro\IndustrialVisionSort\IndustrialVisionSort\bin\Debug\vpps";
+            CTB = CogSerializer.LoadObjectFromFile(path) as CogToolBlock;
+
+            //事件触发VPP方案
+            _cameraService.FrameAcquired += (s, e) => {
+                // 将采集到的图形给到CTB
+                CTB.Inputs["InputImage"].Value = e.Image;
+
+                // 开始执行CTB
+                CTB.Run();
+                // 获取到检测的结果
+                Count = (int)CTB.Outputs["Count"].Value;
+                X = (int)CTB.Outputs["X"].Value;
+                Y = (int)CTB.Outputs["Y"].Value;
+            };
+        }
+        private void Cleanup()
+        {
+            //_robotService?.Disconnect();
+            _modbusService?.Dispose();
+        }
+
+        private async void BTStartSort_Click(object sender, EventArgs e)
+        {
+            //传送带启动
+            _modbusService.Connect();
+            _modbusService.SetSpeed(200);
+            _modbusService.Start();
+            //相机开始自动拍照
+            _cameraService.InitializeImageSource();
+            _cameraService.SetAuto();
+            //VPP方案检测
+            //事件检测
+            //检测到后停止传输带
+            if (Count > 0)
+                _modbusService.Stop();
+            //延迟原因传输带停止后再次拍照
+            _cameraService.SetManual();
+            _cameraService.SetAuto();
+            //拍照后上料位传输坐标由机械臂执行移动
+            await _robotService.PointMove((float)X,(float)Y,80);
+            //重新开始传送带
+            _modbusService.Start();
+            //internal async Task PointMove(float goalX, float goalY, float goalZ)
+        }
+
+        //public void ToPoint(Image image){
+        //    // 将采集到的图形给到CTB
+        //    CTB.Inputs["InputImage"].Value = image;
+
+        //    // 开始执行CTB
+        //    CTB.Run();
+        //    // 获取到检测的结果
+        //    int Count = (int)CTB.Outputs["Count"].Value;
+        //    Console.WriteLine("检测结果数: " + Count);
+        //    if (Count > 0) // 检测到瓶盖
+        //    {
+        //        double x = (double)CTB.Outputs["X"].Value;
+        //        double y = (double)CTB.Outputs["Y"].Value;
+        //        Dictionary<string, float> Arms = new Dictionary<string, float>()
+        //        {
+        //            ["x"] = (float)x,
+        //            ["y"] = (float)y
+        //        };
+        //        Console.WriteLine("检测的瓶盖坐标---");
+        //        Console.WriteLine(Arms["x"]);
+        //        Console.WriteLine(Arms["y"]);
+        //        Console.WriteLine("检测的瓶盖坐标---");
+        //        //需要将Arms传递给机械臂服务器
+        //        // json转换(使用第三方库)
+        //        string sendData = JsonConvert.SerializeObject(Arms);
+        //        // 转成字节数组
+        //        byte[] SendBytes = System.Text.Encoding.UTF8.GetBytes(sendData);
+        //        // 发送数据
+        //        Stream.Write(SendBytes, 0, SendBytes.Length);
+        //    }
+        //    else
+        //    {
+        //        // 没有检测到 继续启动传送带
+        //        master.WriteSingleRegisterAsync(2, 100, (ushort)1);
+        //    }
+        //}
     }
 }

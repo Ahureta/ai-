@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IndustrialVisionSort.Domain.Interfaces
+{
+    public interface IModbusClient
+    {
+        Task<ushort[]> ReadHoldingRegistersAsync(byte SlaveAddress, ushort Offset, ushort Count);
+        Task WriteMultipleRegistersAsync(byte slaveAddress, ushort startAddress, ushort[] data);
+    }
+}

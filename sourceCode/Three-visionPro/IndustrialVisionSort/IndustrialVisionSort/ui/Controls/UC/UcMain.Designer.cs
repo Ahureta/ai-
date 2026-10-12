@@ -46,8 +46,8 @@
             this.button7 = new AntdUI.Button();
             this.button6 = new AntdUI.Button();
             this.button5 = new AntdUI.Button();
-            this.button2 = new AntdUI.Button();
-            this.button1 = new AntdUI.Button();
+            this.BTStopSort = new AntdUI.Button();
+            this.BTStartSort = new AntdUI.Button();
             this.label2 = new AntdUI.Label();
             this.panel1 = new AntdUI.In.Panel();
             this.PNTestingStatistics = new AntdUI.Panel();
@@ -84,7 +84,7 @@
             this.cogRecordDisplay.MouseWheelSensitivity = 1D;
             this.cogRecordDisplay.Name = "cogRecordDisplay";
             this.cogRecordDisplay.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay.OcxState")));
-            this.cogRecordDisplay.Size = new System.Drawing.Size(728, 712);
+            this.cogRecordDisplay.Size = new System.Drawing.Size(729, 712);
             this.cogRecordDisplay.TabIndex = 3;
             // 
             // TagImagePreviewAreaLB
@@ -93,7 +93,7 @@
             this.TagImagePreviewAreaLB.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TagImagePreviewAreaLB.Location = new System.Drawing.Point(0, 0);
             this.TagImagePreviewAreaLB.Name = "TagImagePreviewAreaLB";
-            this.TagImagePreviewAreaLB.Size = new System.Drawing.Size(728, 45);
+            this.TagImagePreviewAreaLB.Size = new System.Drawing.Size(729, 45);
             this.TagImagePreviewAreaLB.TabIndex = 4;
             this.TagImagePreviewAreaLB.Text = "图像预览区";
             this.TagImagePreviewAreaLB.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -104,7 +104,7 @@
             this.TagImagePreviewArea.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TagImagePreviewArea.Location = new System.Drawing.Point(0, 712);
             this.TagImagePreviewArea.Name = "TagImagePreviewArea";
-            this.TagImagePreviewArea.Size = new System.Drawing.Size(728, 38);
+            this.TagImagePreviewArea.Size = new System.Drawing.Size(729, 38);
             this.TagImagePreviewArea.TabIndex = 0;
             this.TagImagePreviewArea.Text = "状态栏";
             this.TagImagePreviewArea.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -115,7 +115,7 @@
             this.TagTestingStatistics.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TagTestingStatistics.Location = new System.Drawing.Point(2, 2);
             this.TagTestingStatistics.Name = "TagTestingStatistics";
-            this.TagTestingStatistics.Size = new System.Drawing.Size(464, 45);
+            this.TagTestingStatistics.Size = new System.Drawing.Size(463, 45);
             this.TagTestingStatistics.TabIndex = 0;
             this.TagTestingStatistics.Text = "检测统计";
             this.TagTestingStatistics.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -155,12 +155,12 @@
             this.PNOperationControl.Controls.Add(this.button7);
             this.PNOperationControl.Controls.Add(this.button6);
             this.PNOperationControl.Controls.Add(this.button5);
-            this.PNOperationControl.Controls.Add(this.button2);
-            this.PNOperationControl.Controls.Add(this.button1);
+            this.PNOperationControl.Controls.Add(this.BTStopSort);
+            this.PNOperationControl.Controls.Add(this.BTStartSort);
             this.PNOperationControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PNOperationControl.Location = new System.Drawing.Point(0, 0);
             this.PNOperationControl.Name = "PNOperationControl";
-            this.PNOperationControl.Size = new System.Drawing.Size(468, 506);
+            this.PNOperationControl.Size = new System.Drawing.Size(467, 506);
             this.PNOperationControl.TabIndex = 2;
             this.PNOperationControl.Text = "panel4";
             // 
@@ -247,25 +247,26 @@
             this.button5.TabIndex = 1;
             this.button5.Text = "拍照中";
             // 
-            // button2
+            // BTStopSort
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
-            this.button2.BorderWidth = 1F;
-            this.button2.Location = new System.Drawing.Point(108, 53);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(84, 45);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "停止检测";
+            this.BTStopSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
+            this.BTStopSort.BorderWidth = 1F;
+            this.BTStopSort.Location = new System.Drawing.Point(108, 53);
+            this.BTStopSort.Name = "BTStopSort";
+            this.BTStopSort.Size = new System.Drawing.Size(84, 45);
+            this.BTStopSort.TabIndex = 1;
+            this.BTStopSort.Text = "停止检测";
             // 
-            // button1
+            // BTStartSort
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
-            this.button1.BorderWidth = 1F;
-            this.button1.Location = new System.Drawing.Point(18, 53);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 45);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "开始检测";
+            this.BTStartSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(119)))), ((int)(((byte)(255)))));
+            this.BTStartSort.BorderWidth = 1F;
+            this.BTStartSort.Location = new System.Drawing.Point(18, 53);
+            this.BTStartSort.Name = "BTStartSort";
+            this.BTStartSort.Size = new System.Drawing.Size(84, 45);
+            this.BTStartSort.TabIndex = 1;
+            this.BTStartSort.Text = "开始检测";
+            this.BTStartSort.Click += new System.EventHandler(this.BTStartSort_Click);
             // 
             // label2
             // 
@@ -300,7 +301,7 @@
             this.PNTestingStatistics.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.PNTestingStatistics.Location = new System.Drawing.Point(0, 506);
             this.PNTestingStatistics.Name = "PNTestingStatistics";
-            this.PNTestingStatistics.Size = new System.Drawing.Size(468, 244);
+            this.PNTestingStatistics.Size = new System.Drawing.Size(467, 244);
             this.PNTestingStatistics.TabIndex = 3;
             this.PNTestingStatistics.Text = "panel5";
             // 
@@ -310,7 +311,7 @@
             this.TagOperationControl.Font = new System.Drawing.Font("微软雅黑", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TagOperationControl.Location = new System.Drawing.Point(2, 2);
             this.TagOperationControl.Name = "TagOperationControl";
-            this.TagOperationControl.Size = new System.Drawing.Size(464, 44);
+            this.TagOperationControl.Size = new System.Drawing.Size(463, 44);
             this.TagOperationControl.TabIndex = 0;
             this.TagOperationControl.Text = "状态栏";
             this.TagOperationControl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -389,7 +390,7 @@
             this.splitter1.Panel2.Controls.Add(this.cogRecordDisplay);
             this.splitter1.Panel2.Controls.Add(this.TagImagePreviewArea);
             this.splitter1.Size = new System.Drawing.Size(1200, 750);
-            this.splitter1.SplitterDistance = 468;
+            this.splitter1.SplitterDistance = 467;
             this.splitter1.TabIndex = 2;
             // 
             // UcMain
@@ -429,8 +430,8 @@
         private AntdUI.Button button7;
         private AntdUI.Button button6;
         private AntdUI.Button button5;
-        private AntdUI.Button button2;
-        private AntdUI.Button button1;
+        private AntdUI.Button BTStopSort;
+        private AntdUI.Button BTStartSort;
         private AntdUI.Label label2;
         private AntdUI.In.Panel panel1;
         private AntdUI.Panel PNTestingStatistics;

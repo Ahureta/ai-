@@ -29,14 +29,15 @@
         private void InitializeComponent()
         {
             this.panel2 = new AntdUI.Panel();
+            this.slider1 = new AntdUI.Slider();
+            this.label13 = new AntdUI.Label();
             this.label4 = new AntdUI.Label();
+            this.label12 = new AntdUI.Label();
             this.label3 = new AntdUI.Label();
             this.label2 = new AntdUI.Label();
             this.button2 = new AntdUI.Button();
             this.button5 = new AntdUI.Button();
             this.button4 = new AntdUI.Button();
-            this.button7 = new AntdUI.Button();
-            this.button6 = new AntdUI.Button();
             this.button3 = new AntdUI.Button();
             this.button1 = new AntdUI.Button();
             this.label1 = new AntdUI.Label();
@@ -78,14 +79,15 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.slider1);
+            this.panel2.Controls.Add(this.label13);
             this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.label12);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.button2);
             this.panel2.Controls.Add(this.button5);
             this.panel2.Controls.Add(this.button4);
-            this.panel2.Controls.Add(this.button7);
-            this.panel2.Controls.Add(this.button6);
             this.panel2.Controls.Add(this.button3);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label1);
@@ -95,6 +97,23 @@
             this.panel2.TabIndex = 0;
             this.panel2.Text = "panel2";
             // 
+            // slider1
+            // 
+            this.slider1.Location = new System.Drawing.Point(98, 203);
+            this.slider1.Name = "slider1";
+            this.slider1.Size = new System.Drawing.Size(246, 49);
+            this.slider1.TabIndex = 3;
+            this.slider1.Text = "slider1";
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.Location = new System.Drawing.Point(98, 340);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(74, 49);
+            this.label13.TabIndex = 2;
+            this.label13.Text = "通讯/运行状态";
+            // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -103,6 +122,15 @@
             this.label4.Size = new System.Drawing.Size(74, 49);
             this.label4.TabIndex = 2;
             this.label4.Text = "通讯状态";
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.Location = new System.Drawing.Point(98, 273);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(74, 49);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "当前速度";
             // 
             // label3
             // 
@@ -151,26 +179,6 @@
             this.button4.Size = new System.Drawing.Size(90, 54);
             this.button4.TabIndex = 1;
             this.button4.Text = "反转";
-            // 
-            // button7
-            // 
-            this.button7.BorderWidth = 1F;
-            this.button7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button7.Location = new System.Drawing.Point(194, 340);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(90, 49);
-            this.button7.TabIndex = 1;
-            this.button7.Text = "运行状态";
-            // 
-            // button6
-            // 
-            this.button6.BorderWidth = 1F;
-            this.button6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button6.Location = new System.Drawing.Point(98, 340);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(90, 49);
-            this.button6.TabIndex = 1;
-            this.button6.Text = "通讯状态";
             // 
             // button3
             // 
@@ -512,12 +520,12 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "机械臂控制";
             // 
-            // ControlDeviceDebug
+            // UcDeviceDebug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Name = "ControlDeviceDebug";
+            this.Name = "UcDeviceDebug";
             this.Size = new System.Drawing.Size(1170, 721);
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -536,8 +544,6 @@
         private AntdUI.Button button2;
         private AntdUI.Button button5;
         private AntdUI.Button button4;
-        private AntdUI.Button button7;
-        private AntdUI.Button button6;
         private AntdUI.Button button3;
         private AntdUI.Button button1;
         private AntdUI.Label label1;
@@ -571,5 +577,8 @@
         private AntdUI.Button button12;
         private AntdUI.Button button14;
         private AntdUI.Label label8;
+        private AntdUI.Slider slider1;
+        private AntdUI.Label label12;
+        private AntdUI.Label label13;
     }
 }

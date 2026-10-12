@@ -87,11 +87,11 @@
             menuItem1.Text = "主运行页";
             menuItem2.Expand = false;
             menuItem2.Name = "SystemSetting";
-            menuItem3.Name = "ModbusConfig";
-            menuItem3.SubText = "ModbusConfig";
+            menuItem3.Name = "ModbusDeviceDebug";
+            menuItem3.SubText = "ModbusDeviceDebug";
             menuItem3.Text = "Modbus传送带配置";
-            menuItem4.Name = "RobotConfig";
-            menuItem4.SubText = "RobotConfig";
+            menuItem4.Name = "RobotDeviceDebug";
+            menuItem4.SubText = "RobotDeviceDebug";
             menuItem4.Text = "机械臂配置";
             menuItem5.Name = "VisionParamConfig";
             menuItem5.SubText = "VisionParamConfig";
