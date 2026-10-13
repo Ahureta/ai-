@@ -140,10 +140,10 @@
             // sliderSpeed
             // 
             this.sliderSpeed.Location = new System.Drawing.Point(83, 134);
+            this.sliderSpeed.MaxValue = 2000;
             this.sliderSpeed.Name = "sliderSpeed";
             this.sliderSpeed.Size = new System.Drawing.Size(246, 49);
             this.sliderSpeed.TabIndex = 3;
-            this.sliderSpeed.Text = "slider1";
             // 
             // label13
             // 

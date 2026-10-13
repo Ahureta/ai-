@@ -25,7 +25,8 @@ namespace IndustrialVisionSort.ui.Controls.UC.ContolSetting
             Init();
         }
         public void InitAttribute() {
-            sliderSpeed.SetMinMax(1, 1500);
+            sliderSpeed.SetMinMax(1, 2000);
+            sliderSpeed.Value = 200;
 
             _modbusService = new ModbusService(
                 byte.Parse(IPIP.Text),

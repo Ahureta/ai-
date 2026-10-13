@@ -27,7 +27,12 @@ namespace IndustrialVisionSort.ui.Controls.UC
         private ModbusService _modbusService;
         int Count;
         double X, Y;
+
+        private bool _isLive = false;
         private CogToolBlock CTB { get; set; }      // 视觉检测方案(ToolBlock)
+
+        public event EventHandler<FrameAcquiredEventArgs> FrameAcquired;
+
         internal UcMain(CameraService cameraService, ModbusService modbusService, RobotService robotService)
         {
             InitializeComponent();
@@ -62,17 +67,39 @@ namespace IndustrialVisionSort.ui.Controls.UC
             CTB = CogSerializer.LoadObjectFromFile(path) as CogToolBlock;
 
             //事件触发VPP方案
-            //_cameraService.FrameAcquired += (s, e) => {
-            //    // 将采集到的图形给到CTB
-            //    CTB.Inputs["InputImage"].Value = e.Image;
+            _cameraService.FrameAcquired += (s, e) => FrameAcquired.Invoke(s, e);
+            FrameAcquired += async(s,e) =>
+            {
+                if (!_isLive) return;
 
-            //    // 开始执行CTB
-            //    CTB.Run();
+                // 将采集到的图形给到CTB
+                CTB.Inputs["InputImage"].Value = e.Image;
 
-            //    Count = (int)CTB.Outputs["Count"].Value;
-            //    X = (double)(CTB.Outputs["X"].Value);
-            //    Y = (double)(CTB.Outputs["Y"].Value);
-            //};
+                // 开始执行CTB
+                CTB.Run();
+
+                cogRecordDisplay.Image = e.Image;       //如果可以给CTB结果图
+
+                Count = (int)CTB.Outputs["Count"].Value;
+                X = (double)(CTB.Outputs["X"].Value);
+                Y = (double)(CTB.Outputs["Y"].Value);
+
+                //检测到后停止传输带
+                if (Count > 0)
+                    _modbusService.Stop();
+                //延迟原因传输带停止后再次拍照
+                _cameraService.SetManual();
+                _cameraService.SetAuto();
+                //拍照后上料位传输坐标由机械臂执行移动
+                await _robotService.SetHOMECmd();
+                await _robotService.ClearAllAlarmsState();
+                //await _robotService.PointMove((float)200,(float)-17,80);
+
+                //重新开始传送带
+                _modbusService.Start();
+                //internal async Task PointMove(float goalX, float goalY, float goalZ)
+            };
+
         }
         private void Cleanup()
         {
@@ -82,7 +109,7 @@ namespace IndustrialVisionSort.ui.Controls.UC
 
         private async void BTStartSort_Click(object sender, EventArgs e)
         {
-            await _robotService.PointMove((float)200, (float)-17, 50);
+            //await _robotService.PointMove((float)200, (float)-17, 50);
 
             //传送带启动
             _modbusService.Connect();
@@ -93,20 +120,21 @@ namespace IndustrialVisionSort.ui.Controls.UC
             _cameraService.SetAuto();
             //VPP方案检测
             //事件检测
-            //检测到后停止传输带
-            if (Count > 0)
-                _modbusService.Stop();
-            //延迟原因传输带停止后再次拍照
-            _cameraService.SetManual();
-            _cameraService.SetAuto();
-            //拍照后上料位传输坐标由机械臂执行移动
-            await _robotService.SetHOMECmd();
-            await _robotService.ClearAllAlarmsState();
-            //await _robotService.PointMove((float)200,(float)-17,80);
+
+            ////检测到后停止传输带
+            //if (Count > 0)
+            //    _modbusService.Stop();
+            ////延迟原因传输带停止后再次拍照
+            //_cameraService.SetManual();
+            //_cameraService.SetAuto();
+            ////拍照后上料位传输坐标由机械臂执行移动
+            //await _robotService.SetHOMECmd();
+            //await _robotService.ClearAllAlarmsState();
+            ////await _robotService.PointMove((float)200,(float)-17,80);
             
-            //重新开始传送带
-            _modbusService.Start();
-            //internal async Task PointMove(float goalX, float goalY, float goalZ)
+            ////重新开始传送带
+            //_modbusService.Start();
+            ////internal async Task PointMove(float goalX, float goalY, float goalZ)
         }
 
         //public void ToPoint(Image image){
