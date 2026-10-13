@@ -509,6 +509,7 @@ namespace IndustrialVisionSort.DoMain.Entities
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 LastError = ex.Message;
                 ErrorOccurred?.Invoke(this, new CameraErrorEventArgs("取帧失败", ex));
             }
@@ -520,7 +521,7 @@ namespace IndustrialVisionSort.DoMain.Entities
             if (s.Contains("BAYER") || s.Contains("RGB") || s.Contains("COLOR"))
                 return CogAcqFifoPixelFormatConstants.Format32RGB;
             if (s.Contains("MONO10") || s.Contains("MONO12") || s.Contains("10") || s.Contains("12"))
-                return CogAcqFifoPixelFormatConstants.Format16Grey;
+                return CogAcqFifoPixelFormatConstants.Format8Grey;      //16
             return CogAcqFifoPixelFormatConstants.Format8Grey;
         }
 

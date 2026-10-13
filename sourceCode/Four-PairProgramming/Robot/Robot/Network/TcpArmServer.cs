@@ -61,6 +61,33 @@ namespace DobotArms.Network
         }
 
         // ---- 私有：处理单个客户端 ----
+
+        /*
+ {
+  "seq": 1,
+  "cmd": "move",
+  "code": 0,
+  "status": "ok",
+  "message": "执行完成",
+  "data": {
+    "x": 200.0,
+    "y": -17.0,
+    "z": 50.0,
+    "currentPose": [ ... ]
+  },
+  "ts": "2026-10-13T19:22:12.123"
+}
+
+字段含义：
+seq：回包对应哪条请求（客户端发 seq，服务端原样带回），多条指令并发时有用
+cmd：当前这条响应对应的指令名
+code：数字状态码，0=成功，非0=错误
+status：人看的简写，ok / error
+message：描述，成功可写空或"done"，失败写原因
+data：业务数据，没有就返回 {}，别返回 null
+ts：服务端时间戳，排错用
+ */
+
         private void HandleClient(TcpClient client)
         {
             NetworkStream stream = client.GetStream();
@@ -106,28 +133,31 @@ namespace DobotArms.Network
             try
             {
                 var json = JObject.Parse(message);
-                string cmd = json["cmd"]?.ToString();
-                JObject p = (JObject)json["params"];
+                string? cmd = json["cmd"]?.ToString();                
+                
+                var paramsObj = json["params"] as JObject;
+                if (paramsObj == null)
+                {
+                    paramsObj = new JObject();   // 无参命令统一变成空对象
+                }
 
                 switch (cmd)
                 {
                     case "connect":
-                        _armService.Connect();
-                        break;
+                        return _armService.Connect();                                                
                     case "SetHOMECmd":
-                        _armService.SetHOMECmd();
-                        break;
+                        return _armService.SetHOMECmd();                        
                     case "ClearAllAlarmsState":
-                        _armService.ClearAllAlarmsState();
-                        break;
+                        return _armService.ClearAllAlarmsState();                        
                     case "PickAndPlace":
-                        GetArmPosition(p);
-                        break;
+                        return GetArmPosition(paramsObj);                        
                     case "Disconnect":
                         _armService.Disconnect();
-                        break;
+                        return "断开成功";
+                    default:
+                        return "空参数";
                 }
-                return "操作成功";
+                //return "操作成功";
             }
             catch(Exception err)
             {
@@ -137,27 +167,39 @@ namespace DobotArms.Network
             return string.Empty;  // 无响应
         }
 
-        private string GetArmPosition(JObject p) {
+        private string GetArmPosition(JObject paramsObj)
+        {
             // 坐标指令（JSON）
             try
             {
-                var pos = new ArmPosition(
-                    (float)p["X"],
-                    (float)p["Y"],
-                    (float)p["Z"],
-                    p.ContainsKey("RHead") ? (float)p["RHead"] : 0f
-                );
+                // 必要参数存在性检查
+                if (!paramsObj.TryGetValue("X", out JToken? xToken) ||
+                    !paramsObj.TryGetValue("Y", out JToken? yToken) ||
+                    !paramsObj.TryGetValue("Z", out JToken? zToken))
+                {
+                    Console.WriteLine("缺少坐标参数");
+                    return string.Empty;
+                }
 
-                //ArmPosition pos = JsonSerializer.Deserialize<ArmPosition>((ArmPosition)p);
-                //ArmPosition pos = new ArmPosition(x,y,35);
-                if (pos != null && pos.X != 0)  // 简单判断有效坐标
+                // 安全地把 JToken 转为 float（会在解析失败时抛异常，catch 中处理）
+                float x = xToken!.ToObject<float>();
+                float y = yToken!.ToObject<float>();
+                float z = zToken!.ToObject<float>();
+                float rHead = paramsObj.TryGetValue("RHead", out JToken? rToken) && rToken != null
+                    ? rToken.ToObject<float>()
+                    : 0f;
+
+                var pos = new ArmPosition(x, y, z, rHead);
+
+                // 简单判断有效坐标
+                if (pos.X != 0)
                 {
                     return _armService.PickAndPlace(pos);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("JSON 解析失败");
+                Console.WriteLine("JSON 解析失败: " + ex.Message);
             }
 
             return string.Empty;  // 无响应

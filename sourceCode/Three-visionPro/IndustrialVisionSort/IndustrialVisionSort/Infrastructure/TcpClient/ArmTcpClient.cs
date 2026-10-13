@@ -35,6 +35,7 @@ namespace IndustrialVisionSort.Application
             Disconnect
          */
 
+
         /// <summary>
         /// 连接机械臂服务端
         /// </summary>
@@ -131,6 +132,8 @@ namespace IndustrialVisionSort.Application
 
                 string msg = Encoding.UTF8.GetString(buffer, 0, len);
 
+                //if ("connected".Equals(msg)) IsConnected = true;
+
                 Console.WriteLine($"收到: {msg}");
 
                 LogMessage?.Invoke(this, $"收到: {msg}");
@@ -156,5 +159,20 @@ namespace IndustrialVisionSort.Application
             Console.WriteLine(cmd);
             LogMessage?.Invoke(this, $"已发送指令 {cmd}");
         }
+
+        /*
+         {
+          "cmd": "move",
+          "seq": 1,
+          "params": {
+            "x": 200.0,
+            "y": -17.0,
+            "z": 50.0,
+            "rhead": 0
+          }
+        }
+
+        { "cmd": "home", "seq": 2, "params": {} }
+         */
     }
 }

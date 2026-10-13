@@ -1,4 +1,5 @@
-﻿using Cognex.VisionPro;
+﻿using AntdUI;
+using Cognex.VisionPro;
 using Cognex.VisionPro.ToolBlock;
 using IndustrialVisionSort.Application;
 using IndustrialVisionSort.Application.Implementation;
@@ -25,8 +26,7 @@ namespace IndustrialVisionSort.ui.Controls.UC
         private CameraService _cameraService;
         private ModbusService _modbusService;
         int Count;
-        double X;
-        double Y;
+        double X, Y;
         private CogToolBlock CTB { get; set; }      // 视觉检测方案(ToolBlock)
         internal UcMain(CameraService cameraService, ModbusService modbusService, RobotService robotService)
         {
@@ -62,17 +62,17 @@ namespace IndustrialVisionSort.ui.Controls.UC
             CTB = CogSerializer.LoadObjectFromFile(path) as CogToolBlock;
 
             //事件触发VPP方案
-            _cameraService.FrameAcquired += (s, e) => {
-                // 将采集到的图形给到CTB
-                CTB.Inputs["InputImage"].Value = e.Image;
+            //_cameraService.FrameAcquired += (s, e) => {
+            //    // 将采集到的图形给到CTB
+            //    CTB.Inputs["InputImage"].Value = e.Image;
 
-                // 开始执行CTB
-                CTB.Run();
-                // 获取到检测的结果
-                Count = (int)CTB.Outputs["Count"].Value;
-                X = (int)CTB.Outputs["X"].Value;
-                Y = (int)CTB.Outputs["Y"].Value;
-            };
+            //    // 开始执行CTB
+            //    CTB.Run();
+
+            //    Count = (int)CTB.Outputs["Count"].Value;
+            //    X = (double)(CTB.Outputs["X"].Value);
+            //    Y = (double)(CTB.Outputs["Y"].Value);
+            //};
         }
         private void Cleanup()
         {

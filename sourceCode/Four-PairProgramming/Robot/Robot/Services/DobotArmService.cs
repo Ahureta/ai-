@@ -139,7 +139,7 @@ namespace DobotArms.Services
         public bool IsConnected => _isConnected;
 
         // ---- 私有辅助 ----
-        private void MoveTo(float x, float y, float z, float r, UInt64 cmdIndex)
+        private int MoveTo(float x, float y, float z, float r, UInt64 cmdIndex)
         {
             PTPCmd cmd = new PTPCmd();
             cmd.ptpMode = 1;  // MoveJ
@@ -147,7 +147,7 @@ namespace DobotArms.Services
             cmd.y = y;
             cmd.z = z;
             cmd.rHead = r;
-            DobotDll.SetPTPCmd(ref cmd, true, ref cmdIndex);
+            return DobotDll.SetPTPCmd(ref cmd, true, ref cmdIndex);
         }
     }
 }
