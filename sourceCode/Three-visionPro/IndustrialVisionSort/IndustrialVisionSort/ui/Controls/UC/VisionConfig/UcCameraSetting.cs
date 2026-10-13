@@ -16,12 +16,13 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
 {
     public partial class UcCameraSetting : UserControl
     {
-        private readonly CameraService _cameraService = new CameraService();
-        private bool _liveMode = false;             
-        public UcCameraSetting()
+        private readonly CameraService _cameraService;
+        
+        internal UcCameraSetting(CameraService cameraService)
         {
+            _cameraService = cameraService;
             InitializeComponent();
-            Init();            
+            Init();
         }
         private void Init()
         {
@@ -345,7 +346,7 @@ namespace IndustrialVisionSort.ui.Controls.UC.ControlConfig
         {
             cogRecordDisplay1.StopLiveDisplay();
             _cameraService.Stop();
-            _liveMode = false;
+            //_liveMode = false;
         }
         private void BTSingleShot_Click(object sender, EventArgs e)
         {

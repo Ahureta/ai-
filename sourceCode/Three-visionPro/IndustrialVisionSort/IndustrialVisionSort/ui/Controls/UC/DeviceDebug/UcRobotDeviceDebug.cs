@@ -14,30 +14,36 @@ namespace IndustrialVisionSort.ui.Controls.UC.ContolSetting
     public partial class UcRobotDeviceDebug : UserControl
     {
         private RobotService _robotServicel;
-        public UcRobotDeviceDebug()
+        internal UcRobotDeviceDebug(RobotService robotService)
         {
             InitializeComponent();
-            InitAttribute();
+            InitAttribute(robotService);
         }
 
-        public void InitAttribute() {
+        internal void InitAttribute(RobotService robotService) {
             _robotServicel = new RobotService();
             //RobotServicel = new RobotService(
             //    IPIP.Text,
             //    IPPort.Text
             //);
         }
-        private async Task BTConnectRobot_Click(object sender, EventArgs e)
+        private async void BTConnectRobot_Click(object sender, EventArgs e)
         {
             await _robotServicel.ConnectRobot();
+            AntdUI.Message.info(new AntdUI.Target(this), "正在连接", autoClose: 2);
         }
+        //private async Task BTConnectRobot_Click(object sender, EventArgs e)
+        //{
+        //    await _robotServicel.ConnectRobot();
+        //    AntdUI.Message.info(new AntdUI.Target(this),"正在连接", autoClose: 2);
+        //}
 
-        private void BTPointMove_Click(object sender, EventArgs e)
+        private async void BTPointMove_Click(object sender, EventArgs e)
         {
             float GoalX = float.Parse(IPXGoal.Text);
             float GoalY = float.Parse(IPYGoal.Text);
             float GoalZ = float.Parse(IPZGoal.Text);
-            _robotServicel.PointMove(GoalX,GoalY,GoalZ);
+            await _robotServicel.PointMove(GoalX,GoalY,GoalZ);
         }
 
         private void BTLostRobot_Click(object sender, EventArgs e)
@@ -45,19 +51,14 @@ namespace IndustrialVisionSort.ui.Controls.UC.ContolSetting
             _robotServicel.LostRobot();
         }
 
-        private void BTZero_Click(object sender, EventArgs e)
+        private async void BTSetHOMECmd_Click(object sender, EventArgs e)
         {
-
+            await _robotServicel.SetHOMECmd();
         }
 
-        private void BTClearErr_Click(object sender, EventArgs e)
+        private async void BTClearAllAlarmsState_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void BTClearQueue_Click(object sender, EventArgs e)
-        {
-
+            await _robotServicel.ClearAllAlarmsState();
         }
     }
 }

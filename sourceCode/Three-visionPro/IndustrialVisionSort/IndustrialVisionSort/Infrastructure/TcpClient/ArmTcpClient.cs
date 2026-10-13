@@ -1,11 +1,12 @@
-﻿using System;
+﻿using IndustrialVisionSort.DoMain.Entities;
+using IndustrialVisionSort.DoMain.Events;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using IndustrialVisionSort.DoMain.Entities;
-using IndustrialVisionSort.DoMain.Events;
-using Newtonsoft.Json;
 
 namespace IndustrialVisionSort.Application
 {
@@ -24,6 +25,16 @@ namespace IndustrialVisionSort.Application
 
         public bool IsConnected => _client != null && _client.Connected;
 
+
+        // 连接指令
+        /*
+            connect
+            SetHOMECmd
+            ClearAllAlarmsState
+            PickAndPlace
+            Disconnect
+         */
+
         /// <summary>
         /// 连接机械臂服务端
         /// </summary>
@@ -32,14 +43,12 @@ namespace IndustrialVisionSort.Application
             if (IsConnected) return;
 
             _client = new TcpClient();
-            await _client.ConnectAsync(ip, port);
+            Console.WriteLine("正在连接IP");
+            await _client.ConnectAsync(IPAddress.Parse(ip), port);
+            Console.WriteLine("IP连接成功");
             _stream = _client.GetStream();
 
-            // 发送连接指令
-            byte[] sendBytes = Encoding.UTF8.GetBytes("connect");
-            await _stream.WriteAsync(sendBytes, 0, sendBytes.Length);
-
-            LogMessage?.Invoke(this, "机械臂连接请求已发送");
+            await sendAction("connect");
 
             // 启动后台接收
             _running = true;
@@ -51,17 +60,18 @@ namespace IndustrialVisionSort.Application
         /// </summary>
         public async Task SendPositionAsync(ArmPosition pos)
         {
-            if (!IsConnected) throw new InvalidOperationException("机械臂未连接");
+            await sendAction("PickAndPlace", pos);
+            //if (!IsConnected) throw new InvalidOperationException("机械臂未连接");
 
-            string json = JsonConvert.SerializeObject(new
-            {
-                x = pos.X,
-                y = pos.Y
-            });
+            //string json = JsonConvert.SerializeObject(new
+            //{
+            //    x = pos.X,
+            //    y = pos.Y
+            //});
 
-            byte[] sendBytes = Encoding.UTF8.GetBytes(json);
-            await _stream.WriteAsync(sendBytes, 0, sendBytes.Length);
-            LogMessage?.Invoke(this, $"已发送坐标: X={pos.X}, Y={pos.Y}");
+            //byte[] sendBytes = Encoding.UTF8.GetBytes(json);
+            //await _stream.WriteAsync(sendBytes, 0, sendBytes.Length);
+            //LogMessage?.Invoke(this, $"已发送坐标: X={pos.X}, Y={pos.Y}");
         }
 
         /// <summary>
@@ -71,6 +81,22 @@ namespace IndustrialVisionSort.Application
         {
             var testPos = new ArmPosition(280, -25);
             await SendPositionAsync(testPos);
+        }
+
+        /// <summary>
+        /// 发送回零指令
+        /// </summary>
+        internal async Task SetHOMECmd()
+        {
+            await sendAction("SetHOMECmd");
+        }
+
+        /// <summary>
+        /// 发送消除警报指令
+        /// </summary>
+        internal async Task ClearAllAlarmsState()
+        {
+            await sendAction("ClearAllAlarmsState");
         }
 
         /// <summary>
@@ -104,10 +130,31 @@ namespace IndustrialVisionSort.Application
                 if (len == 0) break;
 
                 string msg = Encoding.UTF8.GetString(buffer, 0, len);
+
+                Console.WriteLine($"收到: {msg}");
+
                 LogMessage?.Invoke(this, $"收到: {msg}");
 
                 StateChanged?.Invoke(this, new ArmStateChangedEventArgs { State = msg.Trim() });
             }
+        }
+
+        public async Task sendAction(string cmd, ArmPosition armPosition = null) {
+            if (!IsConnected) throw new InvalidOperationException("机械臂未连接");
+
+            // 需要点参数
+            var msg = new Dictionary<string, object>
+            {
+                ["cmd"] = cmd,
+                ["params"] = armPosition
+            };
+            string json = JsonConvert.SerializeObject(msg);
+
+            byte[] sendBytes = Encoding.UTF8.GetBytes(json);
+            await _stream.WriteAsync(sendBytes, 0, sendBytes.Length);
+
+            Console.WriteLine(cmd);
+            LogMessage?.Invoke(this, $"已发送指令 {cmd}");
         }
     }
 }

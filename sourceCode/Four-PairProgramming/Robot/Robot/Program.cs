@@ -5,6 +5,14 @@ namespace Robot
 {
     internal class Program
     {
+        /*
+         立即指令：下位机收到马上执行
+        队列指令：收到后进下位机队列，串行执行
+        运动类指令（PTP/MovJ/MovL）都是队列指令
+        下发时立刻返回「已入队」，但机械臂还没动
+        要调 SetQueuedCmdStartExec 才真正开始跑队列
+         */
+
         static void Main(string[] args)
         {
             // 1. 创建服务实例

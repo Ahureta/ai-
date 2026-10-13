@@ -16,7 +16,7 @@ namespace DobotArms.Services
         /// <summary>
         /// 连接机械臂
         /// </summary>
-        public string Connect(string port = "COM8", int baudRate = 115200)
+        public string Connect(string port = "COM3", int baudRate = 115200)
         {
             if (_isConnected)
                 return "already_connected";
@@ -35,6 +35,39 @@ namespace DobotArms.Services
             {
                 Console.WriteLine($"连接失败，返回码:{ret}");
                 return "connect_failed";
+            }
+        }
+
+        public string SetHOMECmd()
+        {
+            HOMECmd homeCmd = new HOMECmd();
+            UInt64 cmdIndex = 0;
+            int ret = DobotDll.SetHOMECmd(ref homeCmd, false, ref cmdIndex);
+
+            if (ret == 0)
+            {
+                Console.WriteLine("回零指令下发成功，请观察机械臂运动");
+                return "回零指令下发成功，请观察机械臂运动";
+            }
+            else
+            {
+                Console.WriteLine($"回零调用失败，返回码{ret}");
+                return $"回零调用失败，返回码{ret}";
+            }
+        }
+
+        public string ClearAllAlarmsState()
+        {
+            int ret = DobotDll.ClearAllAlarmsState();
+            if (ret == 0)
+            {
+                Console.WriteLine("清除所有报警成功，观察指示灯变回绿色");
+                return "清除所有报警成功，观察指示灯变回绿色";
+            }
+            else
+            {
+                Console.WriteLine($"清除报警失败，返回码:{ret}");
+                return $"清除报警失败，返回码:{ret}";
             }
         }
 

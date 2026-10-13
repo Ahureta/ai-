@@ -163,7 +163,6 @@ namespace IndustrialVisionSort.DoMain.Entities
                 throw;
             }
         }
-
         /// <summary>
         /// 创建采集 FIFO
         /// </summary>
@@ -200,7 +199,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             IsInitialized = true;
             ConnectionState = CameraConnectionState.Ready;
         }
-
         /// <summary>
         /// 从设备端读取当前参数，同步到现有属性
         /// 在 CreateFifo() 成功后调用
@@ -243,7 +241,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             }
             catch { }
         }
-
         public void SetTriggerModel(CogAcqTriggerModelConstants model) {            
             // 1) 先停触发，避免热切换时旧触发继续生效
             _acq.OwnedTriggerParams.TriggerEnabled = false;
@@ -271,7 +268,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             // 5) 硬触发还要配相机/采集卡端（见下）
             // 6) 改了 videoFormat/大属性可重 Prepare；纯触发切换一般不必重建 FIFO
         }
-
         /// <summary>
         /// 硬件自动模式（外部触发自动采集，不需要 StartAcquire）
         /// 外部信号到来时相机自动出图，程序只管从 FIFO 取
@@ -303,7 +299,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             IsLive = false;
             ConnectionState = CameraConnectionState.Acquiring;
         }
-
         /// <summary>
         /// 硬件半自动模式（先武装 FIFO，等外部触发才出图）
         /// 需要 StartAcquire 武装 → 外部信号到来 → 真正采集一帧
@@ -334,7 +329,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             IsLive = false;
             ConnectionState = CameraConnectionState.Acquiring;
         }
-
         /// <summary>
         /// 预览模式（连续采集，不抛 FrameAcquired 事件，由外部直接读）
         /// </summary>
@@ -350,7 +344,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             IsLive = true;
             ConnectionState = CameraConnectionState.Acquiring;
         }
-
         /// <summary>
         /// 业务模式（单帧/连续，Complete 事件抛 FrameAcquired）
         /// </summary>
@@ -371,7 +364,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             IsLive = false;
             ConnectionState = CameraConnectionState.Acquiring;
         }
-
         /// <summary>
         /// 停止采集
         /// </summary>
@@ -388,40 +380,40 @@ namespace IndustrialVisionSort.DoMain.Entities
             ConnectionState = IsConnected ? CameraConnectionState.Ready : CameraConnectionState.Disconnected;
         }
 
-        /// <summary>
-        /// 应用曝光参数
-        /// </summary>
-        public void ApplyExposure()
-        {
-            if (_acq != null)
-                _acq.OwnedExposureParams.Exposure = ExposureMs;
-        }
-
-        /// <summary>
-        /// 应用增益（若相机支持）
-        /// </summary>
-        public void ApplyGain()
-        {
-            // VisionPro 增益通常通过 GenTL 特性或 Imaging 参数设置
-            // 这里留扩展点
-            try
-            {
-                // 部分采集卡/相机支持：
-                 //_acq.OwnedImagingParams.Gain = Gain;
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// 应用触发模式
-        /// </summary>
-        public void ApplyTrigger()
-        {
-            if (_acq != null)
-            {
-                _acq.OwnedTriggerParams.TriggerModel = TriggerMode;
-            }
-        }
+        #region    待开发代码
+        ///// <summary>
+        ///// 应用曝光参数
+        ///// </summary>
+        //public void ApplyExposure()
+        //{
+        //    if (_acq != null)
+        //        _acq.OwnedExposureParams.Exposure = ExposureMs;
+        //}
+        ///// <summary>
+        ///// 应用增益（若相机支持）
+        ///// </summary>
+        //public void ApplyGain()
+        //{
+        //    // VisionPro 增益通常通过 GenTL 特性或 Imaging 参数设置
+        //    // 这里留扩展点
+        //    try
+        //    {
+        //        // 部分采集卡/相机支持：
+        //         //_acq.OwnedImagingParams.Gain = Gain;
+        //    }
+        //    catch { }
+        //}
+        ///// <summary>
+        ///// 应用触发模式
+        ///// </summary>
+        //public void ApplyTrigger()
+        //{
+        //    if (_acq != null)
+        //    {
+        //        _acq.OwnedTriggerParams.TriggerModel = TriggerMode;
+        //    }
+        //}
+        #endregion
 
         /// <summary>
         /// 断开连接
@@ -443,7 +435,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             IsInitialized = false;
             ConnectionState = CameraConnectionState.Disconnected;
         }
-
         /// <summary>
         /// 释放资源
         /// </summary>
@@ -498,6 +489,7 @@ namespace IndustrialVisionSort.DoMain.Entities
                 }
         */
         #endregion
+        
         private void OnAcqComplete(object sender, CogCompleteEventArgs e)
         {
             try

@@ -1,4 +1,5 @@
 ﻿using DobotArms.Services;
+using Newtonsoft.Json.Linq;
 using Robot.Models;
 using System;
 using System.Net;
@@ -95,15 +96,60 @@ namespace DobotArms.Network
         private string DispatchMessage(string message, NetworkStream stream)
         {
             // 连接指令
-            if (message == "connect")
+            /*
+                connect
+                SetHOMECmd
+                ClearAllAlarmsState
+                PickAndPlace
+                Disconnect
+             */
+            try
             {
-                return _armService.Connect();
+                var json = JObject.Parse(message);
+                string cmd = json["cmd"]?.ToString();
+                JObject p = (JObject)json["params"];
+
+                switch (cmd)
+                {
+                    case "connect":
+                        _armService.Connect();
+                        break;
+                    case "SetHOMECmd":
+                        _armService.SetHOMECmd();
+                        break;
+                    case "ClearAllAlarmsState":
+                        _armService.ClearAllAlarmsState();
+                        break;
+                    case "PickAndPlace":
+                        GetArmPosition(p);
+                        break;
+                    case "Disconnect":
+                        _armService.Disconnect();
+                        break;
+                }
+                return "操作成功";
+            }
+            catch(Exception err)
+            {
+                Console.WriteLine("异常" + err);
             }
 
+            return string.Empty;  // 无响应
+        }
+
+        private string GetArmPosition(JObject p) {
             // 坐标指令（JSON）
             try
             {
-                ArmPosition pos = JsonSerializer.Deserialize<ArmPosition>(message);
+                var pos = new ArmPosition(
+                    (float)p["X"],
+                    (float)p["Y"],
+                    (float)p["Z"],
+                    p.ContainsKey("RHead") ? (float)p["RHead"] : 0f
+                );
+
+                //ArmPosition pos = JsonSerializer.Deserialize<ArmPosition>((ArmPosition)p);
+                //ArmPosition pos = new ArmPosition(x,y,35);
                 if (pos != null && pos.X != 0)  // 简单判断有效坐标
                 {
                     return _armService.PickAndPlace(pos);

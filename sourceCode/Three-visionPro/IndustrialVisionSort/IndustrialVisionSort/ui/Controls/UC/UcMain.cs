@@ -28,24 +28,37 @@ namespace IndustrialVisionSort.ui.Controls.UC
         double X;
         double Y;
         private CogToolBlock CTB { get; set; }      // 视觉检测方案(ToolBlock)
-        public UcMain()
+        internal UcMain(CameraService cameraService, ModbusService modbusService, RobotService robotService)
         {
             InitializeComponent();
-            InitServices();
+            InitServices(cameraService, modbusService, robotService);
+            
             Init();
+            //_cameraService = cameraService;
+            //_modbusService = modbusService;
+            //_robotService = robotService;
+        }
+        // ---- 初始化 ----
+        internal void InitServices(CameraService cameraService, ModbusService modbusService, RobotService robotService)
+        {
+            _cameraService = cameraService;
+            _modbusService = modbusService;
+            _robotService = robotService;
+            //_armClient = new ArmTcpClient();
+
+            InitEvent();
+        }
+        private void InitEvent()
+        {
+            _robotService.LogMessage += (sender, message) => {
+                MessageBox.Show("连接状态"+message);
+            };
         }
 
-        // ---- 初始化 ----
-        private void InitServices()
-        {
-            _robotService = new RobotService();
-            //_armClient = new ArmTcpClient();
-            _cameraService = new CameraService();
-            _modbusService = new ModbusService();
-        }
         public void Init() {
             //初始化VPP方案
-            string path = @"E:\pro\software\Github\GitRepository\ai视觉作业\sourceCode\Three-visionPro\IndustrialVisionSort\IndustrialVisionSort\bin\Debug\vpps";
+            //string path = @"E:\pro\software\Github\GitRepository\ai视觉作业\sourceCode\Three-visionPro\IndustrialVisionSort\IndustrialVisionSort\bin\Debug\vpps\瓶盖检测new.vpp";
+            string path = @".\vpps\瓶盖检测new.vpp";
             CTB = CogSerializer.LoadObjectFromFile(path) as CogToolBlock;
 
             //事件触发VPP方案
@@ -69,6 +82,8 @@ namespace IndustrialVisionSort.ui.Controls.UC
 
         private async void BTStartSort_Click(object sender, EventArgs e)
         {
+            await _robotService.PointMove((float)200, (float)-17, 50);
+
             //传送带启动
             _modbusService.Connect();
             _modbusService.SetSpeed(200);
@@ -85,7 +100,10 @@ namespace IndustrialVisionSort.ui.Controls.UC
             _cameraService.SetManual();
             _cameraService.SetAuto();
             //拍照后上料位传输坐标由机械臂执行移动
-            await _robotService.PointMove((float)X,(float)Y,80);
+            await _robotService.SetHOMECmd();
+            await _robotService.ClearAllAlarmsState();
+            //await _robotService.PointMove((float)200,(float)-17,80);
+            
             //重新开始传送带
             _modbusService.Start();
             //internal async Task PointMove(float goalX, float goalY, float goalZ)

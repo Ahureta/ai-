@@ -15,10 +15,11 @@ namespace IndustrialVisionSort.ui.Controls.UC.ContolSetting
 {
     public partial class UcModbusDeviceDebug : UserControl
     {
-        private ModbusService _modbusService = new ModbusService();
+        private ModbusService _modbusService;
 
-        public UcModbusDeviceDebug()
+        internal UcModbusDeviceDebug(ModbusService modbusService)
         {
+            _modbusService = modbusService;
             InitializeComponent();
             InitAttribute();
             Init();

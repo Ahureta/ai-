@@ -1,4 +1,6 @@
 ﻿using AntdUI;
+using IndustrialVisionSort.Application;
+using IndustrialVisionSort.Application.Implementation;
 using IndustrialVisionSort.ui.Controls;
 using IndustrialVisionSort.ui.Controls.UC;
 using IndustrialVisionSort.ui.Controls.UC.ContolSetting;
@@ -19,6 +21,10 @@ namespace IndustrialVisionSort.ui.Forms
 {
     public partial class IndustrialVisionSortingSystem : Form
     {
+        private CameraService _cameraService;
+        private ModbusService _modbusService;
+        private RobotService _robotService;
+
         // 用于缓存已创建的 UserControl（关键！防止重复New导致卡顿和数据丢失）
         // 懒加载缓存：key -> Lazy<UserControl>
         private readonly Dictionary<string, Lazy<UserControl>> _pages =
@@ -27,24 +33,32 @@ namespace IndustrialVisionSort.ui.Forms
         {
             InitializeComponent();
 
+            InitService();
+
             // 注册懒加载工厂（此时不new，只是登记）
-            Register("Main", () => new UcMain());
+            Register("Main", () => new UcMain(_cameraService, _modbusService, _robotService));
 
             Register("DeviceDebug", () => new UcDeviceDebug());
             Register("Log", () => new UcLog());
 
-            Register("CameraSetting", () => new UcCameraSetting());
+            Register("CameraSetting", () => new UcCameraSetting(_cameraService));
             Register("ImageSaveConfig", () => new UcImageSaveConfig());
             Register("PMATemplateTraining", () => new UcPMATemplateTraining());
             Register("VPPPlan", () => new UcVPPPlan());
 
-            Register("ModbusDeviceDebug", () => new UcModbusDeviceDebug());
-            Register("RobotDeviceDebug", () => new UcRobotDeviceDebug());
+            Register("ModbusDeviceDebug", () => new UcModbusDeviceDebug(_modbusService));
+            Register("RobotDeviceDebug", () => new UcRobotDeviceDebug(_robotService));
             Register("SQLConfig", () => new UcSQLConfig());
             Register("VisionParamConfig", () => new UcVisionConfig());
 
             this.Shown += IndustrialVisionSortingSystem_Shown;
             this.FormClosed += IndustrialVisionSortingSystem_FormClosed;
+        }
+
+        public void InitService() {
+            _cameraService = new CameraService();
+            _modbusService = new ModbusService();
+            _robotService = new RobotService();
         }
 
         private void IndustrialVisionSortingSystem_FormClosed(object sender, FormClosedEventArgs e)
@@ -125,6 +139,9 @@ namespace IndustrialVisionSort.ui.Forms
             // 使用 Lazy.Value 获取真实控件
             UserControl uc = lazy.Value;
             uc.Dock = DockStyle.Fill;           // ← 不加这个控件不会填满 Panel
+
+            //替换标题
+            LBTitle.Text = pageKey;
 
             // 替换 Panel 的内容
             PNView.Controls.Clear();
