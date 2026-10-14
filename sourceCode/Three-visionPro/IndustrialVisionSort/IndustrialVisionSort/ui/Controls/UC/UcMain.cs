@@ -72,6 +72,14 @@ namespace IndustrialVisionSort.ui.Controls.UC
             {
                 if (!_isLive) return;
 
+
+                //检测到后停止传输带
+                _modbusService.Stop();
+
+                //延迟原因传输带停止后再次拍照    不好搞
+                //_cameraService.SetManual();
+                //_cameraService.SetAuto();
+
                 // 将采集到的图形给到CTB
                 CTB.Inputs["InputImage"].Value = e.Image;
 
@@ -84,15 +92,11 @@ namespace IndustrialVisionSort.ui.Controls.UC
                 X = (double)(CTB.Outputs["X"].Value);
                 Y = (double)(CTB.Outputs["Y"].Value);
 
-                //检测到后停止传输带
-                if (Count > 0)
-                    _modbusService.Stop();
-                //延迟原因传输带停止后再次拍照
-                _cameraService.SetManual();
-                _cameraService.SetAuto();
+
                 //拍照后上料位传输坐标由机械臂执行移动
-                await _robotService.SetHOMECmd();
-                await _robotService.ClearAllAlarmsState();
+                await _robotService.PointMove((float)X, (float)Y,80);
+                //await _robotService.SetHOMECmd();
+                //await _robotService.ClearAllAlarmsState();
                 //await _robotService.PointMove((float)200,(float)-17,80);
 
                 //重新开始传送带
@@ -107,12 +111,17 @@ namespace IndustrialVisionSort.ui.Controls.UC
             _modbusService?.Dispose();
         }
 
+        private void BTStopSort_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private async void BTStartSort_Click(object sender, EventArgs e)
         {
             //await _robotService.PointMove((float)200, (float)-17, 50);
 
             //传送带启动
-            _modbusService.Connect();
+            //_modbusService.Connect();
             _modbusService.SetSpeed(200);
             _modbusService.Start();
             //相机开始自动拍照

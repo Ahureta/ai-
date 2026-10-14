@@ -23,7 +23,7 @@ namespace _9_11.Infrastructure.Modbus
         // ===== 原有字段 =====
         //应该要从配置文件中读取
         private SerialPort _serialPort;
-        private readonly string _portName = "COM1";
+        private readonly string _portName = "COM4";
         private readonly int _baudRate = 9600;
         private readonly Parity _parity = Parity.None;
         private readonly int _dataBits = 8;

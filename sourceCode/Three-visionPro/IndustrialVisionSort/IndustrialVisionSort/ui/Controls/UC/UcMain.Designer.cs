@@ -256,6 +256,7 @@
             this.BTStopSort.Size = new System.Drawing.Size(84, 45);
             this.BTStopSort.TabIndex = 1;
             this.BTStopSort.Text = "停止检测";
+            this.BTStopSort.Click += new System.EventHandler(this.BTStopSort_Click);
             // 
             // BTStartSort
             // 

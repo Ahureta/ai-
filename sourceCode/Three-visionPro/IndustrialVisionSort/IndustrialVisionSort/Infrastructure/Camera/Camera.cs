@@ -51,7 +51,7 @@ namespace IndustrialVisionSort.DoMain.Entities
         public int Height { get; private set; }
 
         // ============================================================
-        // 四、运行状态
+        // 四、运行状态       或许直接给出acq状态的get比较好
         // ============================================================
         public bool IsConnected { get; private set; }
         public bool IsInitialized { get; private set; }
