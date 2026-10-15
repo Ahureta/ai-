@@ -82,20 +82,20 @@ namespace DobotArms.Services
             try
             {
                 // 1. 取料位上方
-                MoveTo(pickPos.X, pickPos.Y, 80, 0, 1);
+                MoveTo(pickPos.X, pickPos.Y, (float)32.7, 0, 1);
 
                 // 2. 下降到取料位
-                MoveTo(pickPos.X, pickPos.Y, -18, 0, 2);
+                MoveTo(pickPos.X, pickPos.Y, (float)-21.1, 0, 2);
 
                 // 3. 开启吸盘
                 UInt64 idx3 = 3;
                 DobotDll.SetEndEffectorSuctionCup(true, true, true, ref idx3);
 
                 // 4. 抬起到取料位上方
-                MoveTo(pickPos.X, pickPos.Y, 80, 0, 4);
+                MoveTo(pickPos.X, pickPos.Y, 20, 0, 4);
 
                 // 5. 移动到下料位上方
-                MoveTo(8, 218, 80, 0, 5);
+                MoveTo(17, 162, 20, 0, 5);
 
                 // 6. 释放吸盘
                 UInt64 idx6 = 6;

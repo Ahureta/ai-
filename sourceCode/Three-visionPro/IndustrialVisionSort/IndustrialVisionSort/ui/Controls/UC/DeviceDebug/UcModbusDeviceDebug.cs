@@ -28,12 +28,12 @@ namespace IndustrialVisionSort.ui.Controls.UC.ContolSetting
             sliderSpeed.SetMinMax(1, 2000);
             sliderSpeed.Value = 200;
 
-            _modbusService = new ModbusService(
-                byte.Parse(IPIP.Text),
-                int.Parse(IPDeviceStatus.Text),
-                int.Parse(IPForwardAndReverse.Text),
-                int.Parse(IPSpleed.Text)
-            );
+            //_modbusService = new ModbusService(
+            //    byte.Parse(IPIP.Text),                //2
+            //    int.Parse(IPDeviceStatus.Text),       //100
+            //    int.Parse(IPForwardAndReverse.Text),  //101
+            //    int.Parse(IPSpleed.Text)              //102
+            //);
         }
 
         public void Init() {

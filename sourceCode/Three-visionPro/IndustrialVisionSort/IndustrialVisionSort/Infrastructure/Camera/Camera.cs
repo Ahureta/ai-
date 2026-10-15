@@ -281,7 +281,6 @@ namespace IndustrialVisionSort.DoMain.Entities
             // 2. 设置 FIFO 触发模型为 Auto
             SetTriggerModel(CogAcqTriggerModelConstants.Auto);
 
-            Console.WriteLine("CogAcqTriggerModelConstants"+ _acq.OwnedTriggerParams.TriggerModel);
 
             // 3. 配置相机端硬触发（GigE）
             var g = _acq.FrameGrabber?.OwnedGigEAccess;

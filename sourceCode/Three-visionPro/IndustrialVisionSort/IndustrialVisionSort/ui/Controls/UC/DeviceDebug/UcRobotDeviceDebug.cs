@@ -21,7 +21,7 @@ namespace IndustrialVisionSort.ui.Controls.UC.ContolSetting
         }
 
         internal void InitAttribute(RobotService robotService) {
-            _robotServicel = new RobotService();
+            _robotServicel = robotService;
             //RobotServicel = new RobotService(
             //    IPIP.Text,
             //    IPPort.Text

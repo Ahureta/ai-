@@ -63,45 +63,58 @@ namespace IndustrialVisionSort.ui.Controls.UC
         public void Init() {
             //初始化VPP方案
             //string path = @"E:\pro\software\Github\GitRepository\ai视觉作业\sourceCode\Three-visionPro\IndustrialVisionSort\IndustrialVisionSort\bin\Debug\vpps\瓶盖检测new.vpp";
-            string path = @".\vpps\瓶盖检测new.vpp";
+            string path = @".\vpps\瓶盖检测Down.vpp";
             CTB = CogSerializer.LoadObjectFromFile(path) as CogToolBlock;
 
             //事件触发VPP方案
             _cameraService.FrameAcquired += (s, e) => FrameAcquired.Invoke(s, e);
             FrameAcquired += async(s,e) =>
             {
-                if (!_isLive) return;
+                try
+                {
+                    Console.WriteLine("检测到");
+                    //if (!_isLive) return;
 
 
-                //检测到后停止传输带
-                _modbusService.Stop();
+                    //检测到后停止传输带
+                    _modbusService.Stop();
 
-                //延迟原因传输带停止后再次拍照    不好搞
-                //_cameraService.SetManual();
-                //_cameraService.SetAuto();
+                    //延迟原因传输带停止后再次拍照    不好搞
+                    //_cameraService.SetManual();
+                    //_cameraService.SetAuto();
 
-                // 将采集到的图形给到CTB
-                CTB.Inputs["InputImage"].Value = e.Image;
+                    // 将采集到的图形给到CTB
+                    CTB.Inputs["InputImage"].Value = e.Image;
 
-                // 开始执行CTB
-                CTB.Run();
+                    // 开始执行CTB
+                    CTB.Run();
 
-                cogRecordDisplay.Image = e.Image;       //如果可以给CTB结果图
+                    cogRecordDisplay.Image = e.Image;       //如果可以给CTB结果图
 
-                Count = (int)CTB.Outputs["Count"].Value;
-                X = (double)(CTB.Outputs["X"].Value);
-                Y = (double)(CTB.Outputs["Y"].Value);
+                    Count = (int)CTB.Outputs["Count"].Value;
+                    X = (double)(CTB.Outputs["X"].Value);
+                    Y = (double)(CTB.Outputs["Y"].Value);
 
+                    Console.WriteLine("检测的瓶盖坐标---");
+                    Console.WriteLine(X);
+                    Console.WriteLine(Y);
+                    Console.WriteLine("检测的瓶盖坐标---");
 
-                //拍照后上料位传输坐标由机械臂执行移动
-                await _robotService.PointMove((float)X, (float)Y,80);
-                //await _robotService.SetHOMECmd();
-                //await _robotService.ClearAllAlarmsState();
-                //await _robotService.PointMove((float)200,(float)-17,80);
+                    //拍照后上料位传输坐标由机械臂执行移动
+                    await _robotService.PointMove((float)X, (float)Y, 80);
+                    //await _robotService.SetHOMECmd();
+                    //await _robotService.ClearAllAlarmsState();
+                    //await _robotService.PointMove((float)200,(float)-17,80);
 
-                //重新开始传送带
-                _modbusService.Start();
-                //internal async Task PointMove(float goalX, float goalY, float goalZ)
+                    //重新开始传送带
+                    await Task.Delay(TimeSpan.FromSeconds(2));      //先睡两秒·
+                    _modbusService.Start();
+                    //internal async Task PointMove(float goalX, float goalY, float goalZ)
+                }
+                catch (Exception err) {
+                    Console.WriteLine(err);
+                    MessageBox.Show("异常："+err);
+                }
             };
 
         }
@@ -153,8 +166,7 @@ namespace IndustrialVisionSort.ui.Controls.UC
         //    // 开始执行CTB
         //    CTB.Run();
         //    // 获取到检测的结果
-        //    int Count = (int)CTB.Outputs["Count"].Value;
-        //    Console.WriteLine("检测结果数: " + Count);
+        //    int Count = (int)CTB.Outputs["Count"].Value;        
         //    if (Count > 0) // 检测到瓶盖
         //    {
         //        double x = (double)CTB.Outputs["X"].Value;
